@@ -429,4 +429,29 @@ class Api(object):
     ####################################################################################################################
     #                                           Transactional API                                                      #
     ####################################################################################################################
-    # COMING SOON
+    @require_auth
+    def transactional_message(self, template_id=None, subscriber_email=None, subscriber_id=None, additional_data=None,
+                              headers=None, content_type=None):
+        if template_id is None:
+            raise MissingParameterError
+        data = {
+            'template_id': template_id
+        }
+        if subscriber_id:
+            data['subscriber_id']: subscriber_id
+        elif subscriber_email:
+            data['subscriber_email']: subscriber_email
+        if additional_data:
+            data['data']: additional_data
+        if headers:
+            data['headers']: headers
+        if content_type:
+            if content_type in ['html', 'markdown', 'plain']:
+                data['content_type']: content_type
+            else:
+                raise ParameterError
+        response = self._session.post(f'{self.url}/tx', data=data, headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
