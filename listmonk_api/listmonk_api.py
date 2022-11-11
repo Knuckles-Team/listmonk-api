@@ -311,9 +311,29 @@ class Api(object):
     #                                                Campaigns API                                                     #
     ####################################################################################################################
     @require_auth
-    def get_campaigns(self):
-        response = self._session.get(f'{self.url}/campaigns?page=1&per_page=100', headers=self.headers,
-                                     verify=self.verify)
+    def get_campaigns(self, query=None, order_by=None, order=None, max_pages=0, per_page=100):
+        data = None
+        response = self._session.get(f'{self.url}/lists?per_page={per_page}&x-total-pages',
+                                     headers=self.headers, verify=self.verify)
+        total_pages = int(response.headers['X-Total-Pages'])
+        response = []
+        campaign_filter = f'?per_page={per_page}'
+        if query:
+            try:
+                data = json.dumps(query, indent=4)
+            except ValueError:
+                raise ParameterError
+        if order_by and order_by in ['name', 'status', 'created_at', 'updated_at']:
+            campaign_filter = f'{campaign_filter}&order_by={order_by}'
+        if order and order.upper() in ['ASC', 'DESC']:
+            campaign_filter = f'{campaign_filter}&order={order}'
+        if max_pages == 0 or max_pages > total_pages:
+            max_pages = total_pages
+        for page in range(0, max_pages):
+            response_page = self._session.get(f'{self.url}/campaigns{campaign_filter}&page={page}',
+                                              headers=self.headers, data=data, verify=self.verify)
+            response_page = json.loads(response_page.text.replace('"', '\"'))
+            response = response + response_page
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -330,9 +350,66 @@ class Api(object):
             return response
 
     @require_auth
-    def create_campaign(self, data=None):
-        if data is None:
+    def get_campaign_preview(self, campaign_id=None):
+        if campaign_id is None:
             raise MissingParameterError
+        response = self._session.get(f'{self.url}/campaigns/{campaign_id}/preview', headers=self.headers,
+                                     verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def get_campaign_stats(self, campaign_id=None):
+        if campaign_id is None:
+            raise MissingParameterError
+        response = self._session.get(f'{self.url}/campaigns/{campaign_id}/running/stats?campaign_id={campaign_id}',
+                                     headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def create_campaign(self, name=None, subject=None, lists=None, from_email=None, send_type=None, content_type=None,
+                        body=None, altbody=None, send_at=None, messenger=None, template_id=None, tags=None):
+        if name is None or subject is None or lists is None or send_type is None or content_type is None \
+                or body is None:
+            raise MissingParameterError
+        data = {}
+        if isinstance(name, str):
+            data['name'] = name
+        if isinstance(subject, str):
+            data['subject'] = subject
+        if isinstance(lists, list):
+            data['lists'] = lists
+        if isinstance(from_email, str):
+            data['from_email'] = from_email
+        if send_type in ['regular', 'optin']:
+            data['send_type'] = send_type
+        else:
+            raise ParameterError
+        if content_type in ['richtext', 'html', 'markdown', 'plain']:
+            data['content_type'] = content_type
+        else:
+            raise ParameterError
+        if isinstance(body, str):
+            data['body'] = body
+        if isinstance(altbody, str):
+            data['altbody'] = altbody
+        if isinstance(send_at, str):
+            data['send_at'] = send_at
+        if isinstance(messenger, str):
+            data['messenger'] = messenger
+        if isinstance(template_id, int):
+            data['template_id'] = template_id
+        if isinstance(tags, list):
+            data['tags'] = tags
+        try:
+            data = json.dumps(data, indent=4)
+        except ValueError or AttributeError:
+            raise ParameterError
         response = self._session.post(f'{self.url}/campaigns', data=data, headers=self.headers, verify=self.verify)
         try:
             return response.json()
@@ -340,22 +417,32 @@ class Api(object):
             return response
 
     @require_auth
-    def update_campaign(self, campaign_id=None, data=None):
-        if campaign_id is None or data is None:
+    def set_campaign_status(self, campaign_id=None, status=None):
+        if campaign_id is None or status is None:
             raise MissingParameterError
-        response = self._session.post(f'{self.url}/campaigns/{campaign_id}', data=data, headers=self.headers,
-                                      verify=self.verify)
+        if status and status in ['scheduled', 'running', 'paused', 'cancelled']:
+            data = {
+                'status': status
+            }
+            try:
+                data = json.dumps(data, indent=4)
+            except ValueError or AttributeError:
+                raise ParameterError
+        else:
+            raise ParameterError
+        response = self._session.put(f'{self.url}/campaigns/{campaign_id}/status', data=data, headers=self.headers,
+                                     verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
             return response
 
     @require_auth
-    def set_campaign_status(self, campaign_id=None, data=None, ):
-        if campaign_id is None or data is None:
+    def delete_campaign(self, campaign_id=None):
+        if campaign_id is None:
             raise MissingParameterError
-        response = self._session.put(f'{self.url}/campaigns/{campaign_id}/status', data=data, headers=self.headers,
-                                     verify=self.verify)
+        response = self._session.delete(f'{self.url}/campaigns/{campaign_id}', headers=self.headers,
+                                      verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
