@@ -215,6 +215,41 @@ class Api(object):
         except ValueError or AttributeError:
             return response
 
+    @require_auth
+    def edit_list(self, list_id=None, name=None, type=None, optin=None, tags=None):
+        if list_id is None:
+            raise MissingParameterError
+        data={}
+        if name:
+            if not isinstance(name, str):
+                raise ParameterError
+            else:
+                data['name'] = name
+        if type:
+            if not isinstance(type, str) and optin not in ['private', 'public']:
+                raise ParameterError
+            else:
+                data['type'] = type
+        if optin:
+            if not isinstance(optin, str) and optin not in ['single', 'double']:
+                raise ParameterError
+            else:
+                data['optin'] = optin
+        if tags:
+            if not isinstance(tags, list):
+                raise ParameterError
+            else:
+                data['tags'] = tags
+        try:
+            data = json.dumps(data, indent=4)
+        except ValueError:
+            raise ParameterError
+        response = self._session.put(f'{self.url}/lists/{list_id}', data=data, headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
     ####################################################################################################################
     #                                                 Import API                                                       #
     ####################################################################################################################
@@ -246,7 +281,6 @@ class Api(object):
             raise MissingParameterError
         response = self._session.post(f'{self.url}/campaigns', data=data, headers=self.headers, verify=False)
         try:
-            try:
             return response.json()
         except ValueError or AttributeError:
             return response
