@@ -67,3 +67,83 @@ class Api(object):
             return response.json()
         except ValueError or AttributeError:
             return response
+        
+    @require_auth
+    def get_campaigns(self):
+        r = self._session.get(self.api_url + f"/campaigns?page=1&per_page=100", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def get_campaign(self, campaign_id=None):
+        if campaign_id is None:
+            raise MissingParameterError
+        r = self._session.get(self.api_url + f"/campaigns/{campaign_id}", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def create_campaign(self, data=None, attempt=0):
+        if data is None:
+            raise MissingParameterError
+        r = self._session.post(self.api_url + f"/campaigns", data=data, headers=self.headers, verify=False)
+        try:
+            return r.json()
+        except (json.JSONDecodeError) as e:
+            if attempt < 9:
+                print(f"Unable to create campaign attempt {attempt}")
+                self.create_campaign(data=data, attempt=attempt+1)
+            else:
+                print("Unable to create campaign after 9 attempts. Error: ", e)
+                r = f"{e}"
+                return r
+
+    @require_auth
+    def update_campaign(self, campaign_id=None, data=None):
+        if campaign_id is None or data is None:
+            raise MissingParameterError
+        r = self._session.post(self.api_url + f"/campaigns/{campaign_id}", data=data, headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def set_campaign_status(self, campaign_id=None, data=None,):
+        if campaign_id is None or data is None:
+            raise MissingParameterError
+        r = self._session.put(self.api_url + f"/campaigns/{campaign_id}/status", data=data, headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def get_lists(self):
+        r = self._session.get(self.api_url + f"/lists?page=1&per_page=100", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def get_list(self, list_id=None):
+        if list_id is None:
+            raise MissingParameterError
+        r = self._session.get(self.api_url + f"/lists/{list_id}", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def create_list(self, data=None):
+        if data is None:
+            raise MissingParameterError
+        r = self._session.post(self.api_url + f"/lists", data=data, headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def get_templates(self):
+        r = self._session.get(self.api_url + f"/templates?page=1&per_page=100", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def get_template(self, template_id=None):
+        if template_id is None:
+            raise MissingParameterError
+        r = self._session.get(self.api_url + f"/templates/{template_id}", headers=self.headers, verify=False)
+        return r.json()
+
+    @require_auth
+    def set_default_template(self, data=None):
+        if data is None:
+            raise MissingParameterError
+        r = self._session.post(self.api_url + f"/templates", data=data, headers=self.headers, verify=False)
+
