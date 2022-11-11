@@ -82,7 +82,7 @@ class Api(object):
             max_pages = total_pages
         for page in range(0, max_pages):
             response_page = self._session.get(f'{self.url}/subscribers{subscriber_filter}&page={page}',
-                                              headers=self.headers, verify=self.verify)
+                                              headers=self.headers, data=data, verify=self.verify)
             response_page = json.loads(response_page.text.replace('"', '\"'))
             response = response + response_page
         try:
@@ -142,7 +142,7 @@ class Api(object):
     #                                                  Lists API                                                       #
     ####################################################################################################################
     @require_auth
-    def get_lists(self, query=None,  order_by=None, order=None, max_pages=0, per_page=100):
+    def get_lists(self, query=None, order_by=None, order=None, max_pages=0, per_page=100):
         data = None
         response = self._session.get(f'{self.url}/lists?per_page={per_page}&x-total-pages',
                                      headers=self.headers, verify=self.verify)
@@ -154,9 +154,9 @@ class Api(object):
                 data = json.dumps(query, indent=4)
             except ValueError:
                 raise ParameterError
-        if order_by and order_by in ["name", "status", "created_at", "updated_at"]:
+        if order_by and order_by in ['name', 'status', 'created_at', 'updated_at']:
             list_filter = f'{list_filter}&order_by={order_by}'
-        if order and order.upper() in ["ASC", "DESC"]:
+        if order and order.upper() in ['ASC', 'DESC']:
             list_filter = f'{list_filter}&order={order}'
         if max_pages == 0 or max_pages > total_pages:
             max_pages = total_pages
@@ -174,27 +174,27 @@ class Api(object):
     def get_list(self, list_id=None):
         if list_id is None:
             raise MissingParameterError
-        response = self._session.get(f'{self.url}/lists/{list_id}', headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/lists/{list_id}', headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
             return response
 
     @require_auth
-    def create_list(self, name=None, type=None, optin=None, tags=None):
+    def create_list(self, name=None, visibility_type=None, optin=None, tags=None):
         if name is None or type is None or optin is None:
             raise MissingParameterError
-        data={}
+        data = {}
         if name:
             if not isinstance(name, str):
                 raise ParameterError
             else:
                 data['name'] = name
-        if type:
-            if not isinstance(type, str) and optin not in ['private', 'public']:
+        if visibility_type:
+            if not isinstance(visibility_type, str) and optin not in ['private', 'public']:
                 raise ParameterError
             else:
-                data['type'] = type
+                data['type'] = visibility_type
         if optin:
             if not isinstance(optin, str) and optin not in ['single', 'double']:
                 raise ParameterError
@@ -209,27 +209,27 @@ class Api(object):
             data = json.dumps(data, indent=4)
         except ValueError:
             raise ParameterError
-        response = self._session.post(f'{self.url}/lists', data=data, headers=self.headers, verify=False)
+        response = self._session.post(f'{self.url}/lists', data=data, headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
             return response
 
     @require_auth
-    def edit_list(self, list_id=None, name=None, type=None, optin=None, tags=None):
+    def edit_list(self, list_id=None, name=None, visibility_type=None, optin=None, tags=None):
         if list_id is None:
             raise MissingParameterError
-        data={}
+        data = {}
         if name:
             if not isinstance(name, str):
                 raise ParameterError
             else:
                 data['name'] = name
-        if type:
-            if not isinstance(type, str) and optin not in ['private', 'public']:
+        if visibility_type:
+            if not isinstance(visibility_type, str) and optin not in ['private', 'public']:
                 raise ParameterError
             else:
-                data['type'] = type
+                data['type'] = visibility_type
         if optin:
             if not isinstance(optin, str) and optin not in ['single', 'double']:
                 raise ParameterError
@@ -244,7 +244,7 @@ class Api(object):
             data = json.dumps(data, indent=4)
         except ValueError:
             raise ParameterError
-        response = self._session.put(f'{self.url}/lists/{list_id}', data=data, headers=self.headers, verify=False)
+        response = self._session.put(f'{self.url}/lists/{list_id}', data=data, headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -253,13 +253,67 @@ class Api(object):
     ####################################################################################################################
     #                                                 Import API                                                       #
     ####################################################################################################################
+    @require_auth
+    def get_subscriber_import_status(self):
+        response = self._session.get(f'{self.url}/import/subscribers', headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def get_subscriber_import_logs(self):
+        response = self._session.get(f'{self.url}/import/subscribers/logs', headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def import_subscribers(self, file=None, mode=None, delimiter=',', id_list=None, overwrite=True):
+        if file is None or mode is None or id_list is None:
+            raise MissingParameterError
+        if not isinstance(id_list, list):
+            raise ParameterError
+        if mode not in ['subscribe', 'blocklist']:
+            raise ParameterError
+        if not isinstance(delimiter, str):
+            raise ParameterError
+        if not isinstance(overwrite, bool):
+            raise ParameterError
+        data = {
+            'file': file,
+            'mode': mode,
+            'delim': delimiter,
+            'lists': id_list,
+            'overwrite': overwrite
+        }
+        try:
+            data = json.dumps(data, indent=4)
+        except ValueError:
+            raise ParameterError
+        response = self._session.get(f'{self.url}/import/subscribers/', headers=self.headers, data=data,
+                                     verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def delete_subscriber_import(self):
+        response = self._session.delete(f'{self.url}/import/subscribers/logs', headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     ####################################################################################################################
     #                                                Campaigns API                                                     #
     ####################################################################################################################
     @require_auth
     def get_campaigns(self):
-        response = self._session.get(f'{self.url}/campaigns?page=1&per_page=100', headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/campaigns?page=1&per_page=100', headers=self.headers,
+                                     verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -269,17 +323,17 @@ class Api(object):
     def get_campaign(self, campaign_id=None):
         if campaign_id is None:
             raise MissingParameterError
-        response = self._session.get(f'{self.url}/campaigns/{campaign_id}', headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/campaigns/{campaign_id}', headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
             return response
 
     @require_auth
-    def create_campaign(self, data=None, attempt=0):
+    def create_campaign(self, data=None):
         if data is None:
             raise MissingParameterError
-        response = self._session.post(f'{self.url}/campaigns', data=data, headers=self.headers, verify=False)
+        response = self._session.post(f'{self.url}/campaigns', data=data, headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -289,7 +343,8 @@ class Api(object):
     def update_campaign(self, campaign_id=None, data=None):
         if campaign_id is None or data is None:
             raise MissingParameterError
-        response = self._session.post(f'{self.url}/campaigns/{campaign_id}', data=data, headers=self.headers, verify=False)
+        response = self._session.post(f'{self.url}/campaigns/{campaign_id}', data=data, headers=self.headers,
+                                      verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -300,7 +355,7 @@ class Api(object):
         if campaign_id is None or data is None:
             raise MissingParameterError
         response = self._session.put(f'{self.url}/campaigns/{campaign_id}/status', data=data, headers=self.headers,
-                              verify=False)
+                                     verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -315,7 +370,8 @@ class Api(object):
     ####################################################################################################################
     @require_auth
     def get_templates(self):
-        response = self._session.get(f'{self.url}/templates?page=1&per_page=100', headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/templates?page=1&per_page=100', headers=self.headers,
+                                     verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -325,7 +381,7 @@ class Api(object):
     def get_template(self, template_id=None):
         if template_id is None:
             raise MissingParameterError
-        response = self._session.get(f'{self.url}/templates/{template_id}', headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/templates/{template_id}', headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -335,7 +391,11 @@ class Api(object):
     def set_default_template(self, data=None):
         if data is None:
             raise MissingParameterError
-        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=False)
+        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     ####################################################################################################################
     #                                           Transactional API                                                      #
