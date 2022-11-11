@@ -45,7 +45,7 @@ class Api(object):
         else:
             raise MissingParameterError
 
-        response = self._session.get(f'{self.url}/projects', headers=self.headers, verify=self.verify)
+        response = self._session.get(f'{self.url}/subscribers', headers=self.headers, verify=self.verify)
 
         if response.status_code == 403:
             raise UnauthorizedError
@@ -55,95 +55,254 @@ class Api(object):
             raise ParameterError
 
     ####################################################################################################################
-    #                                                 Branches API                                                     #
+    #                                              Subscribers API                                                     #
     ####################################################################################################################
     @require_auth
-    def get_branches(self, project_id=None):
-        if project_id is None:
+    def get_subscribers(self, query=None, list_id=None, max_pages=0, per_page=100):
+        data = None
+        response = self._session.get(f'{self.url}/subscribers?per_page={per_page}&x-total-pages',
+                                     headers=self.headers, verify=self.verify)
+        total_pages = int(response.headers['X-Total-Pages'])
+        response = []
+        subscriber_filter = f'?per_page={per_page}'
+        if query:
+            try:
+                data = json.dumps(query, indent=4)
+            except ValueError:
+                raise ParameterError
+        if list_id:
+            if not isinstance(list_id, int) and not isinstance(list_id, list):
+                raise ParameterError
+            if isinstance(list_id, list):
+                for single_list_id in list_id:
+                    subscriber_filter = f'{subscriber_filter}&list_id={single_list_id}'
+            else:
+                subscriber_filter = f'{subscriber_filter}&list_id={list_id}'
+        if max_pages == 0 or max_pages > total_pages:
+            max_pages = total_pages
+        for page in range(0, max_pages):
+            response_page = self._session.get(f'{self.url}/subscribers{subscriber_filter}&page={page}',
+                                              headers=self.headers, verify=self.verify)
+            response_page = json.loads(response_page.text.replace('"', '\"'))
+            response = response + response_page
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def get_subscriber(self, subscriber_id=None):
+        if subscriber_id is None:
             raise MissingParameterError
-        response = self._session.get(f'{self.url}/projects/{project_id}/repository/branches',
+        response = self._session.get(f'{self.url}/subscribers/{subscriber_id}',
                                      headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
             return response
-        
-    @require_auth
-    def get_campaigns(self):
-        r = self._session.get(self.api_url + f"/campaigns?page=1&per_page=100", headers=self.headers, verify=False)
-        return r.json()
 
     @require_auth
-    def get_campaign(self, campaign_id=None):
-        if campaign_id is None:
+    def get_subscribers_from_list(self, list_id=None):
+        if list_id is None:
             raise MissingParameterError
-        r = self._session.get(self.api_url + f"/campaigns/{campaign_id}", headers=self.headers, verify=False)
-        return r.json()
-
-    @require_auth
-    def create_campaign(self, data=None, attempt=0):
-        if data is None:
-            raise MissingParameterError
-        r = self._session.post(self.api_url + f"/campaigns", data=data, headers=self.headers, verify=False)
+        response = self._session.get(f'{self.url}/subscribers/lists/{list_id}',
+                                     headers=self.headers, verify=self.verify)
         try:
-            return r.json()
-        except (json.JSONDecodeError) as e:
-            if attempt < 9:
-                print(f"Unable to create campaign attempt {attempt}")
-                self.create_campaign(data=data, attempt=attempt+1)
-            else:
-                print("Unable to create campaign after 9 attempts. Error: ", e)
-                r = f"{e}"
-                return r
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
-    def update_campaign(self, campaign_id=None, data=None):
-        if campaign_id is None or data is None:
+    def create_subscriber(self, email=None, name=None, status=None, lists=None, attributes=None,
+                          preconfirm_subscriptions=True):
+        if email is None or name is None or status is None:
             raise MissingParameterError
-        r = self._session.post(self.api_url + f"/campaigns/{campaign_id}", data=data, headers=self.headers, verify=False)
-        return r.json()
+        if isinstance(email, str) and isinstance(name, str) and isinstance(status, str):
+            data = {'email': email, 'name': name, 'status': status}
+        else:
+            raise ParameterError
+        if lists and isinstance(lists, list):
+            data['lists'] = lists
+        if attributes and isinstance(attributes, dict):
+            data['attribs'] = attributes
+        if isinstance(preconfirm_subscriptions, bool):
+            data['preconfirm_subscriptions'] = preconfirm_subscriptions
+        try:
+            data = json.dumps(data, indent=4)
+        except ValueError:
+            raise ParameterError
+        response = self._session.post(f'{self.url}/subscribers',
+                                      headers=self.headers, data=data, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
+    ####################################################################################################################
+    #                                                  Lists API                                                       #
+    ####################################################################################################################
     @require_auth
-    def set_campaign_status(self, campaign_id=None, data=None,):
-        if campaign_id is None or data is None:
-            raise MissingParameterError
-        r = self._session.put(self.api_url + f"/campaigns/{campaign_id}/status", data=data, headers=self.headers, verify=False)
-        return r.json()
-
-    @require_auth
-    def get_lists(self):
-        r = self._session.get(self.api_url + f"/lists?page=1&per_page=100", headers=self.headers, verify=False)
-        return r.json()
+    def get_lists(self, query=None,  order_by=None, order=None, max_pages=0, per_page=100):
+        data = None
+        response = self._session.get(f'{self.url}/lists?per_page={per_page}&x-total-pages',
+                                     headers=self.headers, verify=self.verify)
+        total_pages = int(response.headers['X-Total-Pages'])
+        response = []
+        list_filter = f'?per_page={per_page}'
+        if query:
+            try:
+                data = json.dumps(query, indent=4)
+            except ValueError:
+                raise ParameterError
+        if order_by and order_by in ["name", "status", "created_at", "updated_at"]:
+            list_filter = f'{list_filter}&order_by={order_by}'
+        if order and order.upper() in ["ASC", "DESC"]:
+            list_filter = f'{list_filter}&order={order}'
+        if max_pages == 0 or max_pages > total_pages:
+            max_pages = total_pages
+        for page in range(0, max_pages):
+            response_page = self._session.get(f'{self.url}/lists{list_filter}&page={page}',
+                                              headers=self.headers, data=data, verify=self.verify)
+            response_page = json.loads(response_page.text.replace('"', '\"'))
+            response = response + response_page
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
     def get_list(self, list_id=None):
         if list_id is None:
             raise MissingParameterError
-        r = self._session.get(self.api_url + f"/lists/{list_id}", headers=self.headers, verify=False)
-        return r.json()
+        response = self._session.get(f'{self.url}/lists/{list_id}', headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
-    def create_list(self, data=None):
+    def create_list(self, name=None, type=None, optin=None, tags=None):
+        if name is None or type is None or optin is None:
+            raise MissingParameterError
+        data={}
+        if name:
+            if not isinstance(name, str):
+                raise ParameterError
+            else:
+                data['name'] = name
+        if type:
+            if not isinstance(type, str) and optin not in ['private', 'public']:
+                raise ParameterError
+            else:
+                data['type'] = type
+        if optin:
+            if not isinstance(optin, str) and optin not in ['single', 'double']:
+                raise ParameterError
+            else:
+                data['optin'] = optin
+        if tags:
+            if not isinstance(tags, list):
+                raise ParameterError
+            else:
+                data['tags'] = tags
+        try:
+            data = json.dumps(data, indent=4)
+        except ValueError:
+            raise ParameterError
+        response = self._session.post(f'{self.url}/lists', data=data, headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    ####################################################################################################################
+    #                                                 Import API                                                       #
+    ####################################################################################################################
+
+    ####################################################################################################################
+    #                                                Campaigns API                                                     #
+    ####################################################################################################################
+    @require_auth
+    def get_campaigns(self):
+        response = self._session.get(f'{self.url}/campaigns?page=1&per_page=100', headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def get_campaign(self, campaign_id=None):
+        if campaign_id is None:
+            raise MissingParameterError
+        response = self._session.get(f'{self.url}/campaigns/{campaign_id}', headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def create_campaign(self, data=None, attempt=0):
         if data is None:
             raise MissingParameterError
-        r = self._session.post(self.api_url + f"/lists", data=data, headers=self.headers, verify=False)
-        return r.json()
+        response = self._session.post(f'{self.url}/campaigns', data=data, headers=self.headers, verify=False)
+        try:
+            try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
+    def update_campaign(self, campaign_id=None, data=None):
+        if campaign_id is None or data is None:
+            raise MissingParameterError
+        response = self._session.post(f'{self.url}/campaigns/{campaign_id}', data=data, headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def set_campaign_status(self, campaign_id=None, data=None, ):
+        if campaign_id is None or data is None:
+            raise MissingParameterError
+        response = self._session.put(f'{self.url}/campaigns/{campaign_id}/status', data=data, headers=self.headers,
+                              verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    ####################################################################################################################
+    #                                                  Media API                                                       #
+    ####################################################################################################################
+
+    ####################################################################################################################
+    #                                               Templates API                                                      #
+    ####################################################################################################################
+    @require_auth
     def get_templates(self):
-        r = self._session.get(self.api_url + f"/templates?page=1&per_page=100", headers=self.headers, verify=False)
-        return r.json()
+        response = self._session.get(f'{self.url}/templates?page=1&per_page=100', headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
     def get_template(self, template_id=None):
         if template_id is None:
             raise MissingParameterError
-        r = self._session.get(self.api_url + f"/templates/{template_id}", headers=self.headers, verify=False)
-        return r.json()
+        response = self._session.get(f'{self.url}/templates/{template_id}', headers=self.headers, verify=False)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
     @require_auth
     def set_default_template(self, data=None):
         if data is None:
             raise MissingParameterError
-        r = self._session.post(self.api_url + f"/templates", data=data, headers=self.headers, verify=False)
+        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=False)
 
+    ####################################################################################################################
+    #                                           Transactional API                                                      #
+    ####################################################################################################################
