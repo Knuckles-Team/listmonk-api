@@ -313,7 +313,7 @@ class Api(object):
     @require_auth
     def get_campaigns(self, query=None, order_by=None, order=None, max_pages=0, per_page=100):
         data = None
-        response = self._session.get(f'{self.url}/lists?per_page={per_page}&x-total-pages',
+        response = self._session.get(f'{self.url}/campaigns?per_page={per_page}&x-total-pages',
                                      headers=self.headers, verify=self.verify)
         total_pages = int(response.headers['X-Total-Pages'])
         response = []
@@ -466,7 +466,7 @@ class Api(object):
         if file is None:
             raise MissingParameterError
         data = {'file': file}
-        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=self.verify)
+        response = self._session.post(f'{self.url}/media', data=data, headers=self.headers, verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -485,9 +485,20 @@ class Api(object):
     #                                               Templates API                                                      #
     ####################################################################################################################
     @require_auth
-    def get_templates(self):
-        response = self._session.get(f'{self.url}/templates?page=1&per_page=100', headers=self.headers,
-                                     verify=self.verify)
+    def get_templates(self, max_pages=0, per_page=100):
+        data = None
+        response = self._session.get(f'{self.url}/templates?per_page={per_page}&x-total-pages',
+                                     headers=self.headers, verify=self.verify)
+        total_pages = int(response.headers['X-Total-Pages'])
+        response = []
+        campaign_filter = f'?per_page={per_page}'
+        if max_pages == 0 or max_pages > total_pages:
+            max_pages = total_pages
+        for page in range(0, max_pages):
+            response_page = self._session.get(f'{self.url}/templates{campaign_filter}&page={page}',
+                                              headers=self.headers, data=data, verify=self.verify)
+            response_page = json.loads(response_page.text.replace('"', '\"'))
+            response = response + response_page
         try:
             return response.json()
         except ValueError or AttributeError:
@@ -504,10 +515,33 @@ class Api(object):
             return response
 
     @require_auth
-    def set_default_template(self, data=None):
-        if data is None:
+    def get_template_preview(self, template_id=None):
+        if template_id is None:
             raise MissingParameterError
-        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=self.verify)
+        response = self._session.get(f'{self.url}/templates/{template_id}/preview', headers=self.headers,
+                                     verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def set_default_template(self, template_id=None):
+        if template_id is None:
+            raise MissingParameterError
+        response = self._session.put(f'{self.url}/templates/{template_id}/default', headers=self.headers,
+                                     verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def delete_template(self, template_id=None):
+        if template_id is None:
+            raise MissingParameterError
+        response = self._session.delete(f'{self.url}/templates/{template_id}', headers=self.headers,
+                                     verify=self.verify)
         try:
             return response.json()
         except ValueError or AttributeError:
