@@ -364,7 +364,36 @@ class Api(object):
     ####################################################################################################################
     #                                                  Media API                                                       #
     ####################################################################################################################
+    @require_auth
+    def get_media(self, media_id=None):
+        if media_id is None:
+            raise MissingParameterError
+        response = self._session.get(f'{self.url}/media', headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
 
+    @require_auth
+    def upload_media(self, file=None):
+        if file is None:
+            raise MissingParameterError
+        data = {'file': file}
+        response = self._session.post(f'{self.url}/templates', data=data, headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
+
+    @require_auth
+    def delete_media(self, media_id=None):
+        if media_id is None:
+            raise MissingParameterError
+        response = self._session.delete(f'{self.url}/media/{media_id}', headers=self.headers, verify=self.verify)
+        try:
+            return response.json()
+        except ValueError or AttributeError:
+            return response
     ####################################################################################################################
     #                                               Templates API                                                      #
     ####################################################################################################################
@@ -400,3 +429,4 @@ class Api(object):
     ####################################################################################################################
     #                                           Transactional API                                                      #
     ####################################################################################################################
+    # COMING SOON

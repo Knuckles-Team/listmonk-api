@@ -6,9 +6,13 @@ Listmonk API Python Wrapper
 This repository is actively maintained and will continue adding more API calls
 
 ### API Calls:
-- Campaigns
+- Subscribers
 - Lists
 - Import
+- Campaigns
+- Media
+- Templates
+- Transactional
 
 ### Usage:
 
@@ -17,23 +21,30 @@ This repository is actively maintained and will continue adding more API calls
 # coding: utf-8
 import listmonk_api
 
-token = "<GITLAB_TOKEN/PERSONAL_TOKEN>"
-gitlab_url = "<GITLAB_URL>"
-client = listmonk_api.Api(url=gitlab_url, token=token)
+username = "<LISTMONK USERNAME>"
+password = "<LISTMONK_PASSWORD>"
+listmonk_api_url = "<LISTMONK_URL>"
+client = listmonk_api.Api(url=listmonk_api_url, username=username, password=password)
 
-users = client.get_users()
-print(users)
+lists = client.get_lists()
+print(f"Lists: {lists}")
 
-created_merge_request = client.create_merge_request(project_id=123, source_branch="development",
-                                                    target_branch="production", title="Merge Request Title")
-print(created_merge_request)
+created_list = client.create_list(name="EXAMPLE TEMPLATE", type="<public/private>", optin="<single/double>", tags=['<LIST TAG>'])
+print(f"Created List: {created_list}")
 
-print(f"Users: {client.get_users()}")
+created_campaign = client.create_campaign(name="EXAMPLE TEMPLATE", type="<public/private>", optin="<single/double>", tags=['<LIST TAG>'])
+print(f"Created Campaign: {created_campaign}")
 
-print(f"Projects: {client.get_projects()}")
+print(f"Subscribers: {client.get_subscribers()}")
 
-response = client.get_runners(runner_type='instance_type', all_runners=True)
-print(f"Runners: {response}")
+print(f"Campaigns: {client.get_campaigns()}")
+```
+
+#### Install Instructions
+Install Python Package
+
+```bash
+python -m pip install listmonk-api
 ```
 
 #### Build Instructions
