@@ -1,5 +1,5 @@
 # Listmonk API
-*Version: 0.0.1*
+*Version: 0.1.0*
 
 Listmonk API Python Wrapper
 
