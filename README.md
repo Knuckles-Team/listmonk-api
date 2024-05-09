@@ -84,4 +84,3 @@ python -m pip install listmonk-api
 ![GitHub followers](https://img.shields.io/github/followers/Knucklessg1)
 ![GitHub User's stars](https://img.shields.io/github/stars/Knucklessg1)
 </details>
-

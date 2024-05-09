@@ -12,3 +12,5 @@ A Python Wrapper for Listmonk API
 __version__ = __version__
 __author__ = __author__
 __credits__ = __credits__
+
+__all__ = ["Api"]
