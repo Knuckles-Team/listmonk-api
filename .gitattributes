@@ -1,7 +1,4 @@
 # Auto detect
-##   Handle line endings automatically for files detected as
-##   text and leave all files detected as binary untouched.
-##   This will handle all files NOT defined below.
 *                 text=auto
 
 # Source code
@@ -45,14 +42,14 @@ Dockerfile        text
 
 # Documentation
 *.ipynb           text
-*.markdown        text diff=markdown
-*.md              text diff=markdown
-*.mdwn            text diff=markdown
-*.mdown           text diff=markdown
-*.mkd             text diff=markdown
-*.mkdn            text diff=markdown
-*.mdtxt           text
-*.mdtext          text
+*.markdown        text diff=markdown eol=lf
+*.md              text diff=markdown eol=lf
+*.mdwn            text diff=markdown eol=lf
+*.mdown           text diff=markdown eol=lf
+*.mkd             text diff=markdown eol=lf
+*.mkdn            text diff=markdown eol=lf
+*.mdtxt           text eol=lf
+*.mdtext          text eol=lf
 *.txt             text
 AUTHORS           text
 CHANGELOG         text
@@ -130,11 +127,7 @@ Procfile          text
 *.png             binary
 *.psb             binary
 *.psd             binary
-# SVG treated as an asset (binary) by default.
 *.svg             text
-# If you want to treat it as binary,
-# use the following line instead.
-# *.svg           binary
 *.svgz            binary
 *.tif             binary
 *.tiff            binary
@@ -189,8 +182,8 @@ Procfile          text
 *.exe             binary
 *.pyc             binary
 
-# RC files (like .babelrc or .eslintrc)
+# RC files
 *.*rc             text
 
-# Ignore files (like .npmignore or .gitignore)
+# Ignore files
 *.*ignore         text

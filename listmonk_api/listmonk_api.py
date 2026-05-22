@@ -7,11 +7,11 @@ import urllib3
 from base64 import b64encode
 
 try:
-    from listmonk_api.decorators import require_auth
+    from agent_utilities.decorators import require_auth
 except ModuleNotFoundError:
     from decorators import require_auth
 try:
-    from listmonk_api.exceptions import (
+    from agent_utilities.exceptions import (
         AuthError,
         UnauthorizedError,
         ParameterError,
@@ -27,7 +27,6 @@ except ModuleNotFoundError:
 
 
 class Api(object):
-
     def __init__(self, url=None, username=None, password=None, token=None, verify=True):
         if url is None:
             raise MissingParameterError

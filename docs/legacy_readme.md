@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/listmonk-api)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/listmonk-api)
 
-*Version: 0.3.1*
+*Version: 1.16.1*
 
 ---
 
@@ -43,7 +43,7 @@
 
 This agent wraps the Python Listmonk API Wrapper API. You can interact with it programmatically or via its integrated execution entrypoints.
 
-Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](docs/index.md).
+Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](file:///home/apps/workspace/agent-packages/agents/listmonk-api/docs/index.md).
 
 ---
 
@@ -54,15 +54,38 @@ This server utilizes dynamic Action-Routed tools to optimize token overhead and 
 ### Available MCP Tools
 | Tool Module | Toggle Env Var | Enabled by Default | Description & Nested Methods |
 |-------------|----------------|--------------------|------------------------------|
-| **Subscribers** | `SUBSCRIBERSTOOL` | `True` | Manage listmonk subscribers. Action-routed methods. |
-| **Lists** | `LISTSTOOL` | `True` | Manage listmonk lists. Action-routed methods. |
-| **Imports** | `IMPORTSTOOL` | `True` | Manage listmonk imports. Action-routed methods. |
-| **Campaigns** | `CAMPAIGNSTOOL` | `True` | Manage listmonk campaigns. Action-routed methods. |
-| **Media** | `MEDIATOOL` | `True` | Manage listmonk media. Action-routed methods. |
-| **Templates** | `TEMPLATESTOOL` | `True` | Manage listmonk templates. Action-routed methods. |
-| **Tx** | `TXTOOL` | `True` | Manage listmonk transactional messages. Action-routed methods. |
+| **Misc** | `MISCTOOL` | `True` | Manage ingest incidents to kg operations. |
+| **Flows** | `FLOWSTOOL` | `True` | Manage workflow to mermaid operations. |
+| **Application** | `APPLICATIONTOOL` | `True` | Manage get application operations. |
+| **Cmdb** | `CMDBTOOL` | `True` | Manage listmonk cmdb operations. Action-routed methods: `get_cmdb`, `delete_cmdb_relation`, `get_cmdb_instances`, `get_cmdb_instance`, `create_cmdb_instance`, `update_cmdb_instance`, `patch_cmdb_instance`, `create_cmdb_relation`, `ingest_cmdb_data`. |
+| **Cicd** | `CICDTOOL` | `True` | Manage listmonk cicd operations. Action-routed methods: `batch_install_result`, `instance_scan_progress`, `progress`, `batch_install`, `batch_rollback`, `app_repo_install`, `app_repo_publish`, `app_repo_rollback`, `full_scan`, `point_scan`, `combo_suite_scan`, `suite_scan`. |
+| **Plugins** | `PLUGINSTOOL` | `True` | Manage listmonk plugins operations. Action-routed methods: `activate_plugin`, `rollback_plugin`. |
+| **Source Control** | `SOURCE_CONTROLTOOL` | `True` | Manage listmonk source control operations. Action-routed methods: `apply_remote_source_control_changes`, `import_repository`. |
+| **Testing** | `TESTINGTOOL` | `True` | Manage run test suite operations. |
+| **Update Sets** | `UPDATE_SETSTOOL` | `True` | Manage listmonk update sets operations. Action-routed methods: `update_set_create`, `update_set_retrieve`, `update_set_preview`, `update_set_commit`, `update_set_commit_multiple`, `update_set_back_out`. |
+| **Batch** | `BATCHTOOL` | `True` | Manage batch request operations. |
+| **Change Management** | `CHANGE_MANAGEMENTTOOL` | `True` | Manage listmonk change management operations. Action-routed methods: `get_change_requests`, `get_change_request_nextstate`, `get_change_request_schedule`, `get_change_request_tasks`, `get_change_request`, `get_change_request_ci`, `get_change_request_conflict`, `get_standard_change_request_templates`, `get_change_request_models`, `get_standard_change_request_model`, `get_standard_change_request_template`, `get_change_request_worker`, `create_change_request`, `create_change_request_task`, `create_change_request_ci_association`, `calculate_standard_change_request_risk`, `check_change_request_conflict`, `refresh_change_request_impacted_services`, `approve_change_request`, `update_change_request`, `update_change_request_first_available`, `update_change_request_task`, `delete_change_request`, `delete_change_request_task`, `delete_change_request_conflict_scan`. |
+| **Cilifecycle** | `CILIFECYCLETOOL` | `True` | Manage listmonk cilifecycle operations. Action-routed methods: `check_ci_lifecycle_compat_actions`, `register_ci_lifecycle_operator`, `unregister_ci_lifecycle_operator`. |
+| **Devops** | `DEVOPSTOOL` | `True` | Manage listmonk devops operations. Action-routed methods: `check_devops_change_control`, `register_devops_artifact`. |
+| **Import Sets** | `IMPORT_SETSTOOL` | `True` | Manage listmonk import sets operations. Action-routed methods: `get_import_set`, `insert_import_set`, `insert_multiple_import_sets`. |
+| **Incidents** | `INCIDENTSTOOL` | `True` | Manage listmonk incidents operations. Action-routed methods: `get_incidents`, `create_incident`. |
+| **Knowledge Management** | `KNOWLEDGE_MANAGEMENTTOOL` | `True` | Manage listmonk knowledge management operations. Action-routed methods: `get_knowledge_articles`, `get_knowledge_article`, `get_knowledge_article_attachment`, `get_featured_knowledge_article`, `get_most_viewed_knowledge_articles`. |
+| **Table Api** | `TABLE_APITOOL` | `True` | Manage listmonk table api operations. Action-routed methods: `delete_table_record`, `get_table`, `get_table_record`, `patch_table_record`, `update_table_record`, `add_table_record`. |
+| **Auth** | `AUTHTOOL` | `True` | Manage refresh auth token operations. |
+| **Custom Api** | `CUSTOM_APITOOL` | `True` | Manage api request operations. |
+| **Email** | `EMAILTOOL` | `True` | Manage send email operations. |
+| **Data Classification** | `DATA_CLASSIFICATIONTOOL` | `True` | Manage get data classification operations. |
+| **Attachment** | `ATTACHMENTTOOL` | `True` | Manage listmonk attachment operations. Action-routed methods: `get_attachment`, `upload_attachment`, `delete_attachment`. |
+| **Aggregate** | `AGGREGATETOOL` | `True` | Manage get stats operations. |
+| **Activity Subscriptions** | `ACTIVITY_SUBSCRIPTIONSTOOL` | `True` | Manage get activity subscriptions operations. |
+| **Account** | `ACCOUNTTOOL` | `True` | Manage get account operations. |
+| **Hr** | `HRTOOL` | `True` | Manage get hr profile operations. |
+| **Metricbase** | `METRICBASETOOL` | `True` | Manage metricbase insert operations. |
+| **Service Qualification** | `SERVICE_QUALIFICATIONTOOL` | `True` | Manage listmonk service qualification operations. Action-routed methods: `check_service_qualification`, `get_service_qualification`, `process_service_qualification_result`. |
+| **Ppm** | `PPMTOOL` | `True` | Manage listmonk ppm operations. Action-routed methods: `insert_cost_plans`, `insert_project_tasks`. |
+| **Product Inventory** | `PRODUCT_INVENTORYTOOL` | `True` | Manage listmonk product inventory operations. Action-routed methods: `get_product_inventory`, `delete_product_inventory`. |
 
-Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
+Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](file:///home/apps/workspace/agent-packages/agents/listmonk-api/docs/mcp.md).
 
 ### MCP Configuration Examples
 
@@ -80,9 +103,14 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
         "listmonk-mcp"
       ],
       "env": {
-        "LISTMONK_URL": "your_listmonk_url_here",
+        "LISTMONK_INSTANCE": "your_listmonk_instance_here",
         "LISTMONK_USERNAME": "your_listmonk_username_here",
-        "LISTMONK_PASSWORD": "your_listmonk_password_here"
+        "LISTMONK_PASSWORD": "your_listmonk_password_here",
+        "LISTMONK_CLIENT_ID": "your_listmonk_client_id_here",
+        "LISTMONK_CLIENT_SECRET": "your_listmonk_client_secret_here",
+        "LISTMONK_SSL_VERIFY": "your_listmonk_ssl_verify_here",
+        "DEBUG": "your_debug_here",
+        "PYTHONUNBUFFERED": "your_pythonunbuffered_here"
       }
     }
   }
@@ -90,32 +118,7 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
 ```
 
 #### Streamable-HTTP Transport (Recommended for production deployments)
-Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx` with explicit host and port definition:
-
-```json
-{
-  "mcpServers": {
-    "listmonk-api": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "listmonk-api",
-        "listmonk-mcp"
-      ],
-      "env": {
-        "TRANSPORT": "streamable-http",
-        "HOST": "0.0.0.0",
-        "PORT": "8000",
-        "LISTMONK_URL": "your_listmonk_url_here",
-        "LISTMONK_USERNAME": "your_listmonk_username_here",
-        "LISTMONK_PASSWORD": "your_listmonk_password_here"
-      }
-    }
-  }
-}
-```
-
-Alternatively, connect to a pre-deployed remote or local Streamable-HTTP instance:
+To run the server as a long-running Streamable-HTTP service:
 
 ```json
 {
@@ -135,9 +138,14 @@ docker run -d \
   -p 8000:8000 \
   -e TRANSPORT=streamable-http \
   -e PORT=8000 \
-  -e LISTMONK_URL="your_listmonk_url_here" \
-  -e LISTMONK_USERNAME="your_listmonk_username_here" \
-  -e LISTMONK_PASSWORD="your_listmonk_password_here" \
+  -e LISTMONK_INSTANCE="your_value" \
+  -e LISTMONK_USERNAME="your_value" \
+  -e LISTMONK_PASSWORD="your_value" \
+  -e LISTMONK_CLIENT_ID="your_value" \
+  -e LISTMONK_CLIENT_SECRET="your_value" \
+  -e LISTMONK_SSL_VERIFY="your_value" \
+  -e DEBUG="your_value" \
+  -e PYTHONUNBUFFERED="your_value" \
   knucklessg1/listmonk-api:latest
 ```
 
@@ -152,9 +160,14 @@ To start the interactive command-line agent:
 
 ```bash
 # Set credentials
-export LISTMONK_URL="your_listmonk_url_here"
-export LISTMONK_USERNAME="your_listmonk_username_here"
-export LISTMONK_PASSWORD="your_listmonk_password_here"
+export LISTMONK_INSTANCE="your_value"
+export LISTMONK_USERNAME="your_value"
+export LISTMONK_PASSWORD="your_value"
+export LISTMONK_CLIENT_ID="your_value"
+export LISTMONK_CLIENT_SECRET="your_value"
+export LISTMONK_SSL_VERIFY="your_value"
+export DEBUG="your_value"
+export PYTHONUNBUFFERED="your_value"
 
 # Run the agent server
 listmonk-agent --provider openai --model-id gpt-4o
@@ -228,7 +241,7 @@ services:
 
 ```
 
-Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](docs/agent.md).
+Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](file:///home/apps/workspace/agent-packages/agents/listmonk-api/docs/agent.md).
 
 ---
 

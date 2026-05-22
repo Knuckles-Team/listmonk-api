@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=80.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "listmonk-api"
+version = "0.3.1"
+description = "Agent package for Listmonk"
+readme = "README.md"
+authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3"]
+requires-python = ">=3.10"
+dependencies = [
+    "agent-utilities[mcp]>=0.2.12"]
+
+[project.optional-dependencies]
+agent = [
+    "agent-utilities[agent,logfire]>=0.2.12"]
+
+
+all = [
+    "agent-utilities[mcp,agent,logfire]>=0.2.12"]
+
+[project.scripts]
+listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
+listmonk-agent = "listmonk_api.agent_server:agent_server"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+listmonk_api = [ "mcp_config.json", "agent/**", "skills/**"]
+
+[tool.codespell]
+ignore-words-list = "optin"
