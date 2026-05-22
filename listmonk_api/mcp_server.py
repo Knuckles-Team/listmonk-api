@@ -33,7 +33,7 @@ from dotenv import find_dotenv, load_dotenv
 
 from listmonk_api.auth import get_client
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
