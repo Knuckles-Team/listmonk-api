@@ -1,0 +1,69 @@
+# Tasks: Code Enhancement: listmonk-api
+
+Generated: 2026-05-24T04:17:16.200999+00:00
+Skipped informational: 4
+
+- [ ] [P] **T001** [Dependency Audit] Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T002** [Codebase Optimization] Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Ap
+  - Priority: P1-High | Effort: Large
+- [ ] [P] **T003** [Security Analysis] 1 MEDIUM severity vulnerabilities found
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T004** [Test Coverage] 13 potential doc-test drift items
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T005** [Documentation & Governance] README.md missing sections: usage|quick start
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T006** [Documentation & Governance] 2 broken internal links in README.md
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T007** [Documentation & Governance] README missing: Has a Table of Contents
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T008** [Documentation & Governance] README missing: Has usage examples with code blocks
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T009** [Architecture & Design Patterns] SRP: 2 modules exceed 500 lines (god modules)
+  - Priority: P2-Medium | Effort: Large
+- [ ] [P] **T010** [Architecture & Design Patterns] SRP: 1 classes have >15 methods
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T011** [Architecture & Design Patterns] No discernible layer architecture (no domain/service/adapter separation)
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T012** [Architecture & Design Patterns] Low dependency injection ratio: 5%
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T013** [Concept Traceability] Low traceability ratio: 0% concepts fully traced
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T014** [Concept Traceability] 15 orphaned concepts (only in one source)
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T015** [Concept Traceability] 42 test functions missing concept markers
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T016** [Concept Traceability] 65 significant functions (>10 lines) missing concept markers in docstrings
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T017** [Linting & Formatting] Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T018** [Pre-Commit Compliance] 1 hook(s) may be outdated: ruff-pre-commit
+  - Priority: P2-Medium | Effort: Small
+- [ ] [P] **T019** [Version Sync Analysis] Found 2 file(s) with version '0.6.0' that are NOT tracked in .bumpversion.cfg:
+  - Priority: P2-Medium | Effort: Small
+- [ ] [P] **T020** [Version Sync Analysis]   - .specify/reports/results.json
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T021** [Version Sync Analysis]   - .specify/reports/code_enhancement_report.md
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T022** [Changelog Audit] CHANGELOG.md exists but could not be parsed — check format compliance
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T023** [Changelog Audit] No changelog entries within the last 30 days
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T024** [Changelog Audit] keepachangelog not installed — pip install 'universal-skills[code-enhancer]'
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T025** [Pytest Quality] 1 test files exceed 500 lines — split into focused modules
+  - Priority: P3-Low | Effort: Large
+- [ ] [P] **T026** [Pytest Quality] Test directory lacks subdirectory organization (consider unit/, integration/, e2
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T027** [Pytest Quality] No @pytest.mark.parametrize usage — consider data-driven tests
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T028** [Pytest Quality] 6 tests use weak assertions (assert result is not None, assert True, etc.)
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T029** [Pytest Quality] 13 tests have >5 assertions — consider splitting (single responsibility)
+  - Priority: P3-Low | Effort: Large
+- [ ] [P] **T030** [Environment Variables] Undocumented env vars: OAUTH_UPSTREAM_AUTH_ENDPOINT, OAUTH_UPSTREAM_CLIENT_ID, O
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T031** [Environment Variables] 3 Python env vars not in .env.example: OPENAPI_CLIENT_ID, OPENAPI_PASSWORD, OPEN
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T032** [analyze_xdg_kg] Analysis error: No module named 'agent_utilities.knowledge_graph'
+  - Priority: P1-High | Effort: Medium

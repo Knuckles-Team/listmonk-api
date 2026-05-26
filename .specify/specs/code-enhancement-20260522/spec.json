@@ -1,0 +1,192 @@
+{
+  "feature_id": "code-enhancement-20260522",
+  "title": "Code Enhancement: listmonk-api",
+  "created": "2026-05-22T21:09:49.796868+00:00",
+  "overview": "Automated code enhancement review for listmonk-api. Covers 16 analysis domains.",
+  "user_stories": [
+    {
+      "role": "developer",
+      "action": "address Project Analysis findings (grade: D, score: 69)",
+      "value": "improve project project analysis from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Architecture & Design Patterns findings (grade: D, score: 65)",
+      "value": "improve project architecture & design patterns from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Concept Traceability findings (grade: F, score: 30)",
+      "value": "improve project concept traceability from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Test Execution findings (grade: F, score: 25)",
+      "value": "improve project test execution from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Changelog Audit findings (grade: C, score: 75)",
+      "value": "improve project changelog audit from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Environment Variables findings (grade: D, score: 60)",
+      "value": "improve project environment variables from D to at least B (80+)"
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "description": "Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0",
+      "testable": true
+    },
+    {
+      "id": "FR-002",
+      "description": "Monolithic: listmonk_api.py (734L) \u2014 2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23); God class: Api (29 methods) \u2014 consider mixins/composition",
+      "testable": true
+    },
+    {
+      "id": "FR-003",
+      "description": "Test suite lacks intent diversity (only one type)",
+      "testable": true
+    },
+    {
+      "id": "FR-004",
+      "description": "12 potential doc-test drift items",
+      "testable": true
+    },
+    {
+      "id": "FR-005",
+      "description": "README.md missing sections: usage|quick start",
+      "testable": true
+    },
+    {
+      "id": "FR-006",
+      "description": "2 broken internal links in README.md",
+      "testable": true
+    },
+    {
+      "id": "FR-007",
+      "description": "README missing: Has a Table of Contents",
+      "testable": true
+    },
+    {
+      "id": "FR-008",
+      "description": "README missing: Has usage examples with code blocks",
+      "testable": true
+    },
+    {
+      "id": "FR-009",
+      "description": "SRP: 1 modules exceed 500 lines (god modules)",
+      "testable": true
+    },
+    {
+      "id": "FR-010",
+      "description": "SRP: 1 classes have >15 methods",
+      "testable": true
+    },
+    {
+      "id": "FR-011",
+      "description": "No discernible layer architecture (no domain/service/adapter separation)",
+      "testable": true
+    },
+    {
+      "id": "FR-012",
+      "description": "Low dependency injection ratio: 5%",
+      "testable": true
+    },
+    {
+      "id": "FR-013",
+      "description": "Low traceability ratio: 0% concepts fully traced",
+      "testable": true
+    },
+    {
+      "id": "FR-014",
+      "description": "36 test functions missing concept markers",
+      "testable": true
+    },
+    {
+      "id": "FR-015",
+      "description": "51 significant functions (>10 lines) missing concept markers in docstrings",
+      "testable": true
+    },
+    {
+      "id": "FR-016",
+      "description": "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)",
+      "testable": true
+    },
+    {
+      "id": "FR-017",
+      "description": "1 hook(s) may be outdated: ruff-pre-commit",
+      "testable": true
+    },
+    {
+      "id": "FR-018",
+      "description": "CHANGELOG.md is missing \u2014 create one following Keep a Changelog format",
+      "testable": true
+    },
+    {
+      "id": "FR-019",
+      "description": "CHANGELOG.md is missing",
+      "testable": true
+    },
+    {
+      "id": "FR-020",
+      "description": "Missing conftest.py for shared fixtures",
+      "testable": true
+    },
+    {
+      "id": "FR-021",
+      "description": "No @pytest.mark.parametrize usage \u2014 consider data-driven tests",
+      "testable": true
+    },
+    {
+      "id": "FR-022",
+      "description": "No shared fixtures in conftest.py",
+      "testable": true
+    },
+    {
+      "id": "FR-023",
+      "description": "5 tests use weak assertions (assert result is not None, assert True, etc.)",
+      "testable": true
+    },
+    {
+      "id": "FR-024",
+      "description": "13 tests have >5 assertions \u2014 consider splitting (single responsibility)",
+      "testable": true
+    },
+    {
+      "id": "FR-025",
+      "description": "Only 14% of env vars documented in README.md",
+      "testable": true
+    },
+    {
+      "id": "FR-026",
+      "description": "Undocumented env vars: ALLOWED_CLIENT_REDIRECT_URIS, AUTH_TYPE, CAMPAIGNSTOOL, EUNOMIA_POLICY_FILE, EUNOMIA_REMOTE_URL, EUNOMIA_TYPE, IMPORTSTOOL, LISTMONK_CAMPAIGNSTOOL, LISTMONK_IMPORTSTOOL, LISTMONK_LISTSTOOL",
+      "testable": true
+    },
+    {
+      "id": "FR-027",
+      "description": "11 Python env vars not in .env.example: LISTMONK_CAMPAIGNSTOOL, LISTMONK_IMPORTSTOOL, LISTMONK_LISTSTOOL, LISTMONK_MEDIATOOL, LISTMONK_SUBSCRIBERSTOOL",
+      "testable": true
+    }
+  ],
+  "success_criteria": [
+    {
+      "metric": "Overall GPA",
+      "current": 2.62,
+      "target": 3.0
+    },
+    {
+      "metric": "Domains at B or above",
+      "current": 10,
+      "target": 16
+    },
+    {
+      "metric": "Actionable findings",
+      "current": 27,
+      "target": 0
+    }
+  ]
+}

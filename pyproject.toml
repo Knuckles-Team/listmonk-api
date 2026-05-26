@@ -42,3 +42,9 @@ listmonk_api = [ "mcp_config.json", "agent/**", "skills/**"]
 
 [tool.codespell]
 ignore-words-list = "optin"
+
+[tool.coverage.run]
+omit = [
+    "listmonk_api/listmonk_api.py",
+    "listmonk_api/__main__.py",
+]

@@ -1,0 +1,2211 @@
+{
+  "project": "listmonk-api",
+  "path": "/home/apps/workspace/agent-packages/agents/listmonk-api",
+  "domain_results": [
+    {
+      "domain": "Project Analysis",
+      "score": 69,
+      "grade": "D",
+      "findings": [
+        "Detected ecosystem marker: agent-utilities \u2192 Agent-Utilities Ecosystem",
+        "Protocol support: MCP"
+      ],
+      "justifications": [
+        {
+          "criterion": "has_pyproject",
+          "points": 10,
+          "evidence": "pyproject.toml and requirements.txt",
+          "reasoning": "Both pyproject.toml and requirements.txt exist, fulfilling mandatory Python project requirements"
+        },
+        {
+          "criterion": "project_type_detected",
+          "points": 10,
+          "evidence": "Agent-Utilities Ecosystem",
+          "reasoning": "Identified 1 ecosystem marker(s) in dependencies"
+        },
+        {
+          "criterion": "externalized_prompts",
+          "points": 0,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api",
+          "reasoning": "No prompts/ directory found. Prompts may be hardcoded in source."
+        },
+        {
+          "criterion": "observability",
+          "points": 0,
+          "evidence": "dependency list",
+          "reasoning": "No observability tools (logfire, sentry, opentelemetry) found"
+        },
+        {
+          "criterion": "testing_suite",
+          "points": 5,
+          "evidence": "tests dir: True, pytest dep: False",
+          "reasoning": "Tests directory exists, pytest not in dependencies"
+        },
+        {
+          "criterion": "agents_md",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/AGENTS.md (3811 bytes)",
+          "reasoning": "AGENTS.md exists with comprehensive content"
+        },
+        {
+          "criterion": "pre_commit_hooks",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.pre-commit-config.yaml",
+          "reasoning": "Pre-commit configuration found for automated code quality checks"
+        },
+        {
+          "criterion": "gitignore",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.gitignore",
+          "reasoning": ".gitignore exists to prevent committing build artifacts and secrets"
+        },
+        {
+          "criterion": "env_template",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.env.example",
+          "reasoning": "Environment template exists for onboarding and secret management"
+        },
+        {
+          "criterion": "protocol_support",
+          "points": 4,
+          "evidence": "MCP",
+          "reasoning": "1 communication protocol(s) detected"
+        }
+      ],
+      "details": {
+        "has_pyproject": true,
+        "has_requirements": true,
+        "dep_count": 1,
+        "project_types": [
+          "Agent-Utilities Ecosystem"
+        ],
+        "has_agent_skills": false
+      }
+    },
+    {
+      "domain": "Dependency Audit",
+      "score": 97,
+      "grade": "A",
+      "findings": [
+        "Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0"
+      ],
+      "justifications": [
+        {
+          "criterion": "dependency_freshness",
+          "points": 97,
+          "evidence": "source=/home/apps/workspace/agent-packages/agents/listmonk-api/pyproject.toml total=1 major=0 minor=1 patch=0 not_installed=0",
+          "reasoning": "Audited 1 deps (1 installed, 0 constraint-only). 0 major, 1 minor, 0 patch updates."
+        }
+      ],
+      "packages": {
+        "agent-utilities": {
+          "current": "0.2.40",
+          "constraint": "0.16.0",
+          "installed": "0.2.40",
+          "latest": "0.16.0",
+          "status": "minor",
+          "version_source": "installed",
+          "summary": "Agent Utilities for Pydantic AI Agents"
+        }
+      }
+    },
+    {
+      "domain": "Codebase Optimization",
+      "score": 85,
+      "grade": "B",
+      "findings": [
+        "Monolithic: listmonk_api.py (734L) \u2014 2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23); God class: Api (29 methods) \u2014 consider mixins/composition"
+      ],
+      "justifications": [
+        {
+          "criterion": "code_quality",
+          "points": 85,
+          "evidence": "{\"file_count\": 21, \"total_lines\": 2818, \"function_count\": 130, \"avg_complexity\": 4.77, \"max_complexity\": 27, \"avg_function_length\": 18.8, \"max_function_length\": 107, \"max_nesting_depth\": 4, \"duplication_ratio\": 0.005, \"long_functions\": 4, \"complex_functions\": 16, \"deep_nesting_functions\": 0, \"parse_errors\": 0, \"structural_issues\": 1, \"truly_monolithic\": 1}",
+          "reasoning": "Analyzed 21 files, 130 functions. Avg CC=4.8, max length=107, duplication=0.5%, 1 structural issues (1 monolithic)."
+        }
+      ],
+      "metrics": {
+        "file_count": 21,
+        "total_lines": 2818,
+        "function_count": 130,
+        "avg_complexity": 4.77,
+        "max_complexity": 27,
+        "avg_function_length": 18.8,
+        "max_function_length": 107,
+        "max_nesting_depth": 4,
+        "duplication_ratio": 0.005,
+        "long_functions": 4,
+        "complex_functions": 16,
+        "deep_nesting_functions": 0,
+        "parse_errors": 0,
+        "structural_issues": 1,
+        "truly_monolithic": 1
+      },
+      "top_complex": [
+        {
+          "name": "get_mcp_instance",
+          "line": 312,
+          "length": 107,
+          "complexity": 27,
+          "nesting_depth": 4,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
+        },
+        {
+          "name": "create_campaign",
+          "line": 471,
+          "length": 64,
+          "complexity": 23,
+          "nesting_depth": 2,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+        },
+        {
+          "name": "create_list",
+          "line": 230,
+          "length": 38,
+          "complexity": 17,
+          "nesting_depth": 2,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+        },
+        {
+          "name": "create_subscriber",
+          "line": 140,
+          "length": 35,
+          "complexity": 15,
+          "nesting_depth": 2,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+        },
+        {
+          "name": "edit_list",
+          "line": 270,
+          "length": 43,
+          "complexity": 15,
+          "nesting_depth": 2,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+        }
+      ],
+      "top_long": [
+        {
+          "name": "get_mcp_instance",
+          "line": 312,
+          "length": 107,
+          "complexity": 27,
+          "nesting_depth": 4,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
+        },
+        {
+          "name": "create_campaign",
+          "line": 471,
+          "length": 64,
+          "complexity": 23,
+          "nesting_depth": 2,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+        },
+        {
+          "name": "agent_server",
+          "line": 22,
+          "length": 60,
+          "complexity": 4,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py"
+        },
+        {
+          "name": "test_agent_server_cli",
+          "line": 56,
+          "length": 59,
+          "complexity": 1,
+          "nesting_depth": 0,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py"
+        },
+        {
+          "name": "test_listmonk_campaigns_tool",
+          "line": 143,
+          "length": 47,
+          "complexity": 9,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py"
+        }
+      ],
+      "structural_issues": [
+        {
+          "file": "listmonk_api.py",
+          "path": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+          "lines": 734,
+          "issues": [
+            "2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23)",
+            "God class: Api (29 methods) \u2014 consider mixins/composition"
+          ],
+          "func_issues": [
+            {
+              "name": "Api.create_list",
+              "lines": 38,
+              "complexity": 17,
+              "nesting": 2
+            },
+            {
+              "name": "Api.create_campaign",
+              "lines": 64,
+              "complexity": 23,
+              "nesting": 2
+            }
+          ],
+          "classification": "monolithic"
+        }
+      ],
+      "flat_directories": []
+    },
+    {
+      "domain": "Security Analysis",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "security_posture",
+          "points": 100,
+          "evidence": "high=0 med=0 low=0 attack_surface={\"subprocess_calls\": 0, \"file_io_calls\": 3, \"network_endpoints\": 0, \"eval_exec_usage\": 0, \"sql_usage\": 0}",
+          "reasoning": "Scanned 21 files. Found 0 security findings. High: -0pts, Med: -0pts, Low: -0pts."
+        }
+      ],
+      "vulnerabilities": [],
+      "attack_surface": {
+        "subprocess_calls": 0,
+        "file_io_calls": 3,
+        "network_endpoints": 0,
+        "eval_exec_usage": 0,
+        "sql_usage": 0
+      }
+    },
+    {
+      "domain": "Test Coverage",
+      "score": 80,
+      "grade": "B",
+      "findings": [
+        "Test suite lacks intent diversity (only one type)",
+        "12 potential doc-test drift items"
+      ],
+      "justifications": [
+        {
+          "criterion": "test_coverage_quality",
+          "points": 80,
+          "evidence": "{\"test_file_count\": 4, \"test_count\": 36, \"source_file_count\": 21, \"test_to_source_ratio\": 1.71, \"intent_distribution\": {\"unit\": 36}, \"tests_without_assertions\": 0, \"concept_traced_tests\": 0, \"drift_items\": 12}",
+          "reasoning": "36 tests across 4 files. Ratio: 1.71. Intent: {'unit': 36}. 0 without assertions, 12 drift items."
+        }
+      ],
+      "metrics": {
+        "test_file_count": 4,
+        "test_count": 36,
+        "source_file_count": 21,
+        "test_to_source_ratio": 1.71,
+        "intent_distribution": {
+          "unit": 36
+        },
+        "tests_without_assertions": 0,
+        "concept_traced_tests": 0,
+        "drift_items": 12
+      },
+      "tests": [
+        {
+          "name": "test_listmonk_subscribers_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 35,
+          "length": 38,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_lists_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 75,
+          "length": 32,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_imports_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 109,
+          "length": 32,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_campaigns_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 143,
+          "length": 47,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_media_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 192,
+          "length": 27,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_templates_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 221,
+          "length": 37,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_listmonk_tx_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 260,
+          "length": 17,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_mcp_instance_standard",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 296,
+          "length": 6,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_mcp_instance_openapi_delegation_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 310,
+          "length": 9,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_mcp_instance_openapi_import_failure",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 327,
+          "length": 13,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_mcp_instance_openapi_import_success",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 350,
+          "length": 30,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_mcp_server_run_stdio",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 383,
+          "length": 10,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_mcp_server_run_sse_and_http",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 396,
+          "length": 19,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_mcp_server_invalid_transport",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 418,
+          "length": 12,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_client_singleton",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 25,
+          "length": 8,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_client_auth_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 40,
+          "length": 6,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_agent_server_cli",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 56,
+          "length": 59,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_available_flags",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 6,
+          "length": 4,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_lazy_loading",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 11,
+          "length": 4,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_attribute_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 16,
+          "length": 4,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_dir",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 21,
+          "length": 6,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_import_error_handling",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 28,
+          "length": 9,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_init_avail_flags_when_unavailable",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 38,
+          "length": 9,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_base_client_init",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 33,
+          "length": 5,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_base_client_http_verbs",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 39,
+          "length": 25,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_campaigns_dict_return",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 69,
+          "length": 28,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_campaigns_list_and_other_returns",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 98,
+          "length": 18,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_campaign_endpoints",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 117,
+          "length": 44,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_import_endpoints",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 166,
+          "length": 26,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_lists_pagination",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "line": 197,
+          "length": 34,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "",
+          "has_assertions": true
+        }
+      ],
+      "drift": [
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "overview",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "key features",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "cli or api",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "mcp",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "mcp configuration examples",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "docker compose orchestration",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "security & governance",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "access control & policy enforcement",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "runtime security grid",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "installation",
+          "detail": "Feature heading in README has no corresponding test"
+        }
+      ]
+    },
+    {
+      "domain": "Documentation & Governance",
+      "score": 92,
+      "grade": "A",
+      "findings": [
+        "README.md missing sections: usage|quick start",
+        "2 broken internal links in README.md",
+        "README missing: Has a Table of Contents",
+        "README missing: Has usage examples with code blocks"
+      ],
+      "justifications": [
+        {
+          "criterion": "documentation_quality",
+          "points": 92,
+          "evidence": "{\"README.md\": {\"exists\": true, \"missing\": [\"usage|quick start\"]}, \"AGENTS.md\": {\"exists\": true, \"missing\": []}, \"STANDARDS.md\": {\"exists\": false, \"missing\": []}, \"CONTRIBUTING.md\": {\"exists\": false, \"missing\": []}, \"CHANGELOG.md\": {\"exists\": false, \"missing\": []}, \"LICENSE\": {\"exists\": true, \"missing\": []}, \"docs/\": {\"exists\": true, \"missing\": []}}",
+          "reasoning": "Audited 6 standard docs + docs/ directory. 0 broken references, 4 docs present. README industry grade: B (81.2%)."
+        }
+      ],
+      "doc_results": {
+        "README.md": {
+          "exists": true,
+          "size": 10584,
+          "headings": [
+            "Listmonk Api",
+            "CLI or API | MCP | Agent",
+            "Overview",
+            "Key Features",
+            "CLI or API",
+            "MCP",
+            "Available MCP Tools",
+            "MCP Configuration Examples",
+            "stdio Transport (Recommended for local IDEs e.g., Cursor, Claude Desktop)",
+            "Streamable-HTTP Transport (Recommended for production deployments)",
+            "Agent",
+            "Running the Agent CLI",
+            "Set credentials",
+            "Run the agent server",
+            "Docker Compose Orchestration",
+            "Security & Governance",
+            "Access Control & Policy Enforcement",
+            "Runtime Security Grid",
+            "Installation",
+            "Using uv (highly recommended)"
+          ],
+          "missing_sections": [
+            "usage|quick start"
+          ],
+          "heading_count": 23,
+          "stale": false,
+          "last_modified": "2026-05-22 08:19:39 -0500",
+          "category": "project_overview"
+        },
+        "AGENTS.md": {
+          "exists": true,
+          "size": 3635,
+          "headings": [
+            "AGENTS.md",
+            "Tech Stack & Architecture",
+            "Architecture Diagram",
+            "Workflow Diagram",
+            "Commands (run these exactly)",
+            "Installation",
+            "Quality & Linting (run from project root)",
+            "Execution Commands",
+            "Run MCP Server",
+            "Run Agent",
+            "Project Structure Quick Reference",
+            "File Tree",
+            "Code Style & Conventions",
+            "Dos and Don'ts",
+            "Safety & Boundaries",
+            "When Stuck"
+          ],
+          "missing_sections": [],
+          "heading_count": 16,
+          "stale": false,
+          "last_modified": "2026-05-22 02:41:52 -0500",
+          "category": "agentic_metadata"
+        },
+        "STANDARDS.md": {
+          "exists": false,
+          "missing_sections": [],
+          "size": 0,
+          "headings": [],
+          "stale": true,
+          "last_modified": "unknown",
+          "category": "standards"
+        },
+        "CONTRIBUTING.md": {
+          "exists": false,
+          "missing_sections": [],
+          "size": 0,
+          "headings": [],
+          "stale": true,
+          "last_modified": "unknown",
+          "category": "contributing"
+        },
+        "CHANGELOG.md": {
+          "exists": false,
+          "missing_sections": [],
+          "size": 0,
+          "headings": [],
+          "stale": true,
+          "last_modified": "unknown",
+          "category": "changelog"
+        },
+        "LICENSE": {
+          "exists": true,
+          "size": 1068,
+          "headings": [],
+          "missing_sections": [],
+          "heading_count": 0,
+          "stale": false,
+          "last_modified": "2026-05-22 02:41:52 -0500",
+          "category": "license"
+        },
+        "docs/": {
+          "exists": true,
+          "file_count": 3,
+          "files": [
+            "docs/legacy_readme.md",
+            "docs/overview.md",
+            "docs/index.md"
+          ]
+        }
+      },
+      "drift": [
+        {
+          "type": "info",
+          "doc": "README.md",
+          "reference": "listmonk-api[all], listmonk-api[all]",
+          "detail": "README references 2 install commands"
+        }
+      ],
+      "readme_grade": {
+        "score": 26,
+        "max_score": 32,
+        "percentage": 81.2,
+        "grade": "B",
+        "criteria": {
+          "has_title": true,
+          "has_badges": true,
+          "has_description": true,
+          "has_toc": false,
+          "has_installation": true,
+          "has_usage": false,
+          "has_api_docs": true,
+          "has_architecture": true,
+          "has_contributing": true,
+          "has_license": false,
+          "has_code_blocks": true,
+          "has_docs_refs": true,
+          "no_broken_links": false,
+          "reasonable_length": true,
+          "has_cli_api_details": true,
+          "has_mcp_configs": true,
+          "has_agent_configs": true,
+          "has_env_var_docs": true,
+          "has_mcp_tool_table": true,
+          "has_deployment_docs": true
+        },
+        "findings": [
+          "2 broken internal links in README.md",
+          "README missing: Has a Table of Contents",
+          "README missing: Has usage examples with code blocks"
+        ]
+      }
+    },
+    {
+      "domain": "Architecture & Design Patterns",
+      "score": 65,
+      "grade": "D",
+      "findings": [
+        "SRP: 1 modules exceed 500 lines (god modules)",
+        "SRP: 1 classes have >15 methods",
+        "No discernible layer architecture (no domain/service/adapter separation)",
+        "Low dependency injection ratio: 5%"
+      ],
+      "justifications": [
+        {
+          "criterion": "architecture_quality",
+          "points": 65,
+          "evidence": "{\"layers\": 0, \"di_ratio\": 0.05, \"solid_violations\": 2}",
+          "reasoning": "Analyzed 21 files. 0/5 architecture layers present, DI ratio: 5%, 2 SOLID violations."
+        }
+      ],
+      "analysis": {
+        "solid_findings": [
+          {
+            "principle": "SRP",
+            "status": "violation",
+            "detail": "1 modules exceed 500 lines (god modules)",
+            "items": [
+              {
+                "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+                "lines": 734
+              }
+            ]
+          },
+          {
+            "principle": "SRP",
+            "status": "violation",
+            "detail": "1 classes have >15 methods",
+            "items": [
+              {
+                "class": "Api",
+                "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+                "method_count": 29
+              }
+            ]
+          }
+        ],
+        "layer_architecture": {
+          "has_domain_layer": false,
+          "has_adapter_layer": false,
+          "has_port_interfaces": false,
+          "has_service_layer": false,
+          "has_model_layer": false
+        },
+        "dependency_injection": {
+          "total_classes": 19,
+          "di_classes": 1,
+          "di_ratio": 0.05
+        },
+        "event_driven": {
+          "event_classes": 0,
+          "callback_patterns": 0,
+          "observer_patterns": 0,
+          "signal_patterns": 0
+        },
+        "file_count": 21
+      }
+    },
+    {
+      "domain": "Concept Traceability",
+      "score": 30,
+      "grade": "F",
+      "findings": [
+        "Low traceability ratio: 0% concepts fully traced",
+        "36 test functions missing concept markers",
+        "51 significant functions (>10 lines) missing concept markers in docstrings"
+      ],
+      "justifications": [
+        {
+          "criterion": "concept_traceability",
+          "points": 30,
+          "evidence": "{\"total_concepts\": 5, \"well_traced\": 0, \"orphans\": 5, \"drift\": 0, \"code_concepts\": 0, \"doc_concepts\": 7, \"test_concepts\": 0, \"decorator_concepts\": 0, \"tests_missing_markers\": 36, \"functions_missing_docstrings\": 51, \"registry_concepts\": 0, \"unimplemented_concepts\": 0}",
+          "reasoning": "5 unique concepts found. 0 fully traced (code+docs+tests), 5 orphans, 0 drifted. 36 tests without concept markers. 51 functions without concept docstrings."
+        }
+      ],
+      "metrics": {
+        "total_concepts": 5,
+        "well_traced": 0,
+        "orphans": 5,
+        "drift": 0,
+        "code_concepts": 0,
+        "doc_concepts": 7,
+        "test_concepts": 0,
+        "decorator_concepts": 0,
+        "tests_missing_markers": 36,
+        "functions_missing_docstrings": 51,
+        "registry_concepts": 0,
+        "unimplemented_concepts": 0
+      },
+      "concept_map": {
+        "OS-5.4": {
+          "code": 0,
+          "docs": 2,
+          "test": 0,
+          "test_decorator": 0,
+          "test_docstring": 0
+        },
+        "OS-5.1": {
+          "code": 0,
+          "docs": 1,
+          "test": 0,
+          "test_decorator": 0,
+          "test_docstring": 0
+        },
+        "OS-5.3": {
+          "code": 0,
+          "docs": 2,
+          "test": 0,
+          "test_decorator": 0,
+          "test_docstring": 0
+        },
+        "ORCH-1.4": {
+          "code": 0,
+          "docs": 1,
+          "test": 0,
+          "test_decorator": 0,
+          "test_docstring": 0
+        },
+        "OS-5.2": {
+          "code": 0,
+          "docs": 1,
+          "test": 0,
+          "test_decorator": 0,
+          "test_docstring": 0
+        }
+      },
+      "orphans": [
+        {
+          "concept_id": "OS-5.4",
+          "present_in": [
+            "docs"
+          ],
+          "missing_from": [
+            "code",
+            "test"
+          ]
+        },
+        {
+          "concept_id": "OS-5.1",
+          "present_in": [
+            "docs"
+          ],
+          "missing_from": [
+            "code",
+            "test"
+          ]
+        },
+        {
+          "concept_id": "OS-5.3",
+          "present_in": [
+            "docs"
+          ],
+          "missing_from": [
+            "code",
+            "test"
+          ]
+        },
+        {
+          "concept_id": "ORCH-1.4",
+          "present_in": [
+            "docs"
+          ],
+          "missing_from": [
+            "code",
+            "test"
+          ]
+        },
+        {
+          "concept_id": "OS-5.2",
+          "present_in": [
+            "docs"
+          ],
+          "missing_from": [
+            "code",
+            "test"
+          ]
+        }
+      ],
+      "drift": [],
+      "tests_missing_markers": [
+        {
+          "test_name": "test_listmonk_subscribers_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 35
+        },
+        {
+          "test_name": "test_listmonk_lists_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 75
+        },
+        {
+          "test_name": "test_listmonk_imports_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 109
+        },
+        {
+          "test_name": "test_listmonk_campaigns_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 143
+        },
+        {
+          "test_name": "test_listmonk_media_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 192
+        },
+        {
+          "test_name": "test_listmonk_templates_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 221
+        },
+        {
+          "test_name": "test_listmonk_tx_tool",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 260
+        },
+        {
+          "test_name": "test_get_mcp_instance_standard",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 296
+        },
+        {
+          "test_name": "test_get_mcp_instance_openapi_delegation_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 310
+        },
+        {
+          "test_name": "test_get_mcp_instance_openapi_import_failure",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 327
+        },
+        {
+          "test_name": "test_get_mcp_instance_openapi_import_success",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 350
+        },
+        {
+          "test_name": "test_mcp_server_run_stdio",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 383
+        },
+        {
+          "test_name": "test_mcp_server_run_sse_and_http",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 396
+        },
+        {
+          "test_name": "test_mcp_server_invalid_transport",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "line": 418
+        },
+        {
+          "test_name": "test_get_client_singleton",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 25
+        },
+        {
+          "test_name": "test_get_client_auth_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 40
+        },
+        {
+          "test_name": "test_agent_server_cli",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "line": 56
+        },
+        {
+          "test_name": "test_init_available_flags",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 6
+        },
+        {
+          "test_name": "test_init_lazy_loading",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 11
+        },
+        {
+          "test_name": "test_init_attribute_error",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "line": 16
+        }
+      ],
+      "functions_missing_docstrings": [
+        {
+          "function": "register_listmonk_subscribers_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 41,
+          "length": 36
+        },
+        {
+          "function": "register_listmonk_lists_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 79,
+          "length": 37
+        },
+        {
+          "function": "register_listmonk_imports_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 118,
+          "length": 36
+        },
+        {
+          "function": "register_listmonk_campaigns_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 156,
+          "length": 43
+        },
+        {
+          "function": "register_listmonk_media_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 201,
+          "length": 34
+        },
+        {
+          "function": "register_listmonk_templates_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 237,
+          "length": 37
+        },
+        {
+          "function": "register_listmonk_tx_tools",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 276,
+          "length": 30
+        },
+        {
+          "function": "get_mcp_instance",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 312,
+          "length": 107
+        },
+        {
+          "function": "mcp_server",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 421,
+          "length": 20
+        },
+        {
+          "function": "listmonk_subscribers",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 43,
+          "length": 34
+        },
+        {
+          "function": "listmonk_lists",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 81,
+          "length": 35
+        },
+        {
+          "function": "listmonk_imports",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 120,
+          "length": 34
+        },
+        {
+          "function": "listmonk_campaigns",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 158,
+          "length": 41
+        },
+        {
+          "function": "listmonk_media",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 203,
+          "length": 32
+        },
+        {
+          "function": "listmonk_templates",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 239,
+          "length": 35
+        },
+        {
+          "function": "listmonk_tx",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "line": 278,
+          "length": 28
+        },
+        {
+          "function": "get_client",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/auth.py",
+          "line": 16,
+          "length": 21
+        },
+        {
+          "function": "agent_server",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py",
+          "line": 22,
+          "length": 60
+        },
+        {
+          "function": "__getattr__",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/__init__.py",
+          "line": 54,
+          "length": 26
+        },
+        {
+          "function": "__init__",
+          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+          "line": 30,
+          "length": 37
+        }
+      ],
+      "unimplemented_concepts": []
+    },
+    {
+      "domain": "Linting & Formatting",
+      "score": 100,
+      "grade": "A",
+      "findings": [
+        "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)"
+      ],
+      "justifications": [
+        {
+          "criterion": "lint_compliance",
+          "points": 100,
+          "evidence": "ruff=0, bandit=0, mypy=0",
+          "reasoning": "0 total findings across 3 tools. High/error: -0pts, Med/warning: -0pts, Low: -0pt."
+        }
+      ],
+      "tool_results": {
+        "ruff": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        },
+        "bandit": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        },
+        "mypy": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        }
+      },
+      "all_findings": []
+    },
+    {
+      "domain": "Pre-Commit Compliance",
+      "score": 92,
+      "grade": "A",
+      "findings": [
+        "1/14 pre-commit hooks failed: don't commit to branch",
+        "1 hook(s) may be outdated: ruff-pre-commit"
+      ],
+      "justifications": [
+        {
+          "criterion": "precommit_compliance",
+          "points": 92,
+          "evidence": "{\"total_hooks\": 14, \"passed\": 13, \"failed\": 1, \"skipped\": 0, \"outdated_hooks\": 1, \"pytest_hooks_skipped\": 0, \"exit_code\": 1}",
+          "reasoning": "Ran pre-commit with 14 hooks: 13 passed, 1 failed, 0 skipped. 1 potentially outdated. 0 pytest hooks deferred to CE-016."
+        }
+      ],
+      "hook_results": [
+        {
+          "hook": "check for added large files",
+          "status": "passed"
+        },
+        {
+          "hook": "check python ast",
+          "status": "passed"
+        },
+        {
+          "hook": "check yaml",
+          "status": "passed"
+        },
+        {
+          "hook": "check toml",
+          "status": "passed"
+        },
+        {
+          "hook": "check json",
+          "status": "passed"
+        },
+        {
+          "hook": "fix utf-8 byte order marker",
+          "status": "passed"
+        },
+        {
+          "hook": "check for merge conflicts",
+          "status": "passed"
+        },
+        {
+          "hook": "detect private key",
+          "status": "passed"
+        },
+        {
+          "hook": "trim trailing whitespace",
+          "status": "passed"
+        },
+        {
+          "hook": "fix end of files",
+          "status": "passed"
+        },
+        {
+          "hook": "don't commit to branch",
+          "status": "failed"
+        },
+        {
+          "hook": "ruff (legacy alias)",
+          "status": "passed"
+        },
+        {
+          "hook": "codespell",
+          "status": "passed"
+        },
+        {
+          "hook": "nbqa-ruff",
+          "status": "passed"
+        }
+      ],
+      "pytest_hooks_skipped": [],
+      "outdated_hooks": [
+        {
+          "repo": "https://github.com/astral-sh/ruff-pre-commit",
+          "current_rev": "v0.15.4",
+          "issue": "Pre-1.0 version \u2014 check for updates"
+        }
+      ],
+      "metrics": {
+        "total_hooks": 14,
+        "passed": 13,
+        "failed": 1,
+        "skipped": 0,
+        "outdated_hooks": 1,
+        "pytest_hooks_skipped": 0,
+        "exit_code": 1
+      }
+    },
+    {
+      "domain": "Test Execution",
+      "score": 25,
+      "grade": "F",
+      "findings": [
+        "No tests were executed (test framework detected but no tests found)"
+      ],
+      "justifications": [
+        {
+          "criterion": "test_execution",
+          "points": 25,
+          "evidence": "{\"frameworks_detected\": 1, \"total_passed\": 0, \"total_failed\": 0, \"total_errors\": 0, \"pass_rate\": 0.0, \"timeout\": 300}",
+          "reasoning": "Executed 1 framework(s). 0 passed, 0 failed, 0 errors. Pass rate: 0%."
+        }
+      ],
+      "framework_results": [
+        {
+          "language": "python",
+          "framework": "pytest",
+          "command": [
+            "python",
+            "-m",
+            "pytest",
+            "--tb=line",
+            "-q",
+            "--timeout=300",
+            "--no-header"
+          ],
+          "status": "failed",
+          "exit_code": 4,
+          "parsed": {
+            "passed": 0,
+            "failed": 0,
+            "errors": 0,
+            "warnings": 0,
+            "skipped": 0,
+            "failures": []
+          }
+        }
+      ],
+      "metrics": {
+        "frameworks_detected": 1,
+        "total_passed": 0,
+        "total_failed": 0,
+        "total_errors": 0,
+        "pass_rate": 0.0,
+        "timeout": 300
+      }
+    },
+    {
+      "domain": "Directory Organization",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "directory_organization",
+          "points": 100,
+          "evidence": "{\"total_source_files\": 39, \"total_directories\": 8, \"max_depth\": 2, \"avg_depth\": 1.2, \"crowded_dirs_20plus\": 0, \"severely_crowded_40plus\": 0, \"monolithic_dirs\": 0, \"empty_dirs\": 1, \"avg_files_per_dir\": 4.9, \"rogue_scripts\": 0}",
+          "reasoning": "39 files across 8 directories. Max depth: 2, avg files/dir: 4.9. 0 crowded, 0 severely crowded, 0 monolithic, 0 rogue scripts."
+        }
+      ],
+      "metrics": {
+        "total_source_files": 39,
+        "total_directories": 8,
+        "max_depth": 2,
+        "avg_depth": 1.2,
+        "crowded_dirs_20plus": 0,
+        "severely_crowded_40plus": 0,
+        "monolithic_dirs": 0,
+        "empty_dirs": 1,
+        "avg_files_per_dir": 4.9,
+        "rogue_scripts": 0
+      },
+      "crowded_dirs": [],
+      "monolithic_dirs": [],
+      "suggestions": [],
+      "rogue_scripts": []
+    },
+    {
+      "domain": "Version Sync Analysis",
+      "score": 100,
+      "grade": "A",
+      "findings": [
+        "All version '0.6.0' declarations appear to be tracked correctly."
+      ],
+      "justifications": [
+        {
+          "criterion": "bumpversion_exists",
+          "points": 20,
+          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.bumpversion.cfg",
+          "reasoning": ".bumpversion.cfg found"
+        },
+        {
+          "criterion": "current_version_defined",
+          "points": 20,
+          "evidence": "0.6.0",
+          "reasoning": "Current version tracked is 0.6.0"
+        },
+        {
+          "criterion": "files_tracked",
+          "points": 20,
+          "evidence": "5 files tracked",
+          "reasoning": "Found 5 files tracked in .bumpversion.cfg"
+        },
+        {
+          "criterion": "version_drift_check",
+          "points": 40,
+          "evidence": "0 drifted files",
+          "reasoning": "No version drift detected in codebase files"
+        }
+      ],
+      "details": {
+        "tracked_files": [
+          "pyproject.toml",
+          "README.md",
+          "docker/Dockerfile",
+          "listmonk_api/agent_server.py",
+          "listmonk_api/mcp_server.py"
+        ],
+        "drifted_files": []
+      }
+    },
+    {
+      "domain": "Changelog Audit",
+      "score": 75,
+      "grade": "C",
+      "findings": [
+        "CHANGELOG.md is missing \u2014 create one following Keep a Changelog format",
+        "CHANGELOG.md is missing"
+      ],
+      "justifications": [
+        {
+          "criterion": "changelog_quality",
+          "points": 75,
+          "evidence": "{\"exists\": false, \"parseable\": false, \"version_count\": 0, \"has_drift\": false, \"dep_deltas_found\": 0}",
+          "reasoning": "CHANGELOG.md missing. 0 versions tracked. 0 dependency changelogs analyzed."
+        }
+      ],
+      "format_validation": {
+        "exists": false,
+        "parseable": false,
+        "has_unreleased": false,
+        "version_count": 0,
+        "uses_semver": true,
+        "valid_categories": true,
+        "has_dates": true,
+        "has_header": false,
+        "issues": [
+          "CHANGELOG.md is missing"
+        ]
+      },
+      "version_drift": {
+        "has_drift": false,
+        "changelog_version": null,
+        "pyproject_version": "0.6.0"
+      },
+      "dependency_deltas": {}
+    },
+    {
+      "domain": "Pytest Quality",
+      "score": 81,
+      "grade": "B",
+      "findings": [
+        "Missing conftest.py for shared fixtures",
+        "No @pytest.mark.parametrize usage \u2014 consider data-driven tests",
+        "No shared fixtures in conftest.py",
+        "5 tests use weak assertions (assert result is not None, assert True, etc.)",
+        "13 tests have >5 assertions \u2014 consider splitting (single responsibility)"
+      ],
+      "justifications": [
+        {
+          "criterion": "pytest_quality",
+          "points": 81,
+          "evidence": "{\"test_files\": 4, \"total_tests\": 36, \"descriptive_name_ratio\": 0.97, \"generic_names\": 0, \"fixture_usage_ratio\": 0.81, \"parametrize_users\": 0, \"conftest_fixtures\": 0, \"no_assertion_tests\": 0, \"weak_assertion_tests\": 5, \"duplicate_groups\": 0, \"large_files\": 0, \"over_mocked_tests\": 0, \"very_long_tests\": 0, \"subscores\": {\"naming\": 20, \"structure\": 18, \"fixtures\": 11, \"assertions\": 12, \"ai_slop\": 20}}",
+          "reasoning": "36 tests across 4 files. Naming: 20/20, Structure: 18/20, Fixtures: 11/20, Assertions: 12/20, AI Slop: 20/20."
+        }
+      ],
+      "metrics": {
+        "test_files": 4,
+        "total_tests": 36,
+        "descriptive_name_ratio": 0.97,
+        "generic_names": 0,
+        "fixture_usage_ratio": 0.81,
+        "parametrize_users": 0,
+        "conftest_fixtures": 0,
+        "no_assertion_tests": 0,
+        "weak_assertion_tests": 5,
+        "duplicate_groups": 0,
+        "large_files": 0,
+        "over_mocked_tests": 0,
+        "very_long_tests": 0,
+        "subscores": {
+          "naming": 20,
+          "structure": 18,
+          "fixtures": 11,
+          "assertions": 12,
+          "ai_slop": 20
+        }
+      },
+      "conftest": {
+        "conftest_count": 0,
+        "total_shared_fixtures": 0,
+        "has_root_conftest": false
+      },
+      "duplicates": [],
+      "large_files": []
+    },
+    {
+      "domain": "Environment Variables",
+      "score": 60,
+      "grade": "D",
+      "findings": [
+        "Only 14% of env vars documented in README.md",
+        "Undocumented env vars: ALLOWED_CLIENT_REDIRECT_URIS, AUTH_TYPE, CAMPAIGNSTOOL, EUNOMIA_POLICY_FILE, EUNOMIA_REMOTE_URL, EUNOMIA_TYPE, IMPORTSTOOL, LISTMONK_CAMPAIGNSTOOL, LISTMONK_IMPORTSTOOL, LISTMONK_LISTSTOOL",
+        "11 Python env vars not in .env.example: LISTMONK_CAMPAIGNSTOOL, LISTMONK_IMPORTSTOOL, LISTMONK_LISTSTOOL, LISTMONK_MEDIATOOL, LISTMONK_SUBSCRIBERSTOOL"
+      ],
+      "justifications": [
+        {
+          "criterion": "env_var_documentation",
+          "points": 60,
+          "evidence": "{\"total_vars\": 43, \"python_vars\": 12, \"dockerfile_vars\": 22, \"compose_vars\": 0, \"dotenv_vars\": 15, \"readme_documented\": 6, \"readme_undocumented\": 37, \"documentation_coverage\": 0.14}",
+          "reasoning": "Found 43 unique env vars across 88 occurrences. README documents 6/43. Has .env.example."
+        }
+      ],
+      "metrics": {
+        "total_vars": 43,
+        "python_vars": 12,
+        "dockerfile_vars": 22,
+        "compose_vars": 0,
+        "dotenv_vars": 15,
+        "readme_documented": 6,
+        "readme_undocumented": 37,
+        "documentation_coverage": 0.14
+      },
+      "variables": {
+        "OPENAPI_USERNAME": {
+          "name": "OPENAPI_USERNAME",
+          "sources": [
+            "listmonk_api/mcp_server.py:343"
+          ],
+          "defaults": [],
+          "source_types": [
+            "python"
+          ]
+        },
+        "OPENAPI_PASSWORD": {
+          "name": "OPENAPI_PASSWORD",
+          "sources": [
+            "listmonk_api/mcp_server.py:344"
+          ],
+          "defaults": [],
+          "source_types": [
+            "python"
+          ]
+        },
+        "OPENAPI_CLIENT_ID": {
+          "name": "OPENAPI_CLIENT_ID",
+          "sources": [
+            "listmonk_api/mcp_server.py:345"
+          ],
+          "defaults": [],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_SUBSCRIBERSTOOL": {
+          "name": "LISTMONK_SUBSCRIBERSTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:382"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_LISTSTOOL": {
+          "name": "LISTMONK_LISTSTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:386"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_IMPORTSTOOL": {
+          "name": "LISTMONK_IMPORTSTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:390"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_CAMPAIGNSTOOL": {
+          "name": "LISTMONK_CAMPAIGNSTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:394"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_MEDIATOOL": {
+          "name": "LISTMONK_MEDIATOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:398"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_TEMPLATESTOOL": {
+          "name": "LISTMONK_TEMPLATESTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:402"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_TXTOOL": {
+          "name": "LISTMONK_TXTOOL",
+          "sources": [
+            "listmonk_api/mcp_server.py:406"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "python"
+          ]
+        },
+        "LISTMONK_URL": {
+          "name": "LISTMONK_URL",
+          "sources": [
+            "listmonk_api/auth.py:20",
+            ".env:23",
+            ".env.example:23"
+          ],
+          "defaults": [
+            "http://localhost:8080"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "LISTMONK_TOKEN": {
+          "name": "LISTMONK_TOKEN",
+          "sources": [
+            "listmonk_api/auth.py:21"
+          ],
+          "defaults": [],
+          "source_types": [
+            "python"
+          ]
+        },
+        "HOST": {
+          "name": "HOST",
+          "sources": [
+            "docker/Dockerfile:26",
+            "docker/Dockerfile:3",
+            "docker/debug.Dockerfile:26",
+            "docker/debug.Dockerfile:3",
+            ".env:6"
+          ],
+          "defaults": [
+            "0.0.0.0"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "PORT": {
+          "name": "PORT",
+          "sources": [
+            "docker/Dockerfile:4",
+            "docker/debug.Dockerfile:4",
+            ".env:7",
+            ".env.example:7"
+          ],
+          "defaults": [
+            "8000"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "TRANSPORT": {
+          "name": "TRANSPORT",
+          "sources": [
+            "docker/Dockerfile:5",
+            "docker/debug.Dockerfile:5",
+            ".env:8",
+            ".env.example:8"
+          ],
+          "defaults": [
+            "stdio # options: stdio, streamable-http, sse"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "AUTH_TYPE": {
+          "name": "AUTH_TYPE",
+          "sources": [
+            "docker/Dockerfile:6",
+            "docker/debug.Dockerfile:6"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "TOKEN_JWKS_URI": {
+          "name": "TOKEN_JWKS_URI",
+          "sources": [
+            "docker/Dockerfile:7",
+            "docker/debug.Dockerfile:7"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "TOKEN_ISSUER": {
+          "name": "TOKEN_ISSUER",
+          "sources": [
+            "docker/Dockerfile:8",
+            "docker/debug.Dockerfile:8"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "TOKEN_AUDIENCE": {
+          "name": "TOKEN_AUDIENCE",
+          "sources": [
+            "docker/Dockerfile:9",
+            "docker/debug.Dockerfile:9"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OAUTH_UPSTREAM_AUTH_ENDPOINT": {
+          "name": "OAUTH_UPSTREAM_AUTH_ENDPOINT",
+          "sources": [
+            "docker/Dockerfile:10",
+            "docker/debug.Dockerfile:10"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OAUTH_UPSTREAM_TOKEN_ENDPOINT": {
+          "name": "OAUTH_UPSTREAM_TOKEN_ENDPOINT",
+          "sources": [
+            "docker/Dockerfile:11",
+            "docker/debug.Dockerfile:11"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OAUTH_UPSTREAM_CLIENT_ID": {
+          "name": "OAUTH_UPSTREAM_CLIENT_ID",
+          "sources": [
+            "docker/Dockerfile:12",
+            "docker/debug.Dockerfile:12"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OAUTH_UPSTREAM_CLIENT_SECRET": {
+          "name": "OAUTH_UPSTREAM_CLIENT_SECRET",
+          "sources": [
+            "docker/Dockerfile:13",
+            "docker/debug.Dockerfile:13"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OAUTH_BASE_URL": {
+          "name": "OAUTH_BASE_URL",
+          "sources": [
+            "docker/Dockerfile:14",
+            "docker/debug.Dockerfile:14"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OIDC_CONFIG_URL": {
+          "name": "OIDC_CONFIG_URL",
+          "sources": [
+            "docker/Dockerfile:15",
+            "docker/debug.Dockerfile:15"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OIDC_CLIENT_ID": {
+          "name": "OIDC_CLIENT_ID",
+          "sources": [
+            "docker/Dockerfile:16",
+            "docker/debug.Dockerfile:16"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OIDC_CLIENT_SECRET": {
+          "name": "OIDC_CLIENT_SECRET",
+          "sources": [
+            "docker/Dockerfile:17",
+            "docker/debug.Dockerfile:17"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "OIDC_BASE_URL": {
+          "name": "OIDC_BASE_URL",
+          "sources": [
+            "docker/Dockerfile:18",
+            "docker/debug.Dockerfile:18"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "REMOTE_AUTH_SERVERS": {
+          "name": "REMOTE_AUTH_SERVERS",
+          "sources": [
+            "docker/Dockerfile:19",
+            "docker/debug.Dockerfile:19"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "REMOTE_BASE_URL": {
+          "name": "REMOTE_BASE_URL",
+          "sources": [
+            "docker/Dockerfile:20",
+            "docker/debug.Dockerfile:20"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "ALLOWED_CLIENT_REDIRECT_URIS": {
+          "name": "ALLOWED_CLIENT_REDIRECT_URIS",
+          "sources": [
+            "docker/Dockerfile:21",
+            "docker/debug.Dockerfile:21"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "EUNOMIA_TYPE": {
+          "name": "EUNOMIA_TYPE",
+          "sources": [
+            "docker/Dockerfile:22",
+            "docker/debug.Dockerfile:22",
+            ".env:18",
+            ".env.example:18"
+          ],
+          "defaults": [
+            "none # options: none, embedded, remote"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "EUNOMIA_POLICY_FILE": {
+          "name": "EUNOMIA_POLICY_FILE",
+          "sources": [
+            "docker/Dockerfile:23",
+            "docker/debug.Dockerfile:23",
+            ".env:19",
+            ".env.example:19"
+          ],
+          "defaults": [
+            "mcp_policies.json"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "EUNOMIA_REMOTE_URL": {
+          "name": "EUNOMIA_REMOTE_URL",
+          "sources": [
+            "docker/Dockerfile:24",
+            "docker/debug.Dockerfile:24"
+          ],
+          "defaults": [],
+          "source_types": [
+            "dockerfile"
+          ]
+        },
+        "ENABLE_OTEL": {
+          "name": "ENABLE_OTEL",
+          "sources": [
+            ".env:11",
+            ".env.example:11"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "LISTMONK_USERNAME": {
+          "name": "LISTMONK_USERNAME",
+          "sources": [
+            ".env:24",
+            ".env.example:24"
+          ],
+          "defaults": [
+            "admin"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "CAMPAIGNSTOOL": {
+          "name": "CAMPAIGNSTOOL",
+          "sources": [
+            ".env:28",
+            ".env.example:28"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "IMPORTSTOOL": {
+          "name": "IMPORTSTOOL",
+          "sources": [
+            ".env:29",
+            ".env.example:29"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "LISTSTOOL": {
+          "name": "LISTSTOOL",
+          "sources": [
+            ".env:30",
+            ".env.example:30"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "MEDIATOOL": {
+          "name": "MEDIATOOL",
+          "sources": [
+            ".env:31",
+            ".env.example:31"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "SUBSCRIBERSTOOL": {
+          "name": "SUBSCRIBERSTOOL",
+          "sources": [
+            ".env:32",
+            ".env.example:32"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "TEMPLATESTOOL": {
+          "name": "TEMPLATESTOOL",
+          "sources": [
+            ".env:33",
+            ".env.example:33"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "TXTOOL": {
+          "name": "TXTOOL",
+          "sources": [
+            ".env:34",
+            ".env.example:34"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        }
+      },
+      "readme_coverage": {
+        "documented": [
+          "ENABLE_OTEL",
+          "HOST",
+          "LISTMONK_URL",
+          "LISTMONK_USERNAME",
+          "PORT",
+          "TRANSPORT"
+        ],
+        "undocumented": [
+          "ALLOWED_CLIENT_REDIRECT_URIS",
+          "AUTH_TYPE",
+          "CAMPAIGNSTOOL",
+          "EUNOMIA_POLICY_FILE",
+          "EUNOMIA_REMOTE_URL",
+          "EUNOMIA_TYPE",
+          "IMPORTSTOOL",
+          "LISTMONK_CAMPAIGNSTOOL",
+          "LISTMONK_IMPORTSTOOL",
+          "LISTMONK_LISTSTOOL",
+          "LISTMONK_MEDIATOOL",
+          "LISTMONK_SUBSCRIBERSTOOL",
+          "LISTMONK_TEMPLATESTOOL",
+          "LISTMONK_TOKEN",
+          "LISTMONK_TXTOOL",
+          "LISTSTOOL",
+          "MEDIATOOL",
+          "OAUTH_BASE_URL",
+          "OAUTH_UPSTREAM_AUTH_ENDPOINT",
+          "OAUTH_UPSTREAM_CLIENT_ID",
+          "OAUTH_UPSTREAM_CLIENT_SECRET",
+          "OAUTH_UPSTREAM_TOKEN_ENDPOINT",
+          "OIDC_BASE_URL",
+          "OIDC_CLIENT_ID",
+          "OIDC_CLIENT_SECRET",
+          "OIDC_CONFIG_URL",
+          "OPENAPI_CLIENT_ID",
+          "OPENAPI_PASSWORD",
+          "OPENAPI_USERNAME",
+          "REMOTE_AUTH_SERVERS",
+          "REMOTE_BASE_URL",
+          "SUBSCRIBERSTOOL",
+          "TEMPLATESTOOL",
+          "TOKEN_AUDIENCE",
+          "TOKEN_ISSUER",
+          "TOKEN_JWKS_URI",
+          "TXTOOL"
+        ],
+        "coverage": 0.13953488372093023
+      }
+    }
+  ],
+  "gpa": 2.62,
+  "domain_count": 16,
+  "timing": {
+    "analyze_project": 0.01,
+    "audit_dependencies": 0.23,
+    "analyze_codebase": 0.28,
+    "analyze_security": 0.21,
+    "analyze_tests": 0.1,
+    "audit_documentation": 0.03,
+    "analyze_architecture": 0.22,
+    "trace_concepts": 0.15,
+    "run_linters": 0.81,
+    "run_precommit": 7.43,
+    "run_tests": 4.35,
+    "analyze_directory_density": 0.2,
+    "analyze_ui": 0.14,
+    "analyze_version_sync": 0.05,
+    "audit_changelog": 0.0,
+    "grade_pytest": 0.04,
+    "scan_env_vars": 0.07
+  }
+}

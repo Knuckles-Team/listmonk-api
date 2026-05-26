@@ -1,0 +1,227 @@
+{
+  "feature_id": "code-enhancement-20260524",
+  "title": "Code Enhancement: listmonk-api",
+  "created": "2026-05-24T04:17:16.200999+00:00",
+  "overview": "Automated code enhancement review for listmonk-api. Covers 17 analysis domains.",
+  "user_stories": [
+    {
+      "role": "developer",
+      "action": "address Project Analysis findings (grade: D, score: 69)",
+      "value": "improve project project analysis from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Codebase Optimization findings (grade: C, score: 79)",
+      "value": "improve project codebase optimization from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Architecture & Design Patterns findings (grade: D, score: 65)",
+      "value": "improve project architecture & design patterns from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Concept Traceability findings (grade: F, score: 23)",
+      "value": "improve project concept traceability from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Test Execution findings (grade: F, score: 25)",
+      "value": "improve project test execution from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Version Sync Analysis findings (grade: D, score: 60)",
+      "value": "improve project version sync analysis from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Changelog Audit findings (grade: C, score: 75)",
+      "value": "improve project changelog audit from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address analyze_xdg_kg findings (grade: F, score: 0)",
+      "value": "improve project analyze_xdg_kg from F to at least B (80+)"
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "description": "Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0",
+      "testable": true
+    },
+    {
+      "id": "FR-002",
+      "description": "Monolithic: listmonk_api.py (734L) \u2014 2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23); God class: Api (29 methods) \u2014 consider mixins/composition",
+      "testable": true
+    },
+    {
+      "id": "FR-003",
+      "description": "1 MEDIUM severity vulnerabilities found",
+      "testable": true
+    },
+    {
+      "id": "FR-004",
+      "description": "13 potential doc-test drift items",
+      "testable": true
+    },
+    {
+      "id": "FR-005",
+      "description": "README.md missing sections: usage|quick start",
+      "testable": true
+    },
+    {
+      "id": "FR-006",
+      "description": "2 broken internal links in README.md",
+      "testable": true
+    },
+    {
+      "id": "FR-007",
+      "description": "README missing: Has a Table of Contents",
+      "testable": true
+    },
+    {
+      "id": "FR-008",
+      "description": "README missing: Has usage examples with code blocks",
+      "testable": true
+    },
+    {
+      "id": "FR-009",
+      "description": "SRP: 2 modules exceed 500 lines (god modules)",
+      "testable": true
+    },
+    {
+      "id": "FR-010",
+      "description": "SRP: 1 classes have >15 methods",
+      "testable": true
+    },
+    {
+      "id": "FR-011",
+      "description": "No discernible layer architecture (no domain/service/adapter separation)",
+      "testable": true
+    },
+    {
+      "id": "FR-012",
+      "description": "Low dependency injection ratio: 5%",
+      "testable": true
+    },
+    {
+      "id": "FR-013",
+      "description": "Low traceability ratio: 0% concepts fully traced",
+      "testable": true
+    },
+    {
+      "id": "FR-014",
+      "description": "15 orphaned concepts (only in one source)",
+      "testable": true
+    },
+    {
+      "id": "FR-015",
+      "description": "42 test functions missing concept markers",
+      "testable": true
+    },
+    {
+      "id": "FR-016",
+      "description": "65 significant functions (>10 lines) missing concept markers in docstrings",
+      "testable": true
+    },
+    {
+      "id": "FR-017",
+      "description": "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)",
+      "testable": true
+    },
+    {
+      "id": "FR-018",
+      "description": "1 hook(s) may be outdated: ruff-pre-commit",
+      "testable": true
+    },
+    {
+      "id": "FR-019",
+      "description": "Found 2 file(s) with version '0.6.0' that are NOT tracked in .bumpversion.cfg:",
+      "testable": true
+    },
+    {
+      "id": "FR-020",
+      "description": "  - .specify/reports/results.json",
+      "testable": true
+    },
+    {
+      "id": "FR-021",
+      "description": "  - .specify/reports/code_enhancement_report.md",
+      "testable": true
+    },
+    {
+      "id": "FR-022",
+      "description": "CHANGELOG.md exists but could not be parsed \u2014 check format compliance",
+      "testable": true
+    },
+    {
+      "id": "FR-023",
+      "description": "No changelog entries within the last 30 days",
+      "testable": true
+    },
+    {
+      "id": "FR-024",
+      "description": "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'",
+      "testable": true
+    },
+    {
+      "id": "FR-025",
+      "description": "1 test files exceed 500 lines \u2014 split into focused modules",
+      "testable": true
+    },
+    {
+      "id": "FR-026",
+      "description": "Test directory lacks subdirectory organization (consider unit/, integration/, e2e/)",
+      "testable": true
+    },
+    {
+      "id": "FR-027",
+      "description": "No @pytest.mark.parametrize usage \u2014 consider data-driven tests",
+      "testable": true
+    },
+    {
+      "id": "FR-028",
+      "description": "6 tests use weak assertions (assert result is not None, assert True, etc.)",
+      "testable": true
+    },
+    {
+      "id": "FR-029",
+      "description": "13 tests have >5 assertions \u2014 consider splitting (single responsibility)",
+      "testable": true
+    },
+    {
+      "id": "FR-030",
+      "description": "Undocumented env vars: OAUTH_UPSTREAM_AUTH_ENDPOINT, OAUTH_UPSTREAM_CLIENT_ID, OAUTH_UPSTREAM_CLIENT_SECRET, OAUTH_UPSTREAM_TOKEN_ENDPOINT, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CONFIG_URL, OPENAPI_CLIENT_ID, REMOTE_AUTH_SERVERS, REMOTE_BASE_URL",
+      "testable": true
+    },
+    {
+      "id": "FR-031",
+      "description": "3 Python env vars not in .env.example: OPENAPI_CLIENT_ID, OPENAPI_PASSWORD, OPENAPI_USERNAME",
+      "testable": true
+    },
+    {
+      "id": "FR-032",
+      "description": "Analysis error: No module named 'agent_utilities.knowledge_graph'",
+      "testable": true
+    }
+  ],
+  "success_criteria": [
+    {
+      "metric": "Overall GPA",
+      "current": 2.41,
+      "target": 3.0
+    },
+    {
+      "metric": "Domains at B or above",
+      "current": 9,
+      "target": 17
+    },
+    {
+      "metric": "Actionable findings",
+      "current": 32,
+      "target": 0
+    }
+  ]
+}

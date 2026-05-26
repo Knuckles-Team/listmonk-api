@@ -54,15 +54,36 @@ This server utilizes dynamic Action-Routed tools to optimize token overhead and 
 ### Available MCP Tools
 | Tool Module | Toggle Env Var | Enabled by Default | Description & Nested Methods |
 |-------------|----------------|--------------------|------------------------------|
-| **Subscribers** | `SUBSCRIBERSTOOL` | `True` | Manage listmonk subscribers. Action-routed methods. |
-| **Lists** | `LISTSTOOL` | `True` | Manage listmonk lists. Action-routed methods. |
-| **Imports** | `IMPORTSTOOL` | `True` | Manage listmonk imports. Action-routed methods. |
-| **Campaigns** | `CAMPAIGNSTOOL` | `True` | Manage listmonk campaigns. Action-routed methods. |
-| **Media** | `MEDIATOOL` | `True` | Manage listmonk media. Action-routed methods. |
-| **Templates** | `TEMPLATESTOOL` | `True` | Manage listmonk templates. Action-routed methods. |
-| **Tx** | `TXTOOL` | `True` | Manage listmonk transactional messages. Action-routed methods. |
+| **Listmonk Subscribers** | `LISTMONK_SUBSCRIBERS_TOOL` | `True` | Manage listmonk subscribers operations. Action-routed methods: `create_subscriber`, `get_subscriber`, `get_subscribers`, `get_subscribers_from_list`. |
+| **Listmonk Lists** | `LISTMONK_LISTS_TOOL` | `True` | Manage listmonk lists operations. Action-routed methods: `create_list`, `edit_list`, `get_list`, `get_lists`. |
+| **Listmonk Imports** | `LISTMONK_IMPORTS_TOOL` | `True` | Manage listmonk imports operations. Action-routed methods: `delete_subscriber_import`, `get_subscriber_import_logs`, `get_subscriber_import_status`, `import_subscribers`. |
+| **Listmonk Campaigns** | `LISTMONK_CAMPAIGNS_TOOL` | `True` | Manage listmonk campaigns operations. Action-routed methods: `create_campaign`, `delete_campaign`, `get_campaign`, `get_campaign_preview`, `get_campaign_stats`, `get_campaigns`, `set_campaign_status`. |
+| **Listmonk Media** | `LISTMONK_MEDIA_TOOL` | `True` | Manage listmonk media operations. Action-routed methods: `delete_media`, `get_media`, `upload_media`. |
+| **Listmonk Templates** | `LISTMONK_TEMPLATES_TOOL` | `True` | Manage listmonk templates operations. Action-routed methods: `delete_template`, `get_template`, `get_template_preview`, `get_templates`, `set_default_template`. |
+| **Listmonk Tx** | `LISTMONK_TX_TOOL` | `True` | Manage listmonk tx operations. Action-routed methods: `transactional_message`. |
 
 Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
+
+### Dynamic Tool Selection & Visibility
+
+This MCP server supports dynamic toolset selection and visibility filtering at runtime. This allows you to restrict the set of exposed tools in order to prevent blowing up the LLM's context window.
+
+You can configure tool filtering via multiple input channels:
+
+- **CLI Arguments:** Pass `--tools` or `--toolsets` (or their disabled counterparts `--disabled-tools` and `--disabled-toolsets`) during startup.
+- **Environment Variables:** Define standard environment variables:
+  - `MCP_ENABLED_TOOLS` / `MCP_DISABLED_TOOLS`
+  - `MCP_ENABLED_TAGS` / `MCP_DISABLED_TAGS`
+- **HTTP SSE Request Headers:** Pass custom headers during transport initialization:
+  - `x-mcp-enabled-tools` / `x-mcp-disabled-tools`
+  - `x-mcp-enabled-tags` / `x-mcp-disabled-tags`
+- **HTTP SSE Request Query Parameters:** Append query parameters directly to your transport connection URL:
+  - `?tools=tool1,tool2`
+  - `?tags=tag1`
+
+When query strings or parameters are supplied, an LLM-free **Knowledge Graph resolution layer** (using `DynamicToolOrchestrator`) matches query intents against known tool tags, names, or descriptions, with safe fallback and automated 24-hour background cache refreshing.
+
+---
 
 ### MCP Configuration Examples
 
@@ -247,6 +268,39 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | **Tool Guard** | Sensitivity inspection with human-in-the-loop validation | Enabled by default |
 | **Prompt Injection Defense** | Input scanning, repetition monitoring, and recursive loop blocks | Enabled by default |
 | **Context Safety Guard** | Stuck-loop detectors and contextual overflow preemptive alerts | Enabled by default |
+
+---
+
+## Environment Variables
+
+The server and client support standard configuration environment variables:
+
+| Variable | Description | Default |
+|---|---|---|
+| `LISTMONK_URL` | Base URL of your Listmonk instance. | `http://localhost:8080` |
+| `LISTMONK_TOKEN` | Bearer Token used for secure API authorization. | `""` |
+| `LISTMONK_USERNAME` | Username for Basic Authorization (if token is empty). | `""` |
+| `LISTMONK_PASSWORD` | Password for Basic Authorization (if token is empty). | `""` |
+| **Toggles** | | |
+| `LISTMONK_SUBSCRIBERSTOOL`| Enable or disable the `listmonk_subscribers` tool. | `True` |
+| `LISTMONK_LISTSTOOL` | Enable or disable the `listmonk_lists` tool. | `True` |
+| `LISTMONK_IMPORTSTOOL` | Enable or disable the `listmonk_imports` tool. | `True` |
+| `LISTMONK_CAMPAIGNSTOOL` | Enable or disable the `listmonk_campaigns` tool. | `True` |
+| `LISTMONK_MEDIATOOL` | Enable or disable the `listmonk_media` tool. | `True` |
+| `LISTMONK_TEMPLATESTOOL` | Enable or disable the `listmonk_templates` tool. | `True` |
+| `LISTMONK_TXTOOL` | Enable or disable the `listmonk_tx` tool. | `True` |
+| **Security & Policies** | | |
+| `AUTH_TYPE` | Type of API authentication schema required. | `""` |
+| `EUNOMIA_TYPE` | Type of authorization engine policy enforcement (`none`, `embedded`, `remote`). | `none` |
+| `EUNOMIA_POLICY_FILE` | Path to your local policy definition file (e.g., `mcp_policies.json`). | `""` |
+| `EUNOMIA_REMOTE_URL` | Host/Port URL pointing to a remote Eunomia policy daemon. | `""` |
+| `ALLOWED_CLIENT_REDIRECT_URIS`| Whitelisted URIs allowed to complete Oauth/OIDC identity validation flows. | `""` |
+| `OAUTH_BASE_URL` | Base endpoint of your trusted OAuth provider. | `""` |
+| `OIDC_BASE_URL` | Base endpoint of your OIDC identity provider. | `""` |
+| **OpenAPI Docs** | | |
+| `OPENAPI_USERNAME` | Username whitelisted to view internal raw API specifications. | `""` |
+| `OPENAPI_PASSWORD` | Password whitelisted to view internal raw API specifications. | `""` |
+| `OPENAPI_BEARER_TOKEN` | Bearer authorization token used to limit raw API specifications access. | `""` |
 
 ---
 

@@ -1,0 +1,59 @@
+# Tasks: Code Enhancement: listmonk-api
+
+Generated: 2026-05-22T21:09:49.796868+00:00
+Skipped informational: 5
+
+- [ ] [P] **T001** [Dependency Audit] Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T002** [Codebase Optimization] Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Ap
+  - Priority: P1-High | Effort: Large
+- [ ] [P] **T003** [Test Coverage] Test suite lacks intent diversity (only one type)
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T004** [Test Coverage] 12 potential doc-test drift items
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T005** [Documentation & Governance] README.md missing sections: usage|quick start
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T006** [Documentation & Governance] 2 broken internal links in README.md
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T007** [Documentation & Governance] README missing: Has a Table of Contents
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T008** [Documentation & Governance] README missing: Has usage examples with code blocks
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T009** [Architecture & Design Patterns] SRP: 1 modules exceed 500 lines (god modules)
+  - Priority: P2-Medium | Effort: Large
+- [ ] [P] **T010** [Architecture & Design Patterns] SRP: 1 classes have >15 methods
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T011** [Architecture & Design Patterns] No discernible layer architecture (no domain/service/adapter separation)
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T012** [Architecture & Design Patterns] Low dependency injection ratio: 5%
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T013** [Concept Traceability] Low traceability ratio: 0% concepts fully traced
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T014** [Concept Traceability] 36 test functions missing concept markers
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T015** [Concept Traceability] 51 significant functions (>10 lines) missing concept markers in docstrings
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T016** [Linting & Formatting] Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T017** [Pre-Commit Compliance] 1 hook(s) may be outdated: ruff-pre-commit
+  - Priority: P2-Medium | Effort: Small
+- [ ] [P] **T018** [Changelog Audit] CHANGELOG.md is missing — create one following Keep a Changelog format
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T019** [Changelog Audit] CHANGELOG.md is missing
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T020** [Pytest Quality] Missing conftest.py for shared fixtures
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T021** [Pytest Quality] No @pytest.mark.parametrize usage — consider data-driven tests
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T022** [Pytest Quality] No shared fixtures in conftest.py
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T023** [Pytest Quality] 5 tests use weak assertions (assert result is not None, assert True, etc.)
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T024** [Pytest Quality] 13 tests have >5 assertions — consider splitting (single responsibility)
+  - Priority: P3-Low | Effort: Large
+- [ ] [P] **T025** [Environment Variables] Only 14% of env vars documented in README.md
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T026** [Environment Variables] Undocumented env vars: ALLOWED_CLIENT_REDIRECT_URIS, AUTH_TYPE, CAMPAIGNSTOOL, E
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T027** [Environment Variables] 11 Python env vars not in .env.example: LISTMONK_CAMPAIGNSTOOL, LISTMONK_IMPORTS
+  - Priority: P2-Medium | Effort: Medium
