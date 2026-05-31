@@ -17,15 +17,15 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.10"
 dependencies = [
-    "agent-utilities[mcp]>=0.34.4"]
+    "agent-utilities[mcp]>=0.36.0"]
 
 [project.optional-dependencies]
 agent = [
-    "agent-utilities[agent,logfire]>=0.34.4"]
+    "agent-utilities[agent,logfire]>=0.36.0"]
 
 
 all = [
-    "agent-utilities[mcp,agent,logfire]>=0.34.4"]
+    "agent-utilities[mcp,agent,logfire]>=0.36.0"]
 
 [project.scripts]
 listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
