@@ -41,9 +41,10 @@ from dotenv import find_dotenv, load_dotenv
 
 from listmonk_api.auth import get_client
 
-__version__ = "0.13.0"
+__version__ = "0.14.0"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
+
 
 def register_listmonk_subscribers_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_subscribers"})
@@ -82,6 +83,7 @@ def register_listmonk_subscribers_tools(mcp: FastMCP):
 
             return client.create_subscriber(SubscriberCreateRequest(**kwargs))
         raise ValueError(f"Unknown action: {action}")
+
 
 def register_listmonk_lists_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_lists"})
@@ -125,6 +127,7 @@ def register_listmonk_lists_tools(mcp: FastMCP):
             )
         raise ValueError(f"Unknown action: {action}")
 
+
 def register_listmonk_imports_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_imports"})
     def listmonk_imports(
@@ -162,6 +165,7 @@ def register_listmonk_imports_tools(mcp: FastMCP):
         if action == "delete_subscriber_import":
             return client.delete_subscriber_import()
         raise ValueError(f"Unknown action: {action}")
+
 
 def register_listmonk_campaigns_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_campaigns"})
@@ -212,6 +216,7 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
             return client.delete_campaign(**kwargs)
         raise ValueError(f"Unknown action: {action}")
 
+
 def register_listmonk_media_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_media"})
     def listmonk_media(
@@ -247,6 +252,7 @@ def register_listmonk_media_tools(mcp: FastMCP):
         if action == "delete_media":
             return client.delete_media(**kwargs)
         raise ValueError(f"Unknown action: {action}")
+
 
 def register_listmonk_templates_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_templates"})
@@ -286,6 +292,7 @@ def register_listmonk_templates_tools(mcp: FastMCP):
             return client.delete_template(**kwargs)
         raise ValueError(f"Unknown action: {action}")
 
+
 def register_listmonk_tx_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_tx"})
     def listmonk_tx(
@@ -318,8 +325,10 @@ def register_listmonk_tx_tools(mcp: FastMCP):
             return client.transactional_message(TransactionalMessageRequest(**kwargs))
         raise ValueError(f"Unknown action: {action}")
 
+
 def register_prompts(mcp: FastMCP):
     pass
+
 
 def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
     """Initialize and return the MCP instance, args, and middlewares."""
@@ -433,6 +442,7 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
     registered_tags = []
     return (mcp, args, middlewares, registered_tags, imported_tools)
 
+
 def mcp_server() -> None:
     mcp, args, middlewares, registered_tags, imported_tools = get_mcp_instance()
     print("\nStarting Listmonk MCP Server", file=sys.stderr)
@@ -453,6 +463,7 @@ def mcp_server() -> None:
     else:
         logger.error("Invalid transport", extra={"transport": args.transport})
         sys.exit(1)
+
 
 if __name__ == "__main__":
     mcp_server()
