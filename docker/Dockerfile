@@ -59,7 +59,7 @@ RUN apt-get update \
     && curl -sS https://starship.rs/install.sh | sh -s -- --yes \
     && mkdir -p /root/.config \
     && echo 'eval "$(starship init bash)"' >> /root/.bashrc \
-    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow listmonk-api[all]>=0.15.2
+    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow listmonk-api[all]>=0.16.0
 
 COPY docker/starship.toml /root/.config/starship.toml
 
