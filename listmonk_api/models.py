@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 from typing import Optional, List, Dict, Any
 
 
@@ -38,7 +38,14 @@ class CampaignCreateRequest(BaseModel):
     subject: str
     lists: List[int]
     from_email: str
-    type: str = Field(alias="send_type")  # send_type mapped to type
+    # Issue #3: listmonk's create-campaign payload key is "type" (older wrappers
+    # used "send_type"). Accept either on input (legacy "send_type" or "type"),
+    # but always serialize to "type" so model_dump(by_alias=True) sends the key
+    # listmonk expects.
+    type: str = Field(
+        validation_alias=AliasChoices("send_type", "type"),
+        serialization_alias="type",
+    )
     content_type: str
     body: str
     altbody: Optional[str] = None
@@ -46,10 +53,11 @@ class CampaignCreateRequest(BaseModel):
     messenger: Optional[str] = None
     template_id: Optional[int] = None
     tags: Optional[List[str]] = None
-    # Fix: Added attachment support
-    attachments: Optional[List[Dict[str, str]]] = (
-        None  # Assuming a format, or maybe list of media IDs? Listmonk API actually uses just media IDs or base64? Actually, often [{"name": "file.txt", "content": "base64"}] or something. I'll just accept a generic list.
-    )
+    # Issue #4: attach uploaded media to a campaign. Listmonk campaigns reference
+    # attachments by media ID (upload first via the Media API), serialized as the
+    # "media" key, e.g. {"media": [1, 2]}. (Base64/file attachments are a
+    # transactional-message feature — see TransactionalMessageRequest.)
+    media: Optional[List[int]] = None
 
 
 class CampaignStatusRequest(BaseModel):

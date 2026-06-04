@@ -163,7 +163,7 @@ def test_campaign_endpoints(mock_session, client):
             "subject": "Hello",
             "lists": [1],
             "from_email": "noreply@test.com",
-            "send_type": "regular",
+            "type": "regular",
             "content_type": "plain",
             "body": "Welcome!",
         },
