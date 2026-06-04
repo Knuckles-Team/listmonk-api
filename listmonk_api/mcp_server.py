@@ -41,7 +41,7 @@ from dotenv import find_dotenv, load_dotenv
 
 from listmonk_api.auth import get_client
 
-__version__ = "0.16.0"
+__version__ = "0.17.0"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
@@ -327,7 +327,24 @@ def register_listmonk_tx_tools(mcp: FastMCP):
 
 
 def register_prompts(mcp: FastMCP):
-    pass
+    """Register MCP prompts."""
+    @mcp.prompt
+    def create_campaign_prompt(
+        name: str, subject: str, list_ids: str, type: str = "regular"
+    ) -> str:
+        """
+        Generates a prompt for creating a Listmonk campaign.
+        """
+        return f"Create a new Listmonk campaign with name '{name}', subject '{subject}', lists [{list_ids}], and type '{type}'. Use the listmonk_campaigns tool with action='create_campaign'."
+
+    @mcp.prompt
+    def send_transactional_message_prompt(
+        subscriber_email: str, template_id: int
+    ) -> str:
+        """
+        Generates a prompt for sending a Listmonk transactional message.
+        """
+        return f"Send a transactional message to {subscriber_email} using template ID {template_id}. Use the listmonk_tx tool with action='transactional_message'."
 
 
 def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:

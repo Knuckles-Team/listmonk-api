@@ -45,17 +45,17 @@ def is_placeholder(match_str: str) -> bool:
     for placeholder in PLACEHOLDER_SUBSTRINGS:
         if placeholder in match_lower:
             return True
-    
+
     # Check if match is mostly asterisks or single repeated char
     cleaned = match_str.replace("'", "").replace('"', "").strip()
     if not cleaned:
         return True
-    
+
     # Check if there are sequences of asterisks indicating masked values
     if "*" in cleaned:
         # e.g., glpat-*************
         return True
-        
+
     return False
 
 def get_repo_files(repo_path: Path):
@@ -87,11 +87,11 @@ def get_repo_files(repo_path: Path):
 def scan_repository(repo_path: Path):
     violations = []
     files_to_scan = get_repo_files(repo_path)
-    
+
     for file_path in files_to_scan:
         if not file_path.is_file():
             continue
-            
+
         # 1. Check root level naming constraints
         if file_path.parent == repo_path:
             # Check txt files
@@ -112,18 +112,18 @@ def scan_repository(repo_path: Path):
         # 2. Check for secrets
         if file_path.suffix.lower() in EXCLUDED_EXTENSIONS:
             continue
-            
+
         if file_path.name == "security_sanitizer.py":
             continue
-            
+
         try:
             content = file_path.read_text(encoding="utf-8", errors="ignore")
             lines = content.splitlines()
-            
+
             for idx, line in enumerate(lines, 1):
                 if any(bypass in line for bypass in ["# sanitizer:ignore", "# sanitizer-ignore", "# nosec"]):
                     continue
-                    
+
                 for label, pattern in SECRET_PATTERNS:
                     for match in pattern.findall(line):
                         match_str = match[0] if isinstance(match, tuple) else match
@@ -132,19 +132,19 @@ def scan_repository(repo_path: Path):
                             violations.append(
                                 f"Potential unmasked secret ({label}) detected in {rel_path}:{idx}\n"
                                 f"  Line: {line.strip()}"
-                                
+
                             )
         except Exception:
             pass
-            
+
     return violations
 
 def main():
     repo_path = Path.cwd()
-    
+
     print("🔒 Running Security and Garbage Sanitizer...")
     violations = scan_repository(repo_path)
-    
+
     if violations:
         print("\n❌ SECURITY AND GARBAGE VALIDATION FAILED!")
         print("Please correct the following issues before committing:")
@@ -152,7 +152,7 @@ def main():
             print(f"\n[{idx}] {violation}")
         print("\nNote: To bypass secret checks on specific lines, append '# sanitizer:ignore' to the end of the line.")
         sys.exit(1)
-        
+
     print("✅ All checks passed! No root garbage or unmasked secrets detected.")
     sys.exit(0)
 
