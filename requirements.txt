@@ -1,1 +1,1 @@
-agent-utilities[mcp]>=0.41.0
+agent-utilities[mcp]>=0.45.0
