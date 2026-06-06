@@ -1,3 +1,16 @@
+# syntax=docker/dockerfile:1
+# Slim multi-stage build: install in a builder, ship only /usr/local. Cuts the
+# pushed image ~43% (no default-jre/dev-tools/source) so layer pushes finish well
+# inside the registry's blob-upload window even under concurrency.
+FROM python:3.11-slim AS builder
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_SYSTEM_PYTHON=1 \
+    UV_HTTP_TIMEOUT=3600
+RUN --mount=type=cache,target=/root/.cache/uv \
+    pip install --no-cache-dir uv \
+    && uv pip install --system --upgrade --break-system-packages --prerelease=allow listmonk-api[all]>=0.21.0
+
 FROM python:3.11-slim
 
 ARG HOST=0.0.0.0
@@ -50,17 +63,6 @@ ENV HOST=${HOST} \
     UV_HTTP_TIMEOUT=3600 \
     UV_SYSTEM_PYTHON=1 \
     UV_COMPILE_BYTECODE=1
-
-WORKDIR /app
-COPY . /app
-RUN apt-get update \
-    && apt-get install -y default-jre ripgrep tree fd-find curl nano \
-    && curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && curl -sS https://starship.rs/install.sh | sh -s -- --yes \
-    && mkdir -p /root/.config \
-    && echo 'eval "$(starship init bash)"' >> /root/.bashrc \
-    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow listmonk-api[all]>=0.21.0
-
-COPY docker/starship.toml /root/.config/starship.toml
+COPY --from=builder /usr/local /usr/local
 
 CMD ["listmonk-mcp"]
