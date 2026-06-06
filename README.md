@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/listmonk-api)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/listmonk-api)
 
-*Version: 0.20.0*
+*Version: 0.21.0*
 
 ---
 
