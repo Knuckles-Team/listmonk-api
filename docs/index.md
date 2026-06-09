@@ -1,144 +1,62 @@
-# Listmonk API & MCP Agent
+# listmonk-api
 
-[![PyPI - Version](https://img.shields.io/pypi/v/listmonk-api)](https://pypi.org/project/listmonk-api/)
+A Python **API client, MCP Server, and A2A agent** for [Listmonk](https://listmonk.app/)
+— the self-hosted newsletter and mailing-list manager — built on the agent-utilities
+ecosystem.
+
+!!! info "Official documentation"
+    This site is the canonical reference for `listmonk-api`, maintained alongside every
+    release.
+
+[![PyPI](https://img.shields.io/pypi/v/listmonk-api)](https://pypi.org/project/listmonk-api/)
 ![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
-[![PyPI - License](https://img.shields.io/pypi/l/listmonk-api)](https://github.com/Knuckles-Team/listmonk-api/blob/main/LICENSE)
+[![License](https://img.shields.io/pypi/l/listmonk-api)](https://github.com/Knuckles-Team/listmonk-api/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/badge/source-GitHub-181717?logo=github)](https://github.com/Knuckles-Team/listmonk-api)
 
 ## Overview
 
-Welcome to the `listmonk-api` developer documentation. This package provides:
-1. **A Modular Python API Client** (`ListmonkAPI`) designed to interact with Listmonk's REST APIs.
-2. **A Unified Model Context Protocol (MCP) Server** enabling any LLM-powered environment (like Windsurf, Claude Code, or Antigravity) to seamlessly manage lists, campaigns, subscribers, and templates.
+`listmonk-api` wraps Listmonk's REST API with a typed, modular Python client and a
+deterministic MCP tool surface, and ships a Pydantic-AI agent server for conversational
+automation. It provides:
 
-Unlike traditional, flat wrappers, the modern `listmonk-api` codebase is built with a delegated subclassing architecture. The parent `ListmonkAPI` client aggregates dedicated sub-API managers. This design ensures separation of concerns, testability, and a lightweight context footprint.
+- **`ListmonkAPI`** — a delegated-subclassing client that aggregates dedicated
+  sub-API managers for subscribers, lists, campaigns, media, templates, imports, and
+  transactional messaging.
+- **Action-routed MCP tools** — togglable tool modules that group related operations
+  to minimize LLM context overhead while keeping permissions granular.
+- **An integrated A2A agent** — a Pydantic-AI graph agent (console script
+  `listmonk-agent`) with an optional web interface, wired to the MCP server.
 
----
+The connector remains inactive when credentials are absent, so it is safe to install
+ahead of provisioning a Listmonk instance.
 
-## API Structure
+## Explore the documentation
 
-The `ListmonkAPI` client subclasses modular sub-API clients to provide a single, unified interface for all endpoints:
+<div class="grid cards" markdown>
 
-```mermaid
-classDiagram
-    class ListmonkAPI {
-    }
-    class CampaignsApi {
-        +get_campaigns()
-        +get_campaign()
-        +create_campaign()
-        +set_campaign_status()
-        +delete_campaign()
-    }
-    class SubscribersApi {
-        +get_subscribers()
-        +get_subscriber()
-        +create_subscriber()
-    }
-    class ListsApi {
-        +get_lists()
-        +get_list()
-        +create_list()
-        +edit_list()
-    }
-    class TemplatesApi {
-        +get_templates()
-        +get_template()
-        +set_default_template()
-    }
-    class MediaApi {
-        +get_media()
-        +upload_media()
-        +delete_media()
-    }
-    class ImportApi {
-        +get_subscriber_import_status()
-        +get_subscriber_import_logs()
-        +import_subscribers()
-    }
-    class TransactionalApi {
-        +transactional_message()
-    }
+- :material-rocket-launch: **[Installation](installation.md)** — pip, source, extras, and the prebuilt Docker image.
+- :material-server-network: **[Deployment](deployment.md)** — run the MCP and agent servers, Docker Compose, Caddy + Technitium.
+- :material-console: **[Usage](usage.md)** — the MCP tools, the `ListmonkAPI` client, and the agent CLI.
+- :material-database-cog: **[Backing Platform](platform.md)** — deploy Listmonk with Docker.
+- :material-sitemap: **[Overview](overview.md)** — API structure, tool reference, and quick start.
+- :material-tag-multiple: **[Concepts](concepts.md)** — the `CONCEPT:LM-*` registry.
 
-    ListmonkAPI --|> CampaignsApi
-    ListmonkAPI --|> SubscribersApi
-    ListmonkAPI --|> ListsApi
-    ListmonkAPI --|> TemplatesApi
-    ListmonkAPI --|> MediaApi
-    ListmonkAPI --|> ImportApi
-    ListmonkAPI --|> TransactionalApi
-```
+</div>
 
-### Supported API Modules
-
-* **Subscribers**: Core CRUD, list subscriptions management, bulk subscriber imports.
-* **Lists**: Subscriber lists creation, retrieval, updates, and styling.
-* **Campaigns**: Creation, templating, previewing, execution tracking, and deletion.
-* **Media**: Dynamic uploads, storage lookup, and asset deletion.
-* **Templates**: HTML template storage, previewing, and defaults configuration.
-* **Transactional Messaging**: High-performance one-off notification sends.
-
----
-
-## MCP Tools Reference
-
-Our MCP server exposes specialized tools to perform actions inside a Listmonk instance. All tools are tag-routed to allow granular permissions, policy controls, or sub-agent delegation.
-
-### Available Tools
-
-| Function Name | Description | Actions Supported | Tag(s) |
-|---|---|---|---|
-| `listmonk_subscribers` | Manage Listmonk subscribers operations. | `get_subscribers`, `get_subscriber`, `get_subscribers_from_list`, `create_subscriber` | `listmonk_subscribers` |
-| `listmonk_lists` | Manage Listmonk lists operations. | `get_lists`, `get_list`, `create_list`, `edit_list` | `listmonk_lists` |
-| `listmonk_imports` | Manage Listmonk subscriber imports. | `get_subscriber_import_status`, `get_subscriber_import_logs`, `import_subscribers`, `delete_subscriber_import` | `listmonk_imports` |
-| `listmonk_campaigns` | Manage Listmonk marketing campaigns. | `get_campaigns`, `get_campaign`, `get_campaign_preview`, `get_campaign_stats`, `create_campaign`, `set_campaign_status`, `delete_campaign` | `listmonk_campaigns` |
-| `listmonk_media` | Manage Listmonk media/image storage. | `get_media`, `upload_media`, `delete_media` | `listmonk_media` |
-| `listmonk_templates` | Manage template layovers and defaults. | `get_templates`, `get_template`, `get_template_preview`, `set_default_template`, `delete_template` | `listmonk_templates` |
-| `listmonk_tx` | Trigger transactional messaging. | `transactional_message` | `listmonk_tx` |
-
----
-
-## Quick Start & Usage
-
-### 1. API Client Example
-
-Initialize the client with your credentials and call modular endpoints dynamically:
-
-```python
-from listmonk_api import ListmonkAPI
-
-# Initialize client
-client = ListmonkAPI(
-    url="https://listmonk.yourdomain.com",
-    token="your-secret-access-token"
-)
-
-# Fetch active lists
-lists = client.get_lists()
-for lst in lists:
-    print(f"List: {lst.name} (ID: {lst.id})")
-
-# Create a subscriber
-new_subscriber = client.create_subscriber(
-    email="user@domain.com",
-    name="Jane Doe",
-    status="enabled",
-    lists=[1]
-)
-print(f"Created: {new_subscriber['name']}")
-```
-
-### 2. Launching the MCP Server
-
-Start the MCP server using stdin/stdout transport:
+## Quick start
 
 ```bash
-listmonk-mcp --transport stdio
+pip install "listmonk-api[all]"
+listmonk-mcp                     # stdio MCP server (default transport)
 ```
 
-Alternatively, use environment variables to auto-initialize connection settings:
+Connect it to a Listmonk instance:
 
 ```bash
-export LISTMONK_URL="https://listmonk.yourdomain.com"
-export LISTMONK_TOKEN="your-secret-access-token"
-listmonk-mcp --transport stdio
+export LISTMONK_URL=https://listmonk.yourdomain.com
+export LISTMONK_TOKEN=your-bearer-token
+listmonk-mcp --transport streamable-http --host 0.0.0.0 --port 8000
 ```
+
+See **[Installation](installation.md)** and **[Deployment](deployment.md)** for the
+full matrix (PyPI extras, Docker image, all transports, agent server, reverse proxy, DNS).

@@ -22,6 +22,10 @@
 
 *Version: 0.21.0*
 
+> **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
+> agent interfaces, and guidance for provisioning the Listmonk platform are maintained
+> in the [official documentation](https://knuckles-team.github.io/listmonk-api/).
+
 ---
 
 ## Overview
@@ -315,6 +319,23 @@ uv pip install listmonk-api[all]
 # Using standard pip
 python -m pip install listmonk-api[all]
 ```
+
+---
+
+## Documentation
+
+The complete documentation is published as the
+[official documentation site](https://knuckles-team.github.io/listmonk-api/) and is the
+recommended reference for installation, deployment, and day-to-day operation.
+
+| Page | Contents |
+|---|---|
+| [Installation](https://knuckles-team.github.io/listmonk-api/installation/) | pip, source, extras, prebuilt Docker image |
+| [Deployment](https://knuckles-team.github.io/listmonk-api/deployment/) | run the MCP and agent servers, Compose, Caddy + Technitium, env config |
+| [Usage](https://knuckles-team.github.io/listmonk-api/usage/) | the MCP tools, the `ListmonkAPI` client, the agent CLI |
+| [Backing Platform](https://knuckles-team.github.io/listmonk-api/platform/) | deploy Listmonk with Docker |
+| [Overview](https://knuckles-team.github.io/listmonk-api/overview/) | API structure, tool reference, quick start |
+| [Concepts](https://knuckles-team.github.io/listmonk-api/concepts/) | concept registry (`CONCEPT:LM-*`) |
 
 ---
 
