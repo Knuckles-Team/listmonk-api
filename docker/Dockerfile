@@ -9,7 +9,7 @@ ENV UV_COMPILE_BYTECODE=1 \
     UV_SYSTEM_PYTHON=1 \
     UV_HTTP_TIMEOUT=3600
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system --upgrade --break-system-packages --prerelease=allow listmonk-api[all]>=0.21.0
+    uv pip install --system --upgrade --break-system-packages --prerelease=allow listmonk-api[all]>=0.22.0
 
 FROM python:3.11-slim
 
