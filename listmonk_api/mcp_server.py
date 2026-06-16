@@ -36,6 +36,7 @@ from agent_utilities.base_utilities import to_boolean
 from agent_utilities.mcp_utilities import (
     config,
     create_mcp_server,
+    resolve_action,
 )
 from dotenv import find_dotenv, load_dotenv
 
@@ -71,6 +72,17 @@ def register_listmonk_subscribers_tools(mcp: FastMCP):
             return {"error": f"Invalid params_json: {e}"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        valid_actions = (
+            "get_subscribers",
+            "get_subscriber",
+            "get_subscribers_from_list",
+            "create_subscriber",
+        )
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
 
         if action == "get_subscribers":
             return {"results": client.get_subscribers(**kwargs)}
@@ -110,6 +122,12 @@ def register_listmonk_lists_tools(mcp: FastMCP):
             return {"error": f"Invalid params_json: {e}"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        valid_actions = ("get_lists", "get_list", "create_list", "edit_list")
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
 
         if action == "get_lists":
             return {"results": client.get_lists(**kwargs)}
@@ -154,6 +172,17 @@ def register_listmonk_imports_tools(mcp: FastMCP):
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
+        valid_actions = (
+            "get_subscriber_import_status",
+            "get_subscriber_import_logs",
+            "import_subscribers",
+            "delete_subscriber_import",
+        )
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
+
         if action == "get_subscriber_import_status":
             return client.get_subscriber_import_status()
         if action == "get_subscriber_import_logs":
@@ -192,6 +221,20 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
             return {"error": f"Invalid params_json: {e}"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        valid_actions = (
+            "get_campaigns",
+            "get_campaign",
+            "get_campaign_preview",
+            "get_campaign_stats",
+            "create_campaign",
+            "set_campaign_status",
+            "delete_campaign",
+        )
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
 
         if action == "get_campaigns":
             return {"results": client.get_campaigns(**kwargs)}
@@ -243,6 +286,12 @@ def register_listmonk_media_tools(mcp: FastMCP):
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
+        valid_actions = ("get_media", "upload_media", "delete_media")
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
+
         if action == "get_media":
             return client.get_media(**kwargs)
         if action == "upload_media":
@@ -279,6 +328,18 @@ def register_listmonk_templates_tools(mcp: FastMCP):
             return {"error": f"Invalid params_json: {e}"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        valid_actions = (
+            "get_templates",
+            "get_template",
+            "get_template_preview",
+            "set_default_template",
+            "delete_template",
+        )
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
 
         if action == "get_templates":
             return {"results": client.get_templates(**kwargs)}
@@ -319,6 +380,12 @@ def register_listmonk_tx_tools(mcp: FastMCP):
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
+        valid_actions = ("transactional_message",)
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
+
         if action == "transactional_message":
             from listmonk_api.models import TransactionalMessageRequest
 
@@ -328,6 +395,7 @@ def register_listmonk_tx_tools(mcp: FastMCP):
 
 def register_prompts(mcp: FastMCP):
     """Register MCP prompts."""
+
     @mcp.prompt
     def create_campaign_prompt(
         name: str, subject: str, list_ids: str, type: str = "regular"

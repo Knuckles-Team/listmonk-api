@@ -96,8 +96,8 @@ def test_listmonk_subscribers_tool(mock_client, mock_ctx):
     assert res == {"id": 10}
     mock_client.create_subscriber.assert_called_once()
 
-    # Unknown action
-    with pytest.raises(ValueError, match="Unknown action: invalid_action"):
+    # Unknown action — standardized rich error points at list_actions discovery
+    with pytest.raises(ValueError, match="list_actions"):
         tool.fn(
             action="invalid_action", params_json="{}", client=mock_client, ctx=mock_ctx
         )
