@@ -7,6 +7,8 @@ from fastmcp import Context, FastMCP
 from fastmcp.dependencies import Depends
 from pydantic import Field
 from fastmcp.utilities.logging import get_logger
+from agent_utilities.mcp_utilities import resolve_action
+
 from listmonk_api.auth import get_client
 
 logger = get_logger(name="ListmonkMCP")
@@ -37,6 +39,20 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
             return {"error": f"Invalid params_json: {e}"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        valid_actions = (
+            "get_campaigns",
+            "get_campaign",
+            "get_campaign_preview",
+            "get_campaign_stats",
+            "create_campaign",
+            "set_campaign_status",
+            "delete_campaign",
+        )
+        resolved = resolve_action(action, valid_actions, service="listmonk-api")
+        if isinstance(resolved, dict):
+            return resolved
+        action = resolved
 
         if action == "get_campaigns":
             return {"results": client.get_campaigns(**kwargs)}
