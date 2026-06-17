@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/listmonk-api)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/listmonk-api)
 
-*Version: 0.25.0*
+*Version: 0.26.0*
 
 > **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
 > agent interfaces, and guidance for provisioning the Listmonk platform are maintained

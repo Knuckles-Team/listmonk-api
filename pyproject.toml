@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "0.25.0"
+version = "0.26.0"
 description = "Agent package for Listmonk"
 readme = "README.md"
 authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
@@ -17,15 +17,15 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.10"
 dependencies = [
-    "agent-utilities[mcp]>=0.50.0"]
+    "agent-utilities[mcp]>=0.51.0"]
 
 [project.optional-dependencies]
 agent = [
-    "agent-utilities[agent,logfire]>=0.50.0"]
+    "agent-utilities[agent,logfire]>=0.51.0"]
 
 
 all = [
-    "agent-utilities[mcp,agent,logfire]>=0.50.0"]
+    "agent-utilities[mcp,agent,logfire]>=0.51.0"]
 
 [project.scripts]
 listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
