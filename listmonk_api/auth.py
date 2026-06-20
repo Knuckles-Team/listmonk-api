@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # coding: utf-8
 
-import os
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+from agent_utilities.core.config import setting
 from agent_utilities.core.exceptions import AuthError, UnauthorizedError
 
 from listmonk_api.api_client import ListmonkAPI
@@ -17,8 +17,8 @@ def get_client():
     """Get or create a singleton API client instance."""
     global _client
     if _client is None:
-        base_url = os.getenv("LISTMONK_URL", "http://localhost:8080")
-        token = os.getenv("LISTMONK_TOKEN", "")
+        base_url = setting("LISTMONK_URL", "http://localhost:8080")
+        token = setting("LISTMONK_TOKEN", "")
 
         try:
             _client = ListmonkAPI(

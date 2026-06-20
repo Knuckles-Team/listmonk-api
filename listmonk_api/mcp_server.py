@@ -26,20 +26,21 @@ warnings.filterwarnings("ignore", message=".*urllib3.*or charset_normalizer.*")
 import asyncio
 import json
 import logging
-import os
 import sys
 from threading import local
 from typing import Any
 
 import httpx
-from agent_utilities.base_utilities import to_boolean
+from agent_utilities.core.config import setting
 from agent_utilities.mcp_utilities import (
     load_config,
     config,
     create_mcp_server,
+    register_tool_surface,
     resolve_action,
 )
 
+from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
 
 __version__ = "0.26.0"
@@ -446,10 +447,10 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
                         )
                     print("Using incoming JWT for OpenAPI import", file=sys.stderr)
                 else:
-                    username = args.openapi_username or os.getenv("OPENAPI_USERNAME")
-                    password = args.openapi_password or os.getenv("OPENAPI_PASSWORD")
-                    client_id = args.openapi_client_id or os.getenv("OPENAPI_CLIENT_ID")
-                    client_secret = args.openapi_client_secret or os.getenv(
+                    username = args.openapi_username or setting("OPENAPI_USERNAME")
+                    password = args.openapi_password or setting("OPENAPI_PASSWORD")
+                    client_id = args.openapi_client_id or setting("OPENAPI_CLIENT_ID")
+                    client_secret = args.openapi_client_secret or setting(
                         "OPENAPI_CLIENT_SECRET"
                     )
                     if not (username and password) and (
@@ -483,40 +484,13 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
             logger.error("OpenAPI import failed", extra={"error": str(exc)})
             sys.exit(1)
 
-    DEFAULT_LISTMONK_SUBSCRIBERSTOOL = to_boolean(
-        os.getenv("LISTMONK_SUBSCRIBERSTOOL", "True")
+    registered_tags = register_tool_surface(
+        mcp,
+        client_cls=ListmonkAPI,
+        get_client=get_client,
+        service="listmonk-api",
+        tools_module=sys.modules[__name__],
     )
-    if DEFAULT_LISTMONK_SUBSCRIBERSTOOL:
-        register_listmonk_subscribers_tools(mcp)
-
-    DEFAULT_LISTMONK_LISTSTOOL = to_boolean(os.getenv("LISTMONK_LISTSTOOL", "True"))
-    if DEFAULT_LISTMONK_LISTSTOOL:
-        register_listmonk_lists_tools(mcp)
-
-    DEFAULT_LISTMONK_IMPORTSTOOL = to_boolean(os.getenv("LISTMONK_IMPORTSTOOL", "True"))
-    if DEFAULT_LISTMONK_IMPORTSTOOL:
-        register_listmonk_imports_tools(mcp)
-
-    DEFAULT_LISTMONK_CAMPAIGNSTOOL = to_boolean(
-        os.getenv("LISTMONK_CAMPAIGNSTOOL", "True")
-    )
-    if DEFAULT_LISTMONK_CAMPAIGNSTOOL:
-        register_listmonk_campaigns_tools(mcp)
-
-    DEFAULT_LISTMONK_MEDIATOOL = to_boolean(os.getenv("LISTMONK_MEDIATOOL", "True"))
-    if DEFAULT_LISTMONK_MEDIATOOL:
-        register_listmonk_media_tools(mcp)
-
-    DEFAULT_LISTMONK_TEMPLATESTOOL = to_boolean(
-        os.getenv("LISTMONK_TEMPLATESTOOL", "True")
-    )
-    if DEFAULT_LISTMONK_TEMPLATESTOOL:
-        register_listmonk_templates_tools(mcp)
-
-    DEFAULT_LISTMONK_TXTOOL = to_boolean(os.getenv("LISTMONK_TXTOOL", "True"))
-    if DEFAULT_LISTMONK_TXTOOL:
-        register_listmonk_tx_tools(mcp)
-
     register_prompts(mcp)
     for tool in imported_tools:
         mcp.add_tool(tool)
@@ -524,7 +498,6 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
         mcp.add_resource(resource)
     for mw in middlewares:
         mcp.add_middleware(mw)
-    registered_tags = []
     return (mcp, args, middlewares, registered_tags, imported_tools)
 
 
