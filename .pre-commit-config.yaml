@@ -61,6 +61,13 @@ repos:
         entry: python3 /home/apps/workspace/agent-packages/agent-utilities/scripts/check_stubs.py
         language: system
         types: [python]
+      - id: mcp-readme-table
+        name: sync MCP tools table in README
+        entry: |-
+          bash -c 'if [ -f uv.lock ]; then uv run python -m agent_utilities.mcp.readme_tools; else python -m agent_utilities.mcp.readme_tools; fi'
+        language: system
+        files: ^(README\.md|.*/mcp_server\.py|.*/mcp/.*\.py)$
+        pass_filenames: false
       - id: security-sanitizer
         name: Security and Garbage Sanitizer
         entry: python scripts/security_sanitizer.py

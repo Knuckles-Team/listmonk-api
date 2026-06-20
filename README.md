@@ -56,17 +56,23 @@ Detailed instructions on how to use the underlying API wrappers, extended schema
 This server utilizes dynamic Action-Routed tools to optimize token overhead and maximize IDE compatibility.
 
 ### Available MCP Tools
-| Tool Module | Toggle Env Var | Enabled by Default | Description & Nested Methods |
-|-------------|----------------|--------------------|------------------------------|
-| **Listmonk Subscribers** | `LISTMONK_SUBSCRIBERS_TOOL` | `True` | Manage listmonk subscribers operations. Action-routed methods: `create_subscriber`, `get_subscriber`, `get_subscribers`, `get_subscribers_from_list`. |
-| **Listmonk Lists** | `LISTMONK_LISTS_TOOL` | `True` | Manage listmonk lists operations. Action-routed methods: `create_list`, `edit_list`, `get_list`, `get_lists`. |
-| **Listmonk Imports** | `LISTMONK_IMPORTS_TOOL` | `True` | Manage listmonk imports operations. Action-routed methods: `delete_subscriber_import`, `get_subscriber_import_logs`, `get_subscriber_import_status`, `import_subscribers`. |
-| **Listmonk Campaigns** | `LISTMONK_CAMPAIGNS_TOOL` | `True` | Manage listmonk campaigns operations. Action-routed methods: `create_campaign`, `delete_campaign`, `get_campaign`, `get_campaign_preview`, `get_campaign_stats`, `get_campaigns`, `set_campaign_status`. |
-| **Listmonk Media** | `LISTMONK_MEDIA_TOOL` | `True` | Manage listmonk media operations. Action-routed methods: `delete_media`, `get_media`, `upload_media`. |
-| **Listmonk Templates** | `LISTMONK_TEMPLATES_TOOL` | `True` | Manage listmonk templates operations. Action-routed methods: `delete_template`, `get_template`, `get_template_preview`, `get_templates`, `set_default_template`. |
-| **Listmonk Tx** | `LISTMONK_TX_TOOL` | `True` | Manage listmonk tx operations. Action-routed methods: `transactional_message`. |
 
-Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
+Auto-generated — do not edit between the markers below.
+
+<!-- MCP-TOOLS-TABLE:START -->
+
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `listmonk_campaigns` | `LISTMONK_CAMPAIGNSTOOL` | Manage listmonk campaigns operations. |
+| `listmonk_imports` | `LISTMONK_IMPORTSTOOL` | Manage listmonk imports operations. |
+| `listmonk_lists` | `LISTMONK_LISTSTOOL` | Manage listmonk lists operations. |
+| `listmonk_media` | `LISTMONK_MEDIATOOL` | Manage listmonk media operations. |
+| `listmonk_subscribers` | `LISTMONK_SUBSCRIBERSTOOL` | Manage listmonk subscribers operations. |
+| `listmonk_templates` | `LISTMONK_TEMPLATESTOOL` | Manage listmonk templates operations. |
+| `listmonk_tx` | `LISTMONK_TXTOOL` | Manage listmonk tx operations. |
+
+_7 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+<!-- MCP-TOOLS-TABLE:END -->
 
 ### Dynamic Tool Selection & Visibility
 
