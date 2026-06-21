@@ -35,10 +35,10 @@ listmonk-agent = "listmonk_api.agent_server:agent_server"
 where = ["."]
 
 [project.entry-points."agent_utilities.skill_providers"]
-modular-contrib = "listmonk_api.skills"
+listmonk-api = "listmonk_api.skills"
 
 [project.entry-points."agent_utilities.prompt_providers"]
-modular-contrib = "listmonk_api.prompts"
+listmonk-api = "listmonk_api.prompts"
 
 [tool.setuptools]
 include-package-data = true
