@@ -62,7 +62,7 @@ RUN apt-get update \
     && curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable --profile minimal \
     && mkdir -p /root/.config \
     && echo 'eval "$(starship init bash)"' >> /root/.bashrc \
-    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow .[all]
+    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow .[agent]
 
 COPY docker/starship.toml /root/.config/starship.toml
 

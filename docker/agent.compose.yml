@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   listmonk-api-mcp:
-    image: knucklessg1/listmonk-api:latest
+    image: knucklessg1/listmonk-api:mcp
     container_name: listmonk-api-mcp
     hostname: listmonk-api-mcp
     restart: always
