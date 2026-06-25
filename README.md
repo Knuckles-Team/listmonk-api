@@ -313,6 +313,65 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 
 ## Environment Variables
 
+<!-- ENV-VARS-TABLE:START -->
+
+#### Package environment variables
+
+| Variable | Example | Description |
+|----------|---------|-------------|
+| `HOST` | `0.0.0.0` |  |
+| `PORT` | `8000` |  |
+| `TRANSPORT` | `stdio` | options: stdio, streamable-http, sse |
+| `ENABLE_OTEL` | `True` |  |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:8080/api/public/otel` |  |
+| `OTEL_EXPORTER_OTLP_PUBLIC_KEY` | `pk-...` |  |
+| `OTEL_EXPORTER_OTLP_SECRET_KEY` | `sk-...` |  |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | `http/protobuf` |  |
+| `AUTH_TYPE` | — |  |
+| `EUNOMIA_TYPE` | `none` | options: none, embedded, remote |
+| `EUNOMIA_POLICY_FILE` | `mcp_policies.json` |  |
+| `EUNOMIA_REMOTE_URL` | `http://eunomia-server:8000` |  |
+| `ALLOWED_CLIENT_REDIRECT_URIS` | `http://localhost:3000/callback` |  |
+| `OAUTH_BASE_URL` | — |  |
+| `OIDC_BASE_URL` | — |  |
+| `OPENAPI_USERNAME` | `admin` |  |
+| `OPENAPI_PASSWORD` | `adminpassword` |  |
+| `OPENAPI_BEARER_TOKEN` | — |  |
+| `LISTMONK_URL` | `http://localhost:8080` |  |
+| `LISTMONK_TOKEN` | `your_bearer_token_here` |  |
+| `LISTMONK_USERNAME` | `admin` |  |
+| `LISTMONK_PASSWORD` | `your_listmonk_password_here` |  |
+| `LISTMONK_CAMPAIGNSTOOL` | `True` |  |
+| `LISTMONK_IMPORTSTOOL` | `True` |  |
+| `LISTMONK_LISTSTOOL` | `True` |  |
+| `LISTMONK_MEDIATOOL` | `True` |  |
+| `LISTMONK_SUBSCRIBERSTOOL` | `True` |  |
+| `LISTMONK_TEMPLATESTOOL` | `True` |  |
+| `LISTMONK_TXTOOL` | `True` |  |
+
+#### Inherited agent-utilities variables (apply to every connector)
+
+| Variable | Example | Description |
+|----------|---------|-------------|
+| `MCP_TOOL_MODE` | `condensed` | Tool surface: `condensed` | `verbose` | `both` |
+| `MCP_ENABLED_TOOLS` | — | Comma-separated tool allow-list |
+| `MCP_DISABLED_TOOLS` | — | Comma-separated tool deny-list |
+| `MCP_ENABLED_TAGS` | — | Comma-separated tag allow-list |
+| `MCP_DISABLED_TAGS` | — | Comma-separated tag deny-list |
+| `MCP_CLIENT_AUTH` | — | Outbound MCP auth (`oidc-client-credentials` for fleet calls) |
+| `OIDC_CLIENT_ID` | — | OIDC client id (service-account auth) |
+| `OIDC_CLIENT_SECRET` | — | OIDC client secret (service-account auth) |
+| `DEBUG` | `False` | Verbose logging |
+| `PYTHONUNBUFFERED` | `1` | Unbuffered stdout (recommended in containers) |
+| `MCP_URL` | `http://localhost:8000/mcp` | URL of the MCP server the agent connects to |
+| `PROVIDER` | `openai` | LLM provider for the agent |
+| `MODEL_ID` | `gpt-4o` | Model id for the agent |
+| `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
+
+_29 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
+<!-- ENV-VARS-TABLE:END -->
+
+
 The server and client support standard configuration environment variables:
 
 | Variable | Description | Default |
