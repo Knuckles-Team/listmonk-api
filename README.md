@@ -97,6 +97,14 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
 
 ### MCP Configuration Examples
 
+> **Install the slim `[mcp]` extra.** All examples below install
+> `listmonk-api[mcp]` — the MCP-server extra that pulls only the FastMCP /
+> FastAPI tooling (`agent-utilities[mcp]`). It deliberately **excludes** the heavy
+> agent runtime (the epistemic-graph engine, `pydantic-ai`, `dspy`, `llama-index`,
+> `tree-sitter`), so `uvx`/container installs are dramatically smaller and faster.
+> Use the full `[agent]` extra only when you need the integrated Pydantic AI agent
+> (see [Installation](#installation)).
+
 #### stdio Transport (Recommended for local IDEs e.g., Cursor, Claude Desktop)
 Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
 
@@ -107,7 +115,7 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
       "command": "uvx",
       "args": [
         "--from",
-        "listmonk-api",
+        "listmonk-api[mcp]",
         "listmonk-mcp"
       ],
       "env": {
@@ -130,7 +138,7 @@ Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx
       "command": "uvx",
       "args": [
         "--from",
-        "listmonk-api",
+        "listmonk-api[mcp]",
         "listmonk-mcp"
       ],
       "env": {
@@ -169,8 +177,15 @@ docker run -d \
   -e LISTMONK_URL="your_listmonk_url_here" \
   -e LISTMONK_USERNAME="your_listmonk_username_here" \
   -e LISTMONK_PASSWORD="your_listmonk_password_here" \
-  knucklessg1/listmonk-api:latest
+  knucklessg1/listmonk-api:mcp
 ```
+
+> The `:mcp` tag is the **slim MCP-server image** (built from
+> `docker/Dockerfile --target mcp`, installing `listmonk-api[mcp]`). The default
+> `:latest` tag is the **full agent image** (`--target agent`, `listmonk-api[agent]`)
+> which also bundles the Pydantic AI agent and the epistemic-graph engine — use it
+> when you run `listmonk-agent` (the agent), not just the MCP server. See
+> [Container images](#container-images-mcp-vs-agent).
 
 ---
 
@@ -331,15 +346,51 @@ The server and client support standard configuration environment variables:
 
 ## Installation
 
-Install the Python package locally:
+Pick the extra that matches what you want to run:
+
+| Extra | Installs | Use when |
+|-------|----------|----------|
+| `listmonk-api[mcp]` | Slim MCP server only (`agent-utilities[mcp]` — FastMCP/FastAPI) | You only run the **MCP server** (smallest install / image) |
+| `listmonk-api[agent]` | Full agent runtime (`agent-utilities[agent,logfire]` — Pydantic AI + the epistemic-graph engine) | You run the **integrated agent** |
+| `listmonk-api[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
-# Using uv (highly recommended)
-uv pip install listmonk-api[all]
+# MCP server only (recommended for tool hosting — slim deps)
+uv pip install "listmonk-api[mcp]"
 
-# Using standard pip
-python -m pip install listmonk-api[all]
+# Full agent runtime (Pydantic AI + epistemic-graph engine)
+uv pip install "listmonk-api[agent]"
+
+# Everything (development)
+uv pip install "listmonk-api[all]"      # or: python -m pip install "listmonk-api[all]"
 ```
+
+### Container images (`:mcp` vs `:agent`)
+
+One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+
+| Image tag | Build target | Contents | Entrypoint |
+|-----------|--------------|----------|------------|
+| `knucklessg1/listmonk-api:mcp` | `--target mcp` | `listmonk-api[mcp]` — **slim**, no engine/`pydantic-ai`/`dspy`/`llama-index`/`tree-sitter` | `listmonk-mcp` |
+| `knucklessg1/listmonk-api:latest` | `--target agent` (default) | `listmonk-api[agent]` — **full** agent runtime + epistemic-graph engine | `listmonk-agent` |
+
+```bash
+docker build --target mcp   -t knucklessg1/listmonk-api:mcp    docker/   # slim MCP server
+docker build --target agent -t knucklessg1/listmonk-api:latest docker/   # full agent
+```
+
+`docker/mcp.compose.yml` runs the slim `:mcp` server; `docker/agent.compose.yml` runs the
+agent (`:latest`) with a co-located `:mcp` sidecar.
+
+### Knowledge-graph database (`epistemic-graph`)
+
+The **full agent** (`[agent]` / `:latest`) embeds the **epistemic-graph** engine (pulled in
+transitively via `agent-utilities[agent]`). For production — or to share one knowledge graph
+across multiple agents — run **epistemic-graph as its own database container** and point the
+agent at it instead of embedding it. Deployment recipes (single-node + Raft HA), connection
+config, and the full database architecture (with diagrams) are documented in the
+[epistemic-graph deployment guide](https://knuckles-team.github.io/epistemic-graph/deployment/).
+The slim `[mcp]` server does **not** require the database.
 
 ---
 
