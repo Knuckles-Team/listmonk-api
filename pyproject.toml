@@ -20,6 +20,9 @@ dependencies = [
     "agent-utilities[mcp]>=0.51.0"]
 
 [project.optional-dependencies]
+mcp = [
+    "agent-utilities[mcp]>=0.51.0"]
+
 agent = [
     "agent-utilities[agent,logfire]>=0.51.0"]
 
@@ -44,7 +47,7 @@ listmonk-api = "listmonk_api.prompts"
 include-package-data = true
 
 [tool.setuptools.package-data]
-listmonk_api = [ "mcp_config.json", "agent/**", "skills/**", "prompts/**",]
+listmonk_api = [ "mcp_config.json", "skills/**", "prompts/**",]
 
 [tool.codespell]
 ignore-words-list = "optin"
