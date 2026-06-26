@@ -61,6 +61,8 @@ Auto-generated — do not edit between the markers below.
 
 <!-- MCP-TOOLS-TABLE:START -->
 
+#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
 | `listmonk_campaigns` | `LISTMONK_CAMPAIGNSTOOL` | Manage listmonk campaigns operations. |
@@ -71,7 +73,49 @@ Auto-generated — do not edit between the markers below.
 | `listmonk_templates` | `LISTMONK_TEMPLATESTOOL` | Manage listmonk templates operations. |
 | `listmonk_tx` | `LISTMONK_TXTOOL` | Manage listmonk tx operations. |
 
-_7 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+#### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
+
+<details>
+<summary>32 per-operation tools — one per public API method (click to expand)</summary>
+
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `listmonk_create_campaign` | `LISTMONK_APITOOL` | Invoke the create_campaign operation. |
+| `listmonk_create_list` | `LISTMONK_APITOOL` | Invoke the create_list operation. |
+| `listmonk_create_subscriber` | `LISTMONK_APITOOL` | Invoke the create_subscriber operation. |
+| `listmonk_delete` | `BASE_API_CLIENTTOOL` | Invoke the delete operation. |
+| `listmonk_delete_campaign` | `LISTMONK_APITOOL` | Invoke the delete_campaign operation. |
+| `listmonk_delete_media` | `LISTMONK_APITOOL` | Invoke the delete_media operation. |
+| `listmonk_delete_subscriber_import` | `LISTMONK_APITOOL` | Invoke the delete_subscriber_import operation. |
+| `listmonk_delete_template` | `LISTMONK_APITOOL` | Invoke the delete_template operation. |
+| `listmonk_edit_list` | `LISTMONK_APITOOL` | Invoke the edit_list operation. |
+| `listmonk_get` | `BASE_API_CLIENTTOOL` | Invoke the get operation. |
+| `listmonk_get_campaign` | `LISTMONK_APITOOL` | Invoke the get_campaign operation. |
+| `listmonk_get_campaign_preview` | `LISTMONK_APITOOL` | Invoke the get_campaign_preview operation. |
+| `listmonk_get_campaign_stats` | `LISTMONK_APITOOL` | Invoke the get_campaign_stats operation. |
+| `listmonk_get_campaigns` | `LISTMONK_APITOOL` | Invoke the get_campaigns operation. |
+| `listmonk_get_list` | `LISTMONK_APITOOL` | Invoke the get_list operation. |
+| `listmonk_get_lists` | `LISTMONK_APITOOL` | Invoke the get_lists operation. |
+| `listmonk_get_media` | `LISTMONK_APITOOL` | Invoke the get_media operation. |
+| `listmonk_get_subscriber` | `LISTMONK_APITOOL` | Invoke the get_subscriber operation. |
+| `listmonk_get_subscriber_import_logs` | `LISTMONK_APITOOL` | Invoke the get_subscriber_import_logs operation. |
+| `listmonk_get_subscriber_import_status` | `LISTMONK_APITOOL` | Invoke the get_subscriber_import_status operation. |
+| `listmonk_get_subscribers` | `LISTMONK_APITOOL` | Invoke the get_subscribers operation. |
+| `listmonk_get_subscribers_from_list` | `LISTMONK_APITOOL` | Invoke the get_subscribers_from_list operation. |
+| `listmonk_get_template` | `LISTMONK_APITOOL` | Invoke the get_template operation. |
+| `listmonk_get_template_preview` | `LISTMONK_APITOOL` | Invoke the get_template_preview operation. |
+| `listmonk_get_templates` | `LISTMONK_APITOOL` | Invoke the get_templates operation. |
+| `listmonk_import_subscribers` | `LISTMONK_APITOOL` | Invoke the import_subscribers operation. |
+| `listmonk_post` | `BASE_API_CLIENTTOOL` | Invoke the post operation. |
+| `listmonk_put` | `BASE_API_CLIENTTOOL` | Invoke the put operation. |
+| `listmonk_set_campaign_status` | `LISTMONK_APITOOL` | Invoke the set_campaign_status operation. |
+| `listmonk_set_default_template` | `LISTMONK_APITOOL` | Invoke the set_default_template operation. |
+| `listmonk_transactional_message` | `LISTMONK_APITOOL` | Invoke the transactional_message operation. |
+| `listmonk_upload_media` | `LISTMONK_APITOOL` | Invoke the upload_media operation. |
+
+</details>
+
+_7 action-routed tool(s) (default) · 32 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### Dynamic Tool Selection & Visibility
@@ -331,16 +375,13 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `EUNOMIA_TYPE` | `none` | options: none, embedded, remote |
 | `EUNOMIA_POLICY_FILE` | `mcp_policies.json` |  |
 | `EUNOMIA_REMOTE_URL` | `http://eunomia-server:8000` |  |
-| `ALLOWED_CLIENT_REDIRECT_URIS` | `http://localhost:3000/callback` |  |
-| `OAUTH_BASE_URL` | — |  |
 | `OIDC_BASE_URL` | — |  |
 | `OPENAPI_USERNAME` | `admin` |  |
 | `OPENAPI_PASSWORD` | `adminpassword` |  |
-| `OPENAPI_BEARER_TOKEN` | — |  |
+| `OPENAPI_CLIENT_ID` | — | OAuth client id for OpenAPI tool import |
+| `OPENAPI_CLIENT_SECRET` | — | OAuth client secret for OpenAPI tool import |
 | `LISTMONK_URL` | `http://localhost:8080` |  |
 | `LISTMONK_TOKEN` | `your_bearer_token_here` |  |
-| `LISTMONK_USERNAME` | `admin` |  |
-| `LISTMONK_PASSWORD` | `your_listmonk_password_here` |  |
 | `LISTMONK_CAMPAIGNSTOOL` | `True` |  |
 | `LISTMONK_IMPORTSTOOL` | `True` |  |
 | `LISTMONK_LISTSTOOL` | `True` |  |
@@ -368,7 +409,7 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `MODEL_ID` | `gpt-4o` | Model id for the agent |
 | `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
 
-_29 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
+_26 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
 
 
