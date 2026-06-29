@@ -43,7 +43,7 @@ from agent_utilities.mcp_utilities import (
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
 
-__version__ = "0.26.0"
+__version__ = "1.0.0"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
