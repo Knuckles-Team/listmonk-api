@@ -40,6 +40,12 @@ where = ["."]
 [project.entry-points."agent_utilities.skill_providers"]
 listmonk-api = "listmonk_api.skills"
 
+[project.entry-points."agent_utilities.ontology_providers"]
+listmonk-api = "listmonk_api.ontology"
+
+[project.entry-points."agent_utilities.source_connector_providers"]
+listmonk-api = "listmonk_api.connectors"
+
 [project.entry-points."agent_utilities.prompt_providers"]
 listmonk-api = "listmonk_api.prompts"
 
@@ -47,7 +53,7 @@ listmonk-api = "listmonk_api.prompts"
 include-package-data = true
 
 [tool.setuptools.package-data]
-listmonk_api = [ "mcp_config.json", "skills/**", "prompts/**",]
+listmonk_api = [ "mcp_config.json", "skills/**", "prompts/**", "ontology/**", "connectors/**",]
 
 [tool.codespell]
 ignore-words-list = "optin"

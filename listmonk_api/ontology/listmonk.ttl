@@ -1,0 +1,121 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix : <http://knuckles.team/kg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Listmonk email-marketing ontology — campaigns, mailing lists, subscribers, templates
+# and transactional messages. All classes and properties live in the shared `:` (kg#)
+# namespace; only the owl:Ontology node gets the per-package IRI. Backs the listmonk-api
+# MCP tool surface (listmonk_campaigns / listmonk_subscribers / listmonk_lists /
+# listmonk_templates / listmonk_tx). Reuses the shared :Person and :Document classes.
+
+:Campaign a owl:Class ;
+    rdfs:label "Campaign" ;
+    rdfs:comment "An email campaign sent to one or more subscription lists (listmonk_campaigns)." .
+
+:SubscriptionList a owl:Class ;
+    rdfs:label "Subscription List" ;
+    rdfs:comment "A mailing list (public/private, single/double opt-in) that subscribers belong to (listmonk_lists)." .
+
+:Subscriber a owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "Subscriber" ;
+    rdfs:comment "A contact/recipient with an email and status (enabled, disabled, blocklisted); a specialization of :Person (listmonk_subscribers)." .
+
+:EmailTemplate a owl:Class ;
+    rdfs:label "Email Template" ;
+    rdfs:comment "A reusable campaign or transactional email template (listmonk_templates)." .
+
+:TransactionalMessage a owl:Class ;
+    rdfs:label "Transactional Message" ;
+    rdfs:comment "A one-off, per-subscriber transactional email rendered from a template (listmonk_tx)." .
+
+# --- links (owl:ObjectProperty) ---
+
+:targetsList a owl:ObjectProperty ;
+    rdfs:label "targets list" ;
+    rdfs:comment "Links a Campaign to a SubscriptionList it is sent to." ;
+    rdfs:domain :Campaign ;
+    rdfs:range :SubscriptionList .
+
+:subscribedToList a owl:ObjectProperty ;
+    rdfs:label "subscribed to list" ;
+    rdfs:comment "Links a Subscriber to a SubscriptionList they belong to." ;
+    rdfs:domain :Subscriber ;
+    rdfs:range :SubscriptionList .
+
+:usesTemplate a owl:ObjectProperty ;
+    rdfs:label "uses template" ;
+    rdfs:comment "Links a Campaign or TransactionalMessage to the EmailTemplate it renders." ;
+    rdfs:range :EmailTemplate .
+
+:sentToSubscriber a owl:ObjectProperty ;
+    rdfs:label "sent to subscriber" ;
+    rdfs:comment "Links a TransactionalMessage to the Subscriber that received it." ;
+    rdfs:domain :TransactionalMessage ;
+    rdfs:range :Subscriber .
+
+:hasBody a owl:ObjectProperty ;
+    rdfs:label "has body" ;
+    rdfs:comment "Links a Campaign or EmailTemplate to the :Document carrying its rendered body text." ;
+    rdfs:range :Document .
+
+# --- fields (owl:DatatypeProperty) ---
+
+:campaignStatus a owl:DatatypeProperty ;
+    rdfs:label "campaign status" ;
+    rdfs:comment "Lifecycle status of a Campaign (draft, scheduled, running, paused, cancelled, finished)." ;
+    rdfs:domain :Campaign ;
+    rdfs:range xsd:string .
+
+:subject a owl:DatatypeProperty ;
+    rdfs:label "subject" ;
+    rdfs:comment "Email subject line of a Campaign." ;
+    rdfs:domain :Campaign ;
+    rdfs:range xsd:string .
+
+:fromEmail a owl:DatatypeProperty ;
+    rdfs:label "from email" ;
+    rdfs:comment "The From address a Campaign or TransactionalMessage is sent from." ;
+    rdfs:range xsd:string .
+
+:sendAt a owl:DatatypeProperty ;
+    rdfs:label "send at" ;
+    rdfs:comment "Scheduled dispatch time of a Campaign (ISO-8601)." ;
+    rdfs:domain :Campaign ;
+    rdfs:range xsd:string .
+
+:listType a owl:DatatypeProperty ;
+    rdfs:label "list type" ;
+    rdfs:comment "Visibility of a SubscriptionList (public or private)." ;
+    rdfs:domain :SubscriptionList ;
+    rdfs:range xsd:string .
+
+:optinType a owl:DatatypeProperty ;
+    rdfs:label "optin type" ;
+    rdfs:comment "Opt-in mode of a SubscriptionList (single or double)." ;
+    rdfs:domain :SubscriptionList ;
+    rdfs:range xsd:string .
+
+:subscriberStatus a owl:DatatypeProperty ;
+    rdfs:label "subscriber status" ;
+    rdfs:comment "Status of a Subscriber (enabled, disabled, blocklisted)." ;
+    rdfs:domain :Subscriber ;
+    rdfs:range xsd:string .
+
+:email a owl:DatatypeProperty ;
+    rdfs:label "email" ;
+    rdfs:comment "Email address of a Subscriber." ;
+    rdfs:domain :Subscriber ;
+    rdfs:range xsd:string .
+
+<http://knuckles.team/kg/listmonk> a owl:Ontology ;
+    rdfs:label "Listmonk Email-Marketing Ontology" ;
+    rdfs:comment """Listmonk newsletter and mailing-list model — campaigns, subscription
+    lists, subscribers, email templates and transactional messages, with their targeting,
+    subscription and templating relationships — federated into the agent-utilities
+    knowledge-graph hub. Reuses the shared :Person and :Document classes.""" ;
+    owl:imports <http://knuckles.team/kg> .

@@ -394,6 +394,65 @@ def register_listmonk_tx_tools(mcp: FastMCP):
         raise ValueError(f"Unknown action: {action}")
 
 
+def register_listmonk_ingest_tools(mcp: FastMCP):
+    @mcp.tool(tags={"listmonk_ingest"})
+    def listmonk_ingest(
+        entity: str = Field(
+            default="campaigns",
+            description="What to ingest into the KG: 'campaigns', 'lists', or 'subscribers'.",
+        ),
+        params_json: str = Field(
+            default="{}",
+            description="JSON string of list filters (e.g. per_page, max_pages, list_id).",
+        ),
+        client=Depends(get_client),
+        ctx: Context | None = Field(
+            default=None, description="MCP context for progress reporting"
+        ),
+    ) -> dict:
+        """Natively ingest Listmonk records into epistemic-graph as typed nodes + documents.
+
+        Lists campaigns / lists / subscribers via the Listmonk API and pushes them into
+        the knowledge graph as ``:Campaign`` / ``:SubscriptionList`` / ``:Subscriber``
+        nodes (+ :targetsList / :subscribedToList / :usesTemplate links, and campaign
+        bodies as ``:Document`` nodes) via the fast engine client. Best-effort: returns
+        ``{"ingested": None}`` when no engine is reachable.
+        CONCEPT:AU-KG.ingest.enterprise-source-extractor.
+        """
+        if ctx:
+            logger.info("Ingesting Listmonk %s into the KG...", entity)
+        import json
+
+        from listmonk_api.kg_ingest import (
+            ingest_campaigns,
+            ingest_lists,
+            ingest_subscribers,
+        )
+
+        try:
+            kwargs = json.loads(params_json) if params_json else {}
+        except Exception as e:
+            return {"error": f"Invalid params_json: {e}"}
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+        if entity == "campaigns":
+            records = client.get_campaigns(**kwargs)
+            result = ingest_campaigns(records)
+        elif entity == "lists":
+            records = client.get_lists(**kwargs)
+            result = ingest_lists(records)
+        elif entity == "subscribers":
+            records = client.get_subscribers(**kwargs)
+            result = ingest_subscribers(records)
+        else:
+            return {
+                "error": f"Unknown entity '{entity}'. Use campaigns, lists, or subscribers."
+            }
+
+        listed = len(records) if isinstance(records, list) else 1
+        return {"entity": entity, "listed": listed, "ingested": result}
+
+
 def register_prompts(mcp: FastMCP):
     """Register MCP prompts."""
 

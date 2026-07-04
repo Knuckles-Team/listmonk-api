@@ -1,0 +1,18 @@
+{
+  "_comment": "Tier-1 mcp_tool source presets for listmonk-api (AU-KG.ingest.mcp-tool-connector). Syncs Listmonk campaigns into the KG as documents via the listmonk-api MCP server. Contributed presets win over the central MCP_TOOL_PRESETS. Extend with lists/subscribers presets as needed.",
+  "listmonk-campaigns": {
+    "server": "listmonk-api",
+    "tool": "listmonk_campaigns",
+    "action": "get_campaigns",
+    "records_path": "results",
+    "id_field": "id",
+    "title_field": "name",
+    "text_field": "body",
+    "updated_field": "updated_at",
+    "pagination": "page",
+    "page_kind": "page",
+    "page_param": "page",
+    "page_size_param": "per_page",
+    "doc_type": "campaign"
+  }
+}
