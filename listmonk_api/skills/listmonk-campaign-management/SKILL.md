@@ -1,5 +1,6 @@
 ---
 name: listmonk-campaign-management
+skill_type: skill
 description: >-
   Email-campaign operations on Listmonk via the listmonk-api MCP server — list,
   read, preview, create, schedule/run, and stat campaigns with the domain-typed

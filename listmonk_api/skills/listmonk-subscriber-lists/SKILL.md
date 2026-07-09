@@ -1,5 +1,6 @@
 ---
 name: listmonk-subscriber-lists
+skill_type: skill
 description: >-
   Audience management on Listmonk via the listmonk-api MCP server — manage
   subscription lists and the subscribers on them with the domain-typed tools

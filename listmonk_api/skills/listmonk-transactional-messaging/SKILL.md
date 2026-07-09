@@ -1,5 +1,6 @@
 ---
 name: listmonk-transactional-messaging
+skill_type: skill
 description: >-
   Transactional email + template operations on Listmonk via the listmonk-api MCP
   server — send a one-off, per-recipient message rendered from a template, and
