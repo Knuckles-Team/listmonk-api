@@ -1,0 +1,183 @@
+connector: listmonk-api
+ontology_source: listmonk
+schema_version: '1'
+resources:
+- name: Campaign
+  label: Campaign
+  id_prefix: campaign
+  relations:
+  - name: targetsList
+    label: targets list
+    target: SubscriptionList
+    lpg_rel_type: ''
+- name: EmailTemplate
+  label: Email Template
+  id_prefix: emailtemplate
+  relations: []
+- name: Subscriber
+  label: Subscriber
+  id_prefix: subscriber
+  relations:
+  - name: subscribedToList
+    label: subscribed to list
+    target: SubscriptionList
+    lpg_rel_type: ''
+- name: SubscriptionList
+  label: Subscription List
+  id_prefix: subscriptionlist
+  relations: []
+- name: TransactionalMessage
+  label: Transactional Message
+  id_prefix: transactionalmessage
+  relations:
+  - name: sentToSubscriber
+    label: sent to subscriber
+    target: Subscriber
+    lpg_rel_type: ''
+actions: []
+events:
+- name: listmonk-campaigns.updated
+  resource: campaign
+  description: "Watermark event for 'listmonk-campaigns' \u2014 advances on updated_at (mcp_source_presets.json)."
+identity:
+  id_field:
+    campaign: id
+  title_field:
+    campaign: name
+  text_field:
+    campaign: body
+  updated_field:
+    campaign: updated_at
+permissions:
+  acl_fields: []
+  tenant_field: null
+  read_roles: []
+schema_mappings:
+  Campaign:
+    ontology_class: null
+    fields:
+      campaignStatus: xsd:string
+      email: xsd:string
+      fromEmail: xsd:string
+      listType: xsd:string
+      optinType: xsd:string
+      sendAt: xsd:string
+      subject: xsd:string
+      subscriberStatus: xsd:string
+  EmailTemplate:
+    ontology_class: null
+    fields:
+      campaignStatus: xsd:string
+      email: xsd:string
+      fromEmail: xsd:string
+      listType: xsd:string
+      optinType: xsd:string
+      sendAt: xsd:string
+      subject: xsd:string
+      subscriberStatus: xsd:string
+  Subscriber:
+    ontology_class: Person
+    fields:
+      campaignStatus: xsd:string
+      email: xsd:string
+      fromEmail: xsd:string
+      listType: xsd:string
+      optinType: xsd:string
+      sendAt: xsd:string
+      subject: xsd:string
+      subscriberStatus: xsd:string
+  SubscriptionList:
+    ontology_class: null
+    fields:
+      campaignStatus: xsd:string
+      email: xsd:string
+      fromEmail: xsd:string
+      listType: xsd:string
+      optinType: xsd:string
+      sendAt: xsd:string
+      subject: xsd:string
+      subscriberStatus: xsd:string
+  TransactionalMessage:
+    ontology_class: null
+    fields:
+      campaignStatus: xsd:string
+      email: xsd:string
+      fromEmail: xsd:string
+      listType: xsd:string
+      optinType: xsd:string
+      sendAt: xsd:string
+      subject: xsd:string
+      subscriberStatus: xsd:string
+sync:
+- preset: listmonk-campaigns
+  server: listmonk-api
+  tool: listmonk_campaigns
+  action: get_campaigns
+  records_path: results
+  id_field: id
+  title_field: name
+  text_field: body
+  updated_field: updated_at
+  pagination: page
+  doc_type: campaign
+  raw:
+    server: listmonk-api
+    tool: listmonk_campaigns
+    action: get_campaigns
+    records_path: results
+    id_field: id
+    title_field: name
+    text_field: body
+    updated_field: updated_at
+    pagination: page
+    page_kind: page
+    page_param: page
+    page_size_param: per_page
+    doc_type: campaign
+provenance:
+  generated_by: scripts/generate_connector_manifests.py
+  generated_at: '2026-07-09T00:00:00Z'
+  source_artifacts:
+  - listmonk_api/connectors/mcp_source_presets.json
+  - listmonk_api/ontology/listmonk.ttl
+  integrity:
+    algorithm: urdna2015-sha256
+    hash: fb2af6e860a9e9a46bcd7ff1c86186bc4a6872aecb6b4adba6542595fd029f02
+    triple_count: 56
+  signer: ontology-manifest-generator
+  signature: 810902960da9a7d475f03698612885ebf7ee59f334090c97a4bc28b1785de707
+policy:
+  pii_fields:
+    Campaign:
+    - email
+    EmailTemplate:
+    - email
+    Subscriber:
+    - email
+    SubscriptionList:
+    - email
+    TransactionalMessage:
+    - email
+  tenant_boundary: null
+  rls: []
+review_todos:
+- "policy.pii_fields was populated by a field-NAME heuristic (['address', 'birthdate', 'card_number',\
+  \ 'credit_card', 'date_of_birth', 'dateofbirth', 'dob', 'email', 'email_address', 'first_name', 'full_name',\
+  \ 'home_address', 'ip', 'ip_address', 'last_name', 'mobile', 'national_id', 'passport', 'phone', 'phone_number',\
+  \ 'social_security_number', 'ssn']) \u2014 verify against the actual data before relying on it for redaction/RLS."
+- "policy.rls / policy.tenant_boundary are unset \u2014 no row-level-security predicate has been reviewed\
+  \ for this connector."
+- "relation 'hasBody' has no declared rdfs:domain resolving to a known resource in this connector's ontology\
+  \ \u2014 not attached to any resource; verify its true domain manually."
+- "relation 'usesTemplate' has no declared rdfs:domain resolving to a known resource in this connector's\
+  \ ontology \u2014 not attached to any resource; verify its true domain manually."
+- "schema_mappings.Campaign.ontology_class = None [UNRESOLVED \u2014 no crosswalk found by any heuristic]\
+  \ \u2014 verify manually before relying on this crosswalk for reasoning/joins."
+- "schema_mappings.EmailTemplate.ontology_class = None [UNRESOLVED \u2014 no crosswalk found by any heuristic]\
+  \ \u2014 verify manually before relying on this crosswalk for reasoning/joins."
+- "schema_mappings.Subscriber.ontology_class = 'Person' [source ttl rdfs:subClassOf] \u2014 verify manually\
+  \ before relying on this crosswalk for reasoning/joins."
+- "schema_mappings.SubscriptionList.ontology_class = None [UNRESOLVED \u2014 no crosswalk found by any\
+  \ heuristic] \u2014 verify manually before relying on this crosswalk for reasoning/joins."
+- "schema_mappings.TransactionalMessage.ontology_class = None [UNRESOLVED \u2014 no crosswalk found by\
+  \ any heuristic] \u2014 verify manually before relying on this crosswalk for reasoning/joins."
