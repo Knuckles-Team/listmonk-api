@@ -1,5 +1,6 @@
 ---
 name: listmonk-api-operations
+skill_type: skill
 description: >-
   Operate listmonk-api through its governed MCP and GraphOS capabilities, including listmonk campaign management, listmonk subscriber lists, listmonk transactional messaging. Use when a request requires this provider's read, change, automation, ingestion, troubleshooting, or evidence workflows.
 ---
