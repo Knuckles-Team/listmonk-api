@@ -1,6 +1,6 @@
 {
   "project": "listmonk-api",
-  "path": "/home/apps/workspace/agent-packages/agents/listmonk-api",
+  "path": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api",
   "domain_results": [
     {
       "domain": "Project Analysis",
@@ -26,7 +26,7 @@
         {
           "criterion": "externalized_prompts",
           "points": 0,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api",
           "reasoning": "No prompts/ directory found. Prompts may be hardcoded in source."
         },
         {
@@ -44,25 +44,25 @@
         {
           "criterion": "agents_md",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/AGENTS.md (3811 bytes)",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/AGENTS.md (3811 bytes)",
           "reasoning": "AGENTS.md exists with comprehensive content"
         },
         {
           "criterion": "pre_commit_hooks",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.pre-commit-config.yaml",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.pre-commit-config.yaml",
           "reasoning": "Pre-commit configuration found for automated code quality checks"
         },
         {
           "criterion": "gitignore",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.gitignore",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.gitignore",
           "reasoning": ".gitignore exists to prevent committing build artifacts and secrets"
         },
         {
           "criterion": "env_template",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.env.example",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.env.example",
           "reasoning": "Environment template exists for onboarding and secret management"
         },
         {
@@ -93,7 +93,7 @@
         {
           "criterion": "dependency_freshness",
           "points": 97,
-          "evidence": "source=/home/apps/workspace/agent-packages/agents/listmonk-api/pyproject.toml total=1 major=0 minor=1 patch=0 not_installed=0",
+          "evidence": "source=${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/pyproject.toml total=1 major=0 minor=1 patch=0 not_installed=0",
           "reasoning": "Audited 1 deps (1 installed, 0 constraint-only). 0 major, 1 minor, 0 patch updates."
         }
       ],
@@ -148,7 +148,7 @@
           "length": 107,
           "complexity": 27,
           "nesting_depth": 4,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
         },
         {
           "name": "create_campaign",
@@ -156,7 +156,7 @@
           "length": 64,
           "complexity": 23,
           "nesting_depth": 2,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
         },
         {
           "name": "create_list",
@@ -164,7 +164,7 @@
           "length": 38,
           "complexity": 17,
           "nesting_depth": 2,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
         },
         {
           "name": "create_subscriber",
@@ -172,7 +172,7 @@
           "length": 35,
           "complexity": 15,
           "nesting_depth": 2,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
         },
         {
           "name": "edit_list",
@@ -180,7 +180,7 @@
           "length": 43,
           "complexity": 15,
           "nesting_depth": 2,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
         }
       ],
       "top_long": [
@@ -190,7 +190,7 @@
           "length": 107,
           "complexity": 27,
           "nesting_depth": 4,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py"
         },
         {
           "name": "create_campaign",
@@ -198,7 +198,7 @@
           "length": 64,
           "complexity": 23,
           "nesting_depth": 2,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py"
         },
         {
           "name": "agent_server",
@@ -206,7 +206,7 @@
           "length": 60,
           "complexity": 4,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py"
         },
         {
           "name": "test_agent_server_cli",
@@ -214,7 +214,7 @@
           "length": 59,
           "complexity": 1,
           "nesting_depth": 0,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py"
         },
         {
           "name": "test_listmonk_campaigns_tool",
@@ -222,13 +222,13 @@
           "length": 47,
           "complexity": 9,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py"
         }
       ],
       "structural_issues": [
         {
           "file": "listmonk_api.py",
-          "path": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+          "path": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
           "lines": 734,
           "issues": [
             "2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23)",
@@ -306,7 +306,7 @@
       "tests": [
         {
           "name": "test_listmonk_subscribers_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 35,
           "length": 38,
           "intent": "unit",
@@ -316,7 +316,7 @@
         },
         {
           "name": "test_listmonk_lists_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 75,
           "length": 32,
           "intent": "unit",
@@ -326,7 +326,7 @@
         },
         {
           "name": "test_listmonk_imports_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 109,
           "length": 32,
           "intent": "unit",
@@ -336,7 +336,7 @@
         },
         {
           "name": "test_listmonk_campaigns_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 143,
           "length": 47,
           "intent": "unit",
@@ -346,7 +346,7 @@
         },
         {
           "name": "test_listmonk_media_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 192,
           "length": 27,
           "intent": "unit",
@@ -356,7 +356,7 @@
         },
         {
           "name": "test_listmonk_templates_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 221,
           "length": 37,
           "intent": "unit",
@@ -366,7 +366,7 @@
         },
         {
           "name": "test_listmonk_tx_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 260,
           "length": 17,
           "intent": "unit",
@@ -376,7 +376,7 @@
         },
         {
           "name": "test_get_mcp_instance_standard",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 296,
           "length": 6,
           "intent": "unit",
@@ -386,7 +386,7 @@
         },
         {
           "name": "test_get_mcp_instance_openapi_delegation_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 310,
           "length": 9,
           "intent": "unit",
@@ -396,7 +396,7 @@
         },
         {
           "name": "test_get_mcp_instance_openapi_import_failure",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 327,
           "length": 13,
           "intent": "unit",
@@ -406,7 +406,7 @@
         },
         {
           "name": "test_get_mcp_instance_openapi_import_success",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 350,
           "length": 30,
           "intent": "unit",
@@ -416,7 +416,7 @@
         },
         {
           "name": "test_mcp_server_run_stdio",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 383,
           "length": 10,
           "intent": "unit",
@@ -426,7 +426,7 @@
         },
         {
           "name": "test_mcp_server_run_sse_and_http",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 396,
           "length": 19,
           "intent": "unit",
@@ -436,7 +436,7 @@
         },
         {
           "name": "test_mcp_server_invalid_transport",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 418,
           "length": 12,
           "intent": "unit",
@@ -446,7 +446,7 @@
         },
         {
           "name": "test_get_client_singleton",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 25,
           "length": 8,
           "intent": "unit",
@@ -456,7 +456,7 @@
         },
         {
           "name": "test_get_client_auth_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 40,
           "length": 6,
           "intent": "unit",
@@ -466,7 +466,7 @@
         },
         {
           "name": "test_agent_server_cli",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 56,
           "length": 59,
           "intent": "unit",
@@ -476,7 +476,7 @@
         },
         {
           "name": "test_init_available_flags",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 6,
           "length": 4,
           "intent": "unit",
@@ -486,7 +486,7 @@
         },
         {
           "name": "test_init_lazy_loading",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 11,
           "length": 4,
           "intent": "unit",
@@ -496,7 +496,7 @@
         },
         {
           "name": "test_init_attribute_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 16,
           "length": 4,
           "intent": "unit",
@@ -506,7 +506,7 @@
         },
         {
           "name": "test_init_dir",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 21,
           "length": 6,
           "intent": "unit",
@@ -516,7 +516,7 @@
         },
         {
           "name": "test_init_import_error_handling",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 28,
           "length": 9,
           "intent": "unit",
@@ -526,7 +526,7 @@
         },
         {
           "name": "test_init_avail_flags_when_unavailable",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 38,
           "length": 9,
           "intent": "unit",
@@ -536,7 +536,7 @@
         },
         {
           "name": "test_base_client_init",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 33,
           "length": 5,
           "intent": "unit",
@@ -546,7 +546,7 @@
         },
         {
           "name": "test_base_client_http_verbs",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 39,
           "length": 25,
           "intent": "unit",
@@ -556,7 +556,7 @@
         },
         {
           "name": "test_get_campaigns_dict_return",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 69,
           "length": 28,
           "intent": "unit",
@@ -566,7 +566,7 @@
         },
         {
           "name": "test_get_campaigns_list_and_other_returns",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 98,
           "length": 18,
           "intent": "unit",
@@ -576,7 +576,7 @@
         },
         {
           "name": "test_campaign_endpoints",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 117,
           "length": 44,
           "intent": "unit",
@@ -586,7 +586,7 @@
         },
         {
           "name": "test_import_endpoints",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 166,
           "length": 26,
           "intent": "unit",
@@ -596,7 +596,7 @@
         },
         {
           "name": "test_get_lists_pagination",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_api_clients.py",
           "line": 197,
           "length": 34,
           "intent": "unit",
@@ -862,7 +862,7 @@
             "detail": "1 modules exceed 500 lines (god modules)",
             "items": [
               {
-                "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+                "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
                 "lines": 734
               }
             ]
@@ -874,7 +874,7 @@
             "items": [
               {
                 "class": "Api",
-                "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+                "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
                 "method_count": 29
               }
             ]
@@ -1025,223 +1025,223 @@
       "tests_missing_markers": [
         {
           "test_name": "test_listmonk_subscribers_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 35
         },
         {
           "test_name": "test_listmonk_lists_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 75
         },
         {
           "test_name": "test_listmonk_imports_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 109
         },
         {
           "test_name": "test_listmonk_campaigns_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 143
         },
         {
           "test_name": "test_listmonk_media_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 192
         },
         {
           "test_name": "test_listmonk_templates_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 221
         },
         {
           "test_name": "test_listmonk_tx_tool",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 260
         },
         {
           "test_name": "test_get_mcp_instance_standard",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 296
         },
         {
           "test_name": "test_get_mcp_instance_openapi_delegation_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 310
         },
         {
           "test_name": "test_get_mcp_instance_openapi_import_failure",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 327
         },
         {
           "test_name": "test_get_mcp_instance_openapi_import_success",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 350
         },
         {
           "test_name": "test_mcp_server_run_stdio",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 383
         },
         {
           "test_name": "test_mcp_server_run_sse_and_http",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 396
         },
         {
           "test_name": "test_mcp_server_invalid_transport",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_mcp_server.py",
           "line": 418
         },
         {
           "test_name": "test_get_client_singleton",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 25
         },
         {
           "test_name": "test_get_client_auth_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 40
         },
         {
           "test_name": "test_agent_server_cli",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_auth_and_server.py",
           "line": 56
         },
         {
           "test_name": "test_init_available_flags",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 6
         },
         {
           "test_name": "test_init_lazy_loading",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 11
         },
         {
           "test_name": "test_init_attribute_error",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/tests/test_init.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/tests/test_init.py",
           "line": 16
         }
       ],
       "functions_missing_docstrings": [
         {
           "function": "register_listmonk_subscribers_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 41,
           "length": 36
         },
         {
           "function": "register_listmonk_lists_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 79,
           "length": 37
         },
         {
           "function": "register_listmonk_imports_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 118,
           "length": 36
         },
         {
           "function": "register_listmonk_campaigns_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 156,
           "length": 43
         },
         {
           "function": "register_listmonk_media_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 201,
           "length": 34
         },
         {
           "function": "register_listmonk_templates_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 237,
           "length": 37
         },
         {
           "function": "register_listmonk_tx_tools",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 276,
           "length": 30
         },
         {
           "function": "get_mcp_instance",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 312,
           "length": 107
         },
         {
           "function": "mcp_server",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 421,
           "length": 20
         },
         {
           "function": "listmonk_subscribers",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 43,
           "length": 34
         },
         {
           "function": "listmonk_lists",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 81,
           "length": 35
         },
         {
           "function": "listmonk_imports",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 120,
           "length": 34
         },
         {
           "function": "listmonk_campaigns",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 158,
           "length": 41
         },
         {
           "function": "listmonk_media",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 203,
           "length": 32
         },
         {
           "function": "listmonk_templates",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 239,
           "length": 35
         },
         {
           "function": "listmonk_tx",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/mcp_server.py",
           "line": 278,
           "length": 28
         },
         {
           "function": "get_client",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/auth.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/auth.py",
           "line": 16,
           "length": 21
         },
         {
           "function": "agent_server",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/agent_server.py",
           "line": 22,
           "length": 60
         },
         {
           "function": "__getattr__",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/__init__.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/__init__.py",
           "line": 54,
           "length": 26
         },
         {
           "function": "__init__",
-          "file": "/home/apps/workspace/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/listmonk_api/listmonk_api.py",
           "line": 30,
           "length": 37
         }
@@ -1464,7 +1464,7 @@
         {
           "criterion": "bumpversion_exists",
           "points": 20,
-          "evidence": "/home/apps/workspace/agent-packages/agents/listmonk-api/.bumpversion.cfg",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.bumpversion.cfg",
           "reasoning": ".bumpversion.cfg found"
         },
         {
