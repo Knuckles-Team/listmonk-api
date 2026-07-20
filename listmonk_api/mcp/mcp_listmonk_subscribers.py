@@ -3,11 +3,11 @@
 Auto-generated from mcp_server.py during ecosystem standardization.
 """
 
+from agent_utilities.mcp.action_dispatch import resolve_action
 from fastmcp import Context, FastMCP
 from fastmcp.dependencies import Depends
-from pydantic import Field
 from fastmcp.utilities.logging import get_logger
-from agent_utilities.mcp_utilities import resolve_action
+from pydantic import Field
 
 from listmonk_api.auth import get_client
 
@@ -36,7 +36,7 @@ def register_listmonk_subscribers_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 

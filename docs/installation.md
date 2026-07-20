@@ -5,7 +5,7 @@ path that matches how you intend to run it.
 
 ## Requirements
 
-- **Python 3.10+**.
+- **Python 3.11–3.14**.
 - A reachable **Listmonk instance** — see [Backing Platform](platform.md) to deploy one
   locally with Docker.
 
@@ -48,15 +48,15 @@ uv run listmonk-mcp
 
 ## Prebuilt Docker image
 
-A multi-stage, slim image is published on every release (entrypoint `listmonk-mcp`):
+A multi-stage runtime image is published on every release (entrypoint `listmonk-mcp`):
 
 ```bash
-docker pull knucklessg1/listmonk-api:latest
+docker pull example/listmonk-api@sha256:<digest>
 
 docker run --rm -i \
   -e LISTMONK_URL=https://listmonk.yourdomain.com \
   -e LISTMONK_TOKEN=your-bearer-token \
-  knucklessg1/listmonk-api:latest        # stdio transport (default)
+  example/listmonk-api@sha256:<digest>        # stdio transport (default)
 ```
 
 For an HTTP server with a published port and the agent server, see

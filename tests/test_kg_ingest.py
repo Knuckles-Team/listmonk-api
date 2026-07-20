@@ -9,6 +9,7 @@ CONCEPT:AU-KG.ingest.enterprise-source-extractor.
 
 from __future__ import annotations
 
+import pytest
 from listmonk_api.kg_ingest import (
     ingest_campaigns,
     ingest_documents,
@@ -17,10 +18,13 @@ from listmonk_api.kg_ingest import (
     ingest_subscribers,
 )
 
+from agent_utilities.knowledge_graph.memory.native_ingest import NativeIngestError
+
 
 class _FakeTxn:
     def __init__(self):
         self.nodes = {}
+        self.edges = []
         self.committed = False
 
     def begin(self, graph=None):
@@ -30,33 +34,27 @@ class _FakeTxn:
     def add_node(self, txn, node_id, props):
         self.nodes[node_id] = props
 
+    def add_edge(self, txn, source, target, props):
+        self.edges.append((source, target, props))
+
     def commit(self, txn):
         self.committed = True
         return True
 
 
-class _FakeEdges:
-    def __init__(self):
-        self.edges = []
-
-    def add(self, src, dst, props):
-        self.edges.append((src, dst, props))
-
-
 class _FakeClient:
     def __init__(self):
         self.txn = _FakeTxn()
-        self.edges = _FakeEdges()
 
 
 def test_ingest_entities_writes_nodes_and_edges():
     c = _FakeClient()
     res = ingest_entities(
         [
-            {"id": "a", "type": "Campaign", "name": "c"},
-            {"id": "b", "type": "SubscriptionList"},
+            {"id": "a", "node_type": "Campaign", "name": "c"},
+            {"id": "b", "node_type": "SubscriptionList"},
         ],
-        [{"source": "a", "target": "b", "type": "targetsList"}],
+        [{"source": "a", "target": "b", "relationship": "targetsList"}],
         client=c,
         graph="__commons__",
     )
@@ -66,7 +64,7 @@ def test_ingest_entities_writes_nodes_and_edges():
     # provenance is stamped
     assert c.txn.nodes["a"]["source"] == "listmonk-api"
     assert c.txn.nodes["a"]["domain"] == "listmonk"
-    assert c.edges.edges == [("a", "b", {"type": "targetsList"})]
+    assert c.txn.edges == [("a", "b", {"relationship": "targetsList"})]
 
 
 def test_ingest_documents_writes_document_nodes():
@@ -78,7 +76,7 @@ def test_ingest_documents_writes_document_nodes():
     )
     assert res == {"nodes": 1, "edges": 0}
     node = c.txn.nodes["listmonk:campaign:1:body"]
-    assert node["type"] == "Document"
+    assert node["node_type"] == "Document"
     assert node["text"] == "<h1>Hi</h1>"
     assert node["created_at"]  # stamped
 
@@ -104,14 +102,14 @@ def test_ingest_campaigns_maps_campaign_list_template_and_body():
     # 1 campaign + 1 list + 1 template = 3 entity nodes, + 1 document node = 4
     assert res == {"nodes": 4, "edges": 3}
     camp = c.txn.nodes["listmonk:campaign:42"]
-    assert camp["type"] == "Campaign"
+    assert camp["node_type"] == "Campaign"
     assert camp["campaignStatus"] == "running"
     assert camp["subject"] == "News"
     assert camp["externalToolId"] == "42"
-    assert c.txn.nodes["listmonk:list:3"]["type"] == "SubscriptionList"
-    assert c.txn.nodes["listmonk:template:5"]["type"] == "EmailTemplate"
-    assert c.txn.nodes["listmonk:campaign:42:body"]["type"] == "Document"
-    edge_types = {e[2]["type"] for e in c.edges.edges}
+    assert c.txn.nodes["listmonk:list:3"]["node_type"] == "SubscriptionList"
+    assert c.txn.nodes["listmonk:template:5"]["node_type"] == "EmailTemplate"
+    assert c.txn.nodes["listmonk:campaign:42:body"]["node_type"] == "Document"
+    edge_types = {e[2]["relationship"] for e in c.txn.edges}
     assert edge_types == {"targetsList", "usesTemplate", "hasBody"}
 
 
@@ -128,7 +126,7 @@ def test_ingest_lists_maps_subscription_list():
     )
     assert res == {"nodes": 1, "edges": 0}
     node = c.txn.nodes["listmonk:list:3"]
-    assert node["type"] == "SubscriptionList"
+    assert node["node_type"] == "SubscriptionList"
     assert node["listType"] == "public"
     assert node["optinType"] == "double"
 
@@ -150,21 +148,19 @@ def test_ingest_subscribers_maps_subscriber_and_membership():
     )
     assert res == {"nodes": 1, "edges": 1}
     node = c.txn.nodes["listmonk:subscriber:9"]
-    assert node["type"] == "Subscriber"
+    assert node["node_type"] == "Subscriber"
     assert node["email"] == "jane@example.com"
     assert node["subscriberStatus"] == "enabled"
-    assert c.edges.edges == [
-        ("listmonk:subscriber:9", "listmonk:list:3", {"type": "subscribedToList"})
+    assert c.txn.edges == [
+        ("listmonk:subscriber:9", "listmonk:list:3", {"relationship": "subscribedToList"})
     ]
 
 
-def test_ingest_noops_without_engine():
-    # No injected client + no reachable engine -> clean no-op.
-    assert ingest_entities([{"id": "a", "type": "Campaign"}]) is None
+def test_retired_structural_alias_is_rejected():
+    with pytest.raises(NativeIngestError, match="canonical node_type"):
+        ingest_entities([{"id": "a", "type": "Campaign"}], client=_FakeClient())
 
 
-def test_ingest_empty_is_noop():
-    assert ingest_entities([], client=_FakeClient()) is None
-    assert ingest_campaigns([], client=_FakeClient()) is None
-    assert ingest_lists([], client=_FakeClient()) is None
-    assert ingest_subscribers([], client=_FakeClient()) is None
+def test_empty_native_ingest_is_rejected():
+    with pytest.raises(NativeIngestError, match="at least one entity"):
+        ingest_entities([], client=_FakeClient())

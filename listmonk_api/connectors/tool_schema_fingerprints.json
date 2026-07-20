@@ -1,0 +1,8 @@
+{
+  "algorithm": "agent-utilities:mcp-tool-schema-compat:v1",
+  "connector": "listmonk-api",
+  "schema_version": "1",
+  "tools": {
+    "listmonk_campaigns": "e4acd10cb930ee0586e9db54d867b500a594e54b28099102954770a0225d8fa2"
+  }
+}

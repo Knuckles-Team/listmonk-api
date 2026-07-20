@@ -1,0 +1,4 @@
+interface:
+  display_name: "Listmonk API Operations"
+  short_description: "Help with Listmonk API Operations tasks"
+  default_prompt: "Use $listmonk-api-operations to complete a governed provider workflow."

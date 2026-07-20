@@ -7,17 +7,16 @@
         "listmonk-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "condensed",
+        "MCP_TOOL_MODE": "intent",
         "LISTMONK_CAMPAIGNSTOOL": "True",
         "LISTMONK_IMPORTSTOOL": "True",
         "LISTMONK_LISTSTOOL": "True",
         "LISTMONK_MEDIATOOL": "True",
         "LISTMONK_SUBSCRIBERSTOOL": "True",
         "LISTMONK_TEMPLATESTOOL": "True",
-        "LISTMONK_TOKEN": "your_bearer_token_here",
+        "LISTMONK_TLS_PROFILE": "system",
         "LISTMONK_TXTOOL": "True",
-        "LISTMONK_URL": "http://localhost:8080",
-        "OPENAPI_CLIENT_ID": "",
+        "LISTMONK_URL": "https://listmonk.example.invalid",
         "OPENAPI_PASSWORD": "adminpassword",
         "OPENAPI_USERNAME": "admin"
       }

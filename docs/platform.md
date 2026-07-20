@@ -37,7 +37,7 @@ services:
       retries: 6
 
   listmonk:
-    image: listmonk/listmonk:latest
+    image: listmonk/listmonk@sha256:<digest>
     container_name: listmonk
     hostname: listmonk
     restart: unless-stopped
@@ -73,7 +73,7 @@ create an **API user / token** (Settings → Users) to authenticate `listmonk-ap
 ## Connect listmonk-api
 
 ```bash
-export LISTMONK_URL=http://localhost:9000
+export LISTMONK_URL=https://listmonk.example.invalid
 export LISTMONK_TOKEN=your-api-token
 # Or, with basic auth:
 # export LISTMONK_USERNAME=admin
@@ -99,7 +99,7 @@ services:
     volumes: ["listmonk_db:/var/lib/postgresql/data"]
 
   listmonk:
-    image: listmonk/listmonk:latest
+    image: listmonk/listmonk@sha256:<digest>
     depends_on: [listmonk-db]
     ports: ["9000:9000"]
     environment:
@@ -112,10 +112,10 @@ services:
       sh -c "./listmonk --install --idempotent --yes && ./listmonk --upgrade --yes && ./listmonk"
 
   listmonk-api-mcp:
-    image: knucklessg1/listmonk-api:latest
+    image: example/listmonk-api@sha256:<digest>
     depends_on: [listmonk]
     environment:
-      - LISTMONK_URL=http://listmonk:9000
+      - LISTMONK_URL=${LISTMONK_URL:?set an authenticated HTTPS endpoint}
       - LISTMONK_TOKEN=your-api-token
       - TRANSPORT=streamable-http
       - HOST=0.0.0.0

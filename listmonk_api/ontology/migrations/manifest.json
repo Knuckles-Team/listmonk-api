@@ -1,0 +1,6 @@
+{
+  "connector": "listmonk-api",
+  "current_ontology_source": "listmonk",
+  "migrations": [],
+  "schema_version": "1"
+}

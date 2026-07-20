@@ -48,13 +48,13 @@ xychart-beta
 |-----------|--------|----------|-----------|
 | has_pyproject | 10 | `pyproject.toml and requirements.txt` | Both pyproject.toml and requirements.txt exist, fulfilling mandatory Python proj |
 | project_type_detected | 10 | `Agent-Utilities Ecosystem` | Identified 1 ecosystem marker(s) in dependencies |
-| externalized_prompts | 0 | `/home/apps/workspace/agent-packages/agents/listmonk-api` | No prompts/ directory found. Prompts may be hardcoded in source. |
+| externalized_prompts | 0 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api` | No prompts/ directory found. Prompts may be hardcoded in source. |
 | observability | 0 | `dependency list` | No observability tools (logfire, sentry, opentelemetry) found |
 | testing_suite | 5 | `tests dir: True, pytest dep: False` | Tests directory exists, pytest not in dependencies |
-| agents_md | 10 | `/home/apps/workspace/agent-packages/agents/listmonk-api/AGEN` | AGENTS.md exists with comprehensive content |
-| pre_commit_hooks | 10 | `/home/apps/workspace/agent-packages/agents/listmonk-api/.pre` | Pre-commit configuration found for automated code quality checks |
-| gitignore | 10 | `/home/apps/workspace/agent-packages/agents/listmonk-api/.git` | .gitignore exists to prevent committing build artifacts and secrets |
-| env_template | 10 | `/home/apps/workspace/agent-packages/agents/listmonk-api/.env` | Environment template exists for onboarding and secret management |
+| agents_md | 10 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/AGEN` | AGENTS.md exists with comprehensive content |
+| pre_commit_hooks | 10 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.pre` | Pre-commit configuration found for automated code quality checks |
+| gitignore | 10 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.git` | .gitignore exists to prevent committing build artifacts and secrets |
+| env_template | 10 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.env` | Environment template exists for onboarding and secret management |
 | protocol_support | 4 | `MCP` | 1 communication protocol(s) detected |
 
 **Findings:**
@@ -71,7 +71,7 @@ xychart-beta
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
-| dependency_freshness | 97 | `source=/home/apps/workspace/agent-packages/agents/listmonk-a` | Audited 1 deps (1 installed, 0 constraint-only). 0 major, 1 minor, 0 patch updates |
+| dependency_freshness | 97 | `source=${WORKSPACE_ROOT}/agent-packages/agents/listmonk-a` | Audited 1 deps (1 installed, 0 constraint-only). 0 major, 1 minor, 0 patch updates |
 
 ---
 
@@ -228,7 +228,7 @@ xychart-beta
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
-| bumpversion_exists | 20 | `/home/apps/workspace/agent-packages/agents/listmonk-api/.bum` | .bumpversion.cfg found |
+| bumpversion_exists | 20 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api/.bum` | .bumpversion.cfg found |
 | current_version_defined | 20 | `0.6.0` | Current version tracked is 0.6.0 |
 | files_tracked | 20 | `5 files tracked` | Found 5 files tracked in .bumpversion.cfg |
 | version_drift_check | 40 | `0 drifted files` | No version drift detected in codebase files |

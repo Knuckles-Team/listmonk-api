@@ -1,4 +1,3 @@
-import json
 import pytest
 from unittest.mock import Mock, patch, mock_open
 from fastmcp import FastMCP
@@ -50,7 +49,7 @@ def test_listmonk_subscribers_tool(mock_client, mock_ctx):
         ctx=mock_ctx,
     )
     assert "error" in res
-    assert "Invalid params_json" in res["error"]
+    assert res["error"] == "Operation failed"
 
     # get_subscribers
     mock_client.get_subscribers.return_value = [{"id": 1}]
@@ -530,7 +529,7 @@ def test_get_mcp_instance_openapi_import_failure(mock_get_client):
         # Should call sys.exit(1) on failure (since local doesn't have token)
         with pytest.raises(SystemExit) as pytest_wrapped_e:
             get_mcp_instance()
-        assert pytest_wrapped_e.type == SystemExit
+        assert pytest_wrapped_e.type is SystemExit
         assert pytest_wrapped_e.value.code == 1
 
 
@@ -628,5 +627,5 @@ def test_mcp_server_invalid_transport(mock_get_instance):
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         mcp_server()
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 1

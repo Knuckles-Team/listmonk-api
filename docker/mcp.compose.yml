@@ -1,6 +1,18 @@
 ---
 services:
   listmonk-mcp:
+    init: true
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: ${MCP_CONTAINER_MEMORY_LIMIT:-2g}
+    cpus: ${MCP_CONTAINER_CPU_LIMIT:-1.0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
     build:
       context: .. # Production
       dockerfile: docker/debug.Dockerfile # Using debug for local dev usually
@@ -15,8 +27,6 @@ services:
         max-size: "10m"
         max-file: "3"
     restart: always
-    volumes:
-      - ../mcp:/app
     env_file:
       - ../.env
     environment:
@@ -25,7 +35,7 @@ services:
       - "PORT=8004"
       - "TRANSPORT=streamable-http"
     ports:
-      - "8004:8004"
+      - "127.0.0.1:8004:8004"
     healthcheck:
       test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8004/health')" ]
       interval: 30s
@@ -34,6 +44,18 @@ services:
       start_period: 10s
 
   listmonk-agent:
+    init: true
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: ${AGENT_CONTAINER_MEMORY_LIMIT:-4g}
+    cpus: ${AGENT_CONTAINER_CPU_LIMIT:-2.0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
     build:
       context: .. # Production
       dockerfile: docker/debug.Dockerfile
@@ -65,7 +87,7 @@ services:
       - "ENABLE_WEB_UI=True"
       - "ENABLE_OTEL=True"
     ports:
-      - "9004:9004"
+      - "127.0.0.1:9004:9004"
     healthcheck:
       test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9004/health')" ]
       interval: 30s

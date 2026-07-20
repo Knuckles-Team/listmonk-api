@@ -1,7 +1,19 @@
 ---
 services:
   listmonk-agent:
-    # image: docker.io/knucklessg1/listmonk-api:latest
+    init: true
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: ${AGENT_CONTAINER_MEMORY_LIMIT:-4g}
+    cpus: ${AGENT_CONTAINER_CPU_LIMIT:-2.0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+    # image: docker.io/${LISTMONK_API_AGENT_IMAGE:?set-LISTMONK_API_AGENT_IMAGE-to-image@sha256-digest}
     build:
       context: .. # Debug
       dockerfile: docker/debug.Dockerfile
@@ -32,7 +44,7 @@ services:
       - "ENABLE_WEB_UI=True"
       - "ENABLE_OTEL=True"
     ports:
-      - "9001:9001"
+      - "127.0.0.1:9001:9001"
     healthcheck:
       test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9001/health')" ]
       interval: 30s

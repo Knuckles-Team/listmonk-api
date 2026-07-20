@@ -31,14 +31,15 @@ from threading import local
 from typing import Any
 
 import httpx
-from agent_utilities.core.config import setting
-from agent_utilities.mcp_utilities import (
-    load_config,
-    config,
+from agent_utilities.core.config import load_config, setting
+from agent_utilities.mcp.action_dispatch import resolve_action
+from agent_utilities.mcp.server_factory import (
     create_mcp_server,
-    register_tool_surface,
-    resolve_action,
 )
+from agent_utilities.mcp.server_factory import (
+    mcp_auth_config as config,
+)
+from agent_utilities.mcp.verbose_tools import register_tool_surface
 
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
@@ -70,7 +71,7 @@ def register_listmonk_subscribers_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -120,7 +121,7 @@ def register_listmonk_lists_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -169,7 +170,7 @@ def register_listmonk_imports_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -219,7 +220,7 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -283,7 +284,7 @@ def register_listmonk_media_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -326,7 +327,7 @@ def register_listmonk_templates_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -377,7 +378,7 @@ def register_listmonk_tx_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -432,7 +433,7 @@ def register_listmonk_ingest_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json) if params_json else {}
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         if entity == "campaigns":
@@ -539,8 +540,8 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
             for resource in imported_resources:
                 mcp.add_resource(resource)
         except Exception as exc:
-            print(f"OpenAPI import failed: {exc}", file=sys.stderr)
-            logger.error("OpenAPI import failed", extra={"error": str(exc)})
+            print(f"Operation failed: {type(exc).__name__}", file=sys.stderr)
+            logger.error("OpenAPI import failed", extra={"error": "Operation failed"})
             sys.exit(1)
 
     registered_tags = register_tool_surface(
