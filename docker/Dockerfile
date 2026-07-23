@@ -28,12 +28,12 @@ RUN apt-get update \
 # Slim MCP-only dependency closure.
 FROM builder-base AS builder-mcp
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system --break-system-packages listmonk-api[mcp]==1.0.1
+    uv pip install --system --break-system-packages listmonk-api[mcp]==2.0.0
 
 # Full agent runtime dependency closure.
 FROM builder-base AS builder-agent
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system --break-system-packages listmonk-api[agent]==1.0.1
+    uv pip install --system --break-system-packages listmonk-api[agent]==2.0.0
 
 FROM python:3.14-slim@sha256:cea0e6040540fb2b965b6e7fb5ffa00871e632eef63719f0ea54bca189ce14a6 AS runtime-base
 ARG HOST=127.0.0.1

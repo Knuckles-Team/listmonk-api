@@ -44,7 +44,7 @@ from agent_utilities.mcp.verbose_tools import register_tool_surface
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
 
-__version__ = "1.0.1"
+__version__ = "2.0.0"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
