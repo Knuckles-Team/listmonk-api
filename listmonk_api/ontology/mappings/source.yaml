@@ -3,7 +3,7 @@ connector: listmonk-api
 ontology_source: listmonk
 sync:
 - preset: listmonk-campaigns
-  server: listmonk-api
+  server: listmonk-mcp
   tool: listmonk_campaigns
   action: get_campaigns
   records_path: results
