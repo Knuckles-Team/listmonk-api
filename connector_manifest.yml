@@ -137,7 +137,7 @@ sync:
     doc_type: campaign
 provenance:
   generated_by: scripts/generate_connector_manifests.py
-  generated_at: '2026-07-18T00:00:00Z'
+  generated_at: '2026-07-28T10:14:00Z'
   source_artifacts:
   - listmonk_api/connectors/mcp_source_presets.json
   - listmonk_api/connectors/tool_schema_fingerprints.json
@@ -148,8 +148,8 @@ provenance:
     triple_count: 56
   signer: ontology-manifest-generator
   signature_algorithm: ed25519
-  signing_public_key: q0Cp7bmQMqJhbofGKKw8xXC6KbFzukBDDke0UYVi8y4
-  signature: Z0AA8EOabReW0-uMgH0yO4SA-gDSt2Um7NiFgksz6C6X5q8AaErJX4qnEtu4vfLuMgoEBnvTJD0Ut4MpBikZBg
+  signing_public_key: QkigdPNpcUU7x7NcSkwCsUXIQpaFncMQbYSoiSgI2SY
+  signature: wlKU95TH2_6j7crYGf_qKqQ4aT45i6mYxii6omxTsaJMcta9yvA89L7Bb61WbMpYcnb8yY_bG5ichuKCI_nODA
 policy:
   pii_fields:
     Campaign:
