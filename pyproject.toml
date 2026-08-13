@@ -63,3 +63,11 @@ omit = [
     "listmonk_api/listmonk_api.py",
     "listmonk_api/__main__.py",
 ]
+
+[tool.uv]
+override-dependencies = [
+    "fastmcp-slim[client,server]>=4.0.0b1",
+]
+
+[tool.uv.sources]
+agent-utilities = { path = ".uv-workspace-siblings/agent-utilities", editable = true }
