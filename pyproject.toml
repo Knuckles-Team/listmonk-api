@@ -49,6 +49,9 @@ listmonk-api = "listmonk_api.connectors"
 [project.entry-points."agent_utilities.prompt_providers"]
 listmonk-api = "listmonk_api.prompts"
 
+[tool.uv.workspace]
+members = ["."]
+
 [tool.setuptools]
 include-package-data = true
 
