@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/listmonk-api)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/listmonk-api)
 
-*Version: 2.0.0*
+*Version: 2.1.0*
 
 > **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
 > agent interfaces, and guidance for provisioning the Listmonk platform are maintained
@@ -61,12 +61,13 @@ Auto-generated — do not edit between the markers below.
 
 <!-- MCP-TOOLS-TABLE:START -->
 
-#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+#### Condensed action-routed tools (`MCP_TOOL_MODE=condensed`)
 
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
 | `listmonk_campaigns` | `LISTMONK_CAMPAIGNSTOOL` | Manage listmonk campaigns operations. |
 | `listmonk_imports` | `LISTMONK_IMPORTSTOOL` | Manage listmonk imports operations. |
+| `listmonk_ingest` | `LISTMONK_INGESTTOOL` | Natively ingest Listmonk records into epistemic-graph as typed nodes + documents. |
 | `listmonk_lists` | `LISTMONK_LISTSTOOL` | Manage listmonk lists operations. |
 | `listmonk_media` | `LISTMONK_MEDIATOOL` | Manage listmonk media operations. |
 | `listmonk_subscribers` | `LISTMONK_SUBSCRIBERSTOOL` | Manage listmonk subscribers operations. |
@@ -76,20 +77,18 @@ Auto-generated — do not edit between the markers below.
 #### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
 
 <details>
-<summary>32 per-operation tools — one per public API method (click to expand)</summary>
+<summary>28 per-operation tools — one per public API method (click to expand)</summary>
 
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
 | `listmonk_create_campaign` | `LISTMONK_APITOOL` | Invoke the create_campaign operation. |
 | `listmonk_create_list` | `LISTMONK_APITOOL` | Invoke the create_list operation. |
 | `listmonk_create_subscriber` | `LISTMONK_APITOOL` | Invoke the create_subscriber operation. |
-| `listmonk_delete` | `BASE_API_CLIENTTOOL` | Invoke the delete operation. |
 | `listmonk_delete_campaign` | `LISTMONK_APITOOL` | Invoke the delete_campaign operation. |
 | `listmonk_delete_media` | `LISTMONK_APITOOL` | Invoke the delete_media operation. |
 | `listmonk_delete_subscriber_import` | `LISTMONK_APITOOL` | Invoke the delete_subscriber_import operation. |
 | `listmonk_delete_template` | `LISTMONK_APITOOL` | Invoke the delete_template operation. |
 | `listmonk_edit_list` | `LISTMONK_APITOOL` | Invoke the edit_list operation. |
-| `listmonk_get` | `BASE_API_CLIENTTOOL` | Invoke the get operation. |
 | `listmonk_get_campaign` | `LISTMONK_APITOOL` | Invoke the get_campaign operation. |
 | `listmonk_get_campaign_preview` | `LISTMONK_APITOOL` | Invoke the get_campaign_preview operation. |
 | `listmonk_get_campaign_stats` | `LISTMONK_APITOOL` | Invoke the get_campaign_stats operation. |
@@ -106,8 +105,6 @@ Auto-generated — do not edit between the markers below.
 | `listmonk_get_template_preview` | `LISTMONK_APITOOL` | Invoke the get_template_preview operation. |
 | `listmonk_get_templates` | `LISTMONK_APITOOL` | Invoke the get_templates operation. |
 | `listmonk_import_subscribers` | `LISTMONK_APITOOL` | Invoke the import_subscribers operation. |
-| `listmonk_post` | `BASE_API_CLIENTTOOL` | Invoke the post operation. |
-| `listmonk_put` | `BASE_API_CLIENTTOOL` | Invoke the put operation. |
 | `listmonk_set_campaign_status` | `LISTMONK_APITOOL` | Invoke the set_campaign_status operation. |
 | `listmonk_set_default_template` | `LISTMONK_APITOOL` | Invoke the set_default_template operation. |
 | `listmonk_transactional_message` | `LISTMONK_APITOOL` | Invoke the transactional_message operation. |
@@ -115,7 +112,7 @@ Auto-generated — do not edit between the markers below.
 
 </details>
 
-_7 action-routed tool(s) (default) · 32 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
+_8 action-routed tool(s) · 28 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (**`intent` default** — the six verb-tools, granular set loaded on demand · `condensed` action-routed · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### Dynamic Tool Selection & Visibility
