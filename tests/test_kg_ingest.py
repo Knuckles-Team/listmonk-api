@@ -9,6 +9,9 @@ CONCEPT:AU-KG.ingest.enterprise-source-extractor.
 
 from __future__ import annotations
 
+from typing import Any
+
+import msgpack
 import pytest
 from listmonk_api.kg_ingest import (
     ingest_campaigns,
@@ -19,32 +22,97 @@ from listmonk_api.kg_ingest import (
 )
 
 from agent_utilities.knowledge_graph.memory.native_ingest import NativeIngestError
+from agent_utilities.security.brain_context import ActorContext, use_actor
+from agent_utilities.models.company_brain import ActorType
+from agent_utilities.knowledge_graph.core.session import GraphSession, use_session
 
 
-class _FakeTxn:
-    def __init__(self):
-        self.nodes = {}
-        self.edges = []
-        self.committed = False
+@pytest.fixture(autouse=True)
+def _governed_session():
+    actor = ActorContext(
+        actor_id="subject:opaque:synthetic",
+        actor_type=ActorType.AUTOMATED_SERVICE,
+        roles=(),
+        tenant_id="tenant:opaque:synthetic",
+        authenticated=True,
+    )
+    session = GraphSession(
+        actor=actor,
+        tenant=actor.tenant_id,
+        scopes=frozenset({"kg:write"}),
+        graph="graph:opaque:synthetic",
+        policy_version="policy:opaque:synthetic",
+        audience="epistemic-graph",
+    )
+    with use_actor(actor), use_session(session):
+        yield
 
-    def begin(self, graph=None):
-        self.graph = graph
-        return "txn-1"
 
-    def add_node(self, txn, node_id, props):
-        self.nodes[node_id] = props
+class _FakeNodes:
+    def __init__(self) -> None:
+        self.values: dict[str, dict[str, Any]] = {}
 
-    def add_edge(self, txn, source, target, props):
-        self.edges.append((source, target, props))
+    def properties(self, node_id: str) -> dict[str, Any] | None:
+        return self.values.get(node_id)
 
-    def commit(self, txn):
-        self.committed = True
-        return True
+    def list(self) -> list[tuple[str, dict[str, Any]]]:
+        return list(self.values.items())
+
+
+class _FakeChanges:
+    def __init__(self, nodes: _FakeNodes) -> None:
+        self.nodes = nodes
+        self.edges: list[tuple[str, str, dict[str, Any]]] = []
+        self.applied: list[dict[str, Any]] = []
+        self.records: dict[str, dict[str, Any]] = {}
+        self.versions: dict[str, dict[str, Any]] = {}
+
+    def get(self, envelope_id: str) -> dict[str, Any] | None:
+        return self.records.get(envelope_id)
+
+    def content_version(self, object_id: str) -> dict[str, Any] | None:
+        return self.versions.get(object_id)
+
+    def cursor(self, _source: str, _partition: str = "") -> None:
+        return None
+
+    def apply(self, envelope: dict[str, Any]) -> dict[str, Any]:
+        self.applied.append(envelope)
+        mutation = envelope["mutation"]
+        for operation in mutation["operations"]:
+            method = operation["method"]
+            params = method["params"]
+            properties = msgpack.unpackb(params["properties_msgpack"], raw=False)
+            if method["method"] == "AddNode":
+                self.nodes.values[params["node_id"]] = properties
+            elif method["method"] == "AddEdge":
+                self.edges.append(
+                    (params["source_id"], params["target_id"], properties)
+                )
+        version = envelope["content_version"]
+        self.versions[version["object_id"]] = version
+        self.records[envelope["envelope_id"]] = envelope
+        return {
+            "batch_id": mutation["batch_id"],
+            "replayed": False,
+            "projection_pending": False,
+        }
+
+
+class _FakeRdf:
+    def validate_shacl(self, _shapes: str, _data_graph: str) -> dict[str, Any]:
+        return {"conforms": True, "results": []}
 
 
 class _FakeClient:
-    def __init__(self):
-        self.txn = _FakeTxn()
+    def __init__(self) -> None:
+        self.nodes = _FakeNodes()
+        self.changes = _FakeChanges(self.nodes)
+        self.rdf = _FakeRdf()
+
+    @staticmethod
+    def supports(operation: str) -> bool:
+        return operation == "ApplyChangeEnvelope"
 
 
 def test_ingest_entities_writes_nodes_and_edges():
@@ -56,15 +124,14 @@ def test_ingest_entities_writes_nodes_and_edges():
         ],
         [{"source": "a", "target": "b", "relationship": "targetsList"}],
         client=c,
-        graph="__commons__",
     )
     assert res == {"nodes": 2, "edges": 1}
-    assert c.txn.committed is True
-    assert set(c.txn.nodes) == {"a", "b"}
+    assert len(c.changes.applied) == 1
+    assert set(c.nodes.values) == {"a", "b"}
     # provenance is stamped
-    assert c.txn.nodes["a"]["source"] == "listmonk-api"
-    assert c.txn.nodes["a"]["domain"] == "listmonk"
-    assert c.txn.edges == [("a", "b", {"relationship": "targetsList"})]
+    assert c.nodes.values["a"]["source"] == "listmonk-api"
+    assert c.nodes.values["a"]["domain"] == "listmonk"
+    assert c.changes.edges == [("a", "b", {"relationship": "targetsList"})]
 
 
 def test_ingest_documents_writes_document_nodes():
@@ -72,13 +139,12 @@ def test_ingest_documents_writes_document_nodes():
     res = ingest_documents(
         [{"id": "listmonk:campaign:1:body", "text": "<h1>Hi</h1>", "title": "Hi"}],
         client=c,
-        graph="__commons__",
     )
     assert res == {"nodes": 1, "edges": 0}
-    node = c.txn.nodes["listmonk:campaign:1:body"]
+    node = c.nodes.values["listmonk:campaign:1:body"]
     assert node["node_type"] == "Document"
     assert node["text"] == "<h1>Hi</h1>"
-    assert node["created_at"]  # stamped
+    assert node["needs_enrichment"] is True  # stamped
 
 
 def test_ingest_campaigns_maps_campaign_list_template_and_body():
@@ -97,19 +163,18 @@ def test_ingest_campaigns_maps_campaign_list_template_and_body():
             }
         ],
         client=c,
-        graph="__commons__",
     )
     # 1 campaign + 1 list + 1 template = 3 entity nodes, + 1 document node = 4
     assert res == {"nodes": 4, "edges": 3}
-    camp = c.txn.nodes["listmonk:campaign:42"]
+    camp = c.nodes.values["listmonk:campaign:42"]
     assert camp["node_type"] == "Campaign"
     assert camp["campaignStatus"] == "running"
     assert camp["subject"] == "News"
     assert camp["externalToolId"] == "42"
-    assert c.txn.nodes["listmonk:list:3"]["node_type"] == "SubscriptionList"
-    assert c.txn.nodes["listmonk:template:5"]["node_type"] == "EmailTemplate"
-    assert c.txn.nodes["listmonk:campaign:42:body"]["node_type"] == "Document"
-    edge_types = {e[2]["relationship"] for e in c.txn.edges}
+    assert c.nodes.values["listmonk:list:3"]["node_type"] == "SubscriptionList"
+    assert c.nodes.values["listmonk:template:5"]["node_type"] == "EmailTemplate"
+    assert c.nodes.values["listmonk:campaign:42:body"]["node_type"] == "Document"
+    edge_types = {e[2]["relationship"] for e in c.changes.edges}
     assert edge_types == {"targetsList", "usesTemplate", "hasBody"}
 
 
@@ -122,10 +187,9 @@ def test_ingest_lists_maps_subscription_list():
             ]
         },
         client=c,
-        graph="__commons__",
     )
     assert res == {"nodes": 1, "edges": 0}
-    node = c.txn.nodes["listmonk:list:3"]
+    node = c.nodes.values["listmonk:list:3"]
     assert node["node_type"] == "SubscriptionList"
     assert node["listType"] == "public"
     assert node["optinType"] == "double"
@@ -144,14 +208,14 @@ def test_ingest_subscribers_maps_subscriber_and_membership():
             }
         ],
         client=c,
-        graph="__commons__",
     )
     assert res == {"nodes": 1, "edges": 1}
-    node = c.txn.nodes["listmonk:subscriber:9"]
+    node = c.nodes.values["listmonk:subscriber:9"]
     assert node["node_type"] == "Subscriber"
-    assert node["email"] == "jane@example.com"
+    # native_ingest's governed PII scrubber redacts email-shaped values.
+    assert node["email"] == "[REDACTED_EMAIL]"
     assert node["subscriberStatus"] == "enabled"
-    assert c.txn.edges == [
+    assert c.changes.edges == [
         ("listmonk:subscriber:9", "listmonk:list:3", {"relationship": "subscribedToList"})
     ]
 
