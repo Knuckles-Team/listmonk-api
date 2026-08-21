@@ -145,9 +145,8 @@ sync:
     doc_type: campaign
 provenance:
   generated_by: scripts/generate_connector_manifests.py
-  generated_at: '2026-07-31T04:00:00Z'
+  generated_at: '2026-08-21T04:30:39Z'
   source_artifacts:
-  - a2a.json
   - listmonk_api/connectors/mcp_source_presets.json
   - listmonk_api/connectors/tool_schema_fingerprints.json
   - listmonk_api/ontology/listmonk.ttl
@@ -155,10 +154,11 @@ provenance:
     algorithm: urdna2015-sha256
     hash: fb2af6e860a9e9a46bcd7ff1c86186bc4a6872aecb6b4adba6542595fd029f02
     triple_count: 56
-  signer: ontology-manifest-generator
-  signature_algorithm: ed25519
-  signing_public_key: QkigdPNpcUU7x7NcSkwCsUXIQpaFncMQbYSoiSgI2SY
-  signature: 0C4O3Ojf9uRf9ZoNsrr-4M7K4M5BC2TLG-gMT2b6M_ufeEgWQ8JHW3_3uG93LvGKX-mSn999k9EVVU5wLw2qBA
+  signer: UNSIGNED-PREVIEW
+  signature_algorithm: none
+  signing_public_key: ''
+  signature: null
+  dependency_lock_digest: d9a7a8eafa985d82a117af04bd873825c6ee2cae172ea813fdad13e2db9df1fd
 policy:
   pii_fields:
     Campaign:
