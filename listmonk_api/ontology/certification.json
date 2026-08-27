@@ -1,7 +1,7 @@
 {
   "api_version": "graphos.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "2103c19d047db7e09c05aebbecb63669da0529fc71726a1453a7e346b3a46c07",
+    "connector_manifest.yml": "d018a7d27d23643b1e5d54f49c80dc9dee55227d9c42a0d86b528fdb223bd7db",
     "listmonk_api/connectors/mcp_source_presets.json": "b03d2d5cfb3ec4d80f5268806fb68de29c7b31214f433a4e11cff5d2fa593df6",
     "listmonk_api/connectors/tool_schema_fingerprints.json": "154fcd5d8d081a9427f46196b9311e97a4d51de32028a85a8b6e435e38fe4d6b",
     "listmonk_api/ontology/fixtures/records.json": "3bfc9ad808b89d144406d45d220b63c8c40e969068f525844780c02a91e88b3a",
@@ -18,9 +18,9 @@
     "synthetic_fixture_contract": "passed"
   },
   "compatibility": {
-    "agent_utilities": ">=2.4.0,<3",
+    "agent_utilities": ">=2.5.0,<3",
     "bundle_schema": "2",
-    "epistemic_graph": ">=2.26.0,<3"
+    "epistemic_graph": ">=2.27.0,<3"
   },
   "connector": "listmonk-api",
   "kind": "ConnectorSourceAttestation",
@@ -32,5 +32,5 @@
   "signer": "UNSIGNED-PREVIEW",
   "signing_public_key": "",
   "status": "source-validated",
-  "validated_at": "2026-08-21T04:30:39Z"
+  "validated_at": "2026-08-26T13:42:55Z"
 }
