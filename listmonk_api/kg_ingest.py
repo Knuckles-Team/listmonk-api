@@ -56,22 +56,103 @@ def ingest_documents(
 # --- record mappers (records -> entity/document dicts) ------------------------
 
 
+def _as_list_from_dict(records: dict[str, Any]) -> list[dict[str, Any]]:
+    """Unwrap a single record, or a {"results": [...]} / {"data": {...}} envelope."""
+    if "results" in records and isinstance(records["results"], list):
+        return records["results"]
+    data = records.get("data")
+    if isinstance(data, dict) and isinstance(data.get("results"), list):
+        return data["results"]
+    if isinstance(data, list):
+        return data
+    return [records]
+
+
 def _as_list(records: Any) -> list[dict[str, Any]]:
     if records is None:
         return []
     if isinstance(records, dict):
-        # A single record, or a {"results": [...]} / {"data": {...}} envelope.
-        if "results" in records and isinstance(records["results"], list):
-            return records["results"]
-        data = records.get("data")
-        if isinstance(data, dict) and isinstance(data.get("results"), list):
-            return data["results"]
-        if isinstance(data, list):
-            return data
-        return [records]
+        return _as_list_from_dict(records)
     if isinstance(records, list):
         return [r for r in records if isinstance(r, dict)]
     return []
+
+
+def _campaign_entity(camp: dict[str, Any], cid: Any, node_id: str) -> dict[str, Any]:
+    """Build one campaign record's :Campaign entity dict."""
+    return {
+        "id": node_id,
+        "node_type": "Campaign",
+        "name": camp.get("name"),
+        "subject": camp.get("subject"),
+        "campaignStatus": camp.get("status"),
+        "fromEmail": camp.get("from_email"),
+        "sendAt": camp.get("send_at"),
+        "created_at": camp.get("created_at"),
+        "updated_at": camp.get("updated_at"),
+        "externalToolId": str(cid),
+    }
+
+
+def _campaign_list_links(
+    camp: dict[str, Any], node_id: str
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """:SubscriptionList entities + :targetsList relationships for a campaign's lists."""
+    entities: list[dict[str, Any]] = []
+    relationships: list[dict[str, Any]] = []
+    for lst in camp.get("lists") or []:
+        lid = lst.get("id") if isinstance(lst, dict) else lst
+        if lid is None:
+            continue
+        entities.append(
+            {
+                "id": f"listmonk:list:{lid}",
+                "node_type": "SubscriptionList",
+                "name": lst.get("name") if isinstance(lst, dict) else None,
+            }
+        )
+        relationships.append(
+            {
+                "source": node_id,
+                "target": f"listmonk:list:{lid}",
+                "relationship": "targetsList",
+            }
+        )
+    return entities, relationships
+
+
+def _campaign_template_link(
+    camp: dict[str, Any], node_id: str
+) -> tuple[dict[str, Any], dict[str, Any]] | tuple[None, None]:
+    """The :EmailTemplate entity + :usesTemplate relationship, or (None, None)."""
+    tid = camp.get("template_id")
+    if not tid:
+        return None, None
+    entity = {"id": f"listmonk:template:{tid}", "node_type": "EmailTemplate"}
+    relationship = {
+        "source": node_id,
+        "target": f"listmonk:template:{tid}",
+        "relationship": "usesTemplate",
+    }
+    return entity, relationship
+
+
+def _campaign_body_document(
+    camp: dict[str, Any], cid: Any, node_id: str
+) -> tuple[dict[str, Any], dict[str, Any]] | tuple[None, None]:
+    """The campaign body's :Document + :hasBody relationship, or (None, None)."""
+    body = camp.get("body")
+    if not body:
+        return None, None
+    doc_id = f"listmonk:campaign:{cid}:body"
+    document = {
+        "id": doc_id,
+        "text": body,
+        "title": camp.get("subject") or camp.get("name"),
+        "campaign_id": str(cid),
+    }
+    relationship = {"source": node_id, "target": doc_id, "relationship": "hasBody"}
+    return document, relationship
 
 
 def ingest_campaigns(
@@ -91,62 +172,21 @@ def ingest_campaigns(
         if cid is None:
             continue
         node_id = f"listmonk:campaign:{cid}"
-        entities.append(
-            {
-                "id": node_id,
-                "node_type": "Campaign",
-                "name": camp.get("name"),
-                "subject": camp.get("subject"),
-                "campaignStatus": camp.get("status"),
-                "fromEmail": camp.get("from_email"),
-                "sendAt": camp.get("send_at"),
-                "created_at": camp.get("created_at"),
-                "updated_at": camp.get("updated_at"),
-                "externalToolId": str(cid),
-            }
-        )
-        for lst in camp.get("lists") or []:
-            lid = lst.get("id") if isinstance(lst, dict) else lst
-            if lid is None:
-                continue
-            entities.append(
-                {
-                    "id": f"listmonk:list:{lid}",
-                    "node_type": "SubscriptionList",
-                    "name": lst.get("name") if isinstance(lst, dict) else None,
-                }
-            )
-            relationships.append(
-                {
-                    "source": node_id,
-                    "target": f"listmonk:list:{lid}",
-                    "relationship": "targetsList",
-                }
-            )
-        tid = camp.get("template_id")
-        if tid:
-            entities.append({"id": f"listmonk:template:{tid}", "node_type": "EmailTemplate"})
-            relationships.append(
-                {
-                    "source": node_id,
-                    "target": f"listmonk:template:{tid}",
-                    "relationship": "usesTemplate",
-                }
-            )
-        body = camp.get("body")
-        if body:
-            doc_id = f"listmonk:campaign:{cid}:body"
-            documents.append(
-                {
-                    "id": doc_id,
-                    "text": body,
-                    "title": camp.get("subject") or camp.get("name"),
-                    "campaign_id": str(cid),
-                }
-            )
-            document_relationships.append(
-                {"source": node_id, "target": doc_id, "relationship": "hasBody"}
-            )
+        entities.append(_campaign_entity(camp, cid, node_id))
+
+        list_entities, list_relationships = _campaign_list_links(camp, node_id)
+        entities.extend(list_entities)
+        relationships.extend(list_relationships)
+
+        template_entity, template_relationship = _campaign_template_link(camp, node_id)
+        if template_entity is not None:
+            entities.append(template_entity)
+            relationships.append(template_relationship)
+
+        document, document_relationship = _campaign_body_document(camp, cid, node_id)
+        if document is not None:
+            documents.append(document)
+            document_relationships.append(document_relationship)
     ent_res = ingest_entities(entities, relationships, client=client, graph=graph)
     doc_res = (
         _native_ingest_documents(

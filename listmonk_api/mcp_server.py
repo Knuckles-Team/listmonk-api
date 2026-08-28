@@ -49,6 +49,19 @@ logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
 
+def _parse_action_params(params_json: str) -> dict[str, Any] | None:
+    """Parse a tool's ``params_json`` into a kwargs dict with ``None`` values dropped.
+
+    Returns ``None`` on invalid JSON; callers return the same
+    ``{"error": "Operation failed"}`` response the inline try/except used to.
+    """
+    try:
+        kwargs = json.loads(params_json)
+    except Exception:
+        return None
+    return {k: v for k, v in kwargs.items() if v is not None}
+
+
 def register_listmonk_subscribers_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_subscribers"})
     def listmonk_subscribers(
@@ -198,6 +211,32 @@ def register_listmonk_imports_tools(mcp: FastMCP):
         raise ValueError(f"Unknown action: {action}")
 
 
+def _dispatch_campaign_action(action: str, client: Any, kwargs: dict[str, Any]) -> Any:
+    """Call the ``ListmonkAPI`` method for one resolved ``listmonk_campaigns`` action."""
+    if action == "get_campaigns":
+        return {"results": client.get_campaigns(**kwargs)}
+    if action == "get_campaign":
+        return client.get_campaign(**kwargs)
+    if action == "get_campaign_preview":
+        return client.get_campaign_preview(**kwargs)
+    if action == "get_campaign_stats":
+        return client.get_campaign_stats(**kwargs)
+    if action == "create_campaign":
+        from listmonk_api.models import CampaignCreateRequest
+
+        return client.create_campaign(CampaignCreateRequest(**kwargs))
+    if action == "set_campaign_status":
+        from listmonk_api.models import CampaignStatusRequest
+
+        return client.set_campaign_status(
+            campaign_id=kwargs["campaign_id"],
+            data=CampaignStatusRequest(**kwargs["data"]),
+        )
+    if action == "delete_campaign":
+        return client.delete_campaign(**kwargs)
+    raise ValueError(f"Unknown action: {action}")
+
+
 def register_listmonk_campaigns_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_campaigns"})
     def listmonk_campaigns(
@@ -215,14 +254,9 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
         """Manage listmonk campaigns operations."""
         if ctx:
             logger.info("Executing tool...")
-        import json
-
-        try:
-            kwargs = json.loads(params_json)
-        except Exception:
+        kwargs = _parse_action_params(params_json)
+        if kwargs is None:
             return {"error": "Operation failed"}
-
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         valid_actions = (
             "get_campaigns",
@@ -238,28 +272,7 @@ def register_listmonk_campaigns_tools(mcp: FastMCP):
             return resolved
         action = resolved
 
-        if action == "get_campaigns":
-            return {"results": client.get_campaigns(**kwargs)}
-        if action == "get_campaign":
-            return client.get_campaign(**kwargs)
-        if action == "get_campaign_preview":
-            return client.get_campaign_preview(**kwargs)
-        if action == "get_campaign_stats":
-            return client.get_campaign_stats(**kwargs)
-        if action == "create_campaign":
-            from listmonk_api.models import CampaignCreateRequest
-
-            return client.create_campaign(CampaignCreateRequest(**kwargs))
-        if action == "set_campaign_status":
-            from listmonk_api.models import CampaignStatusRequest
-
-            return client.set_campaign_status(
-                campaign_id=kwargs["campaign_id"],
-                data=CampaignStatusRequest(**kwargs["data"]),
-            )
-        if action == "delete_campaign":
-            return client.delete_campaign(**kwargs)
-        raise ValueError(f"Unknown action: {action}")
+        return _dispatch_campaign_action(action, client, kwargs)
 
 
 def register_listmonk_media_tools(mcp: FastMCP):
@@ -305,6 +318,21 @@ def register_listmonk_media_tools(mcp: FastMCP):
         raise ValueError(f"Unknown action: {action}")
 
 
+def _dispatch_template_action(action: str, client: Any, kwargs: dict[str, Any]) -> Any:
+    """Call the ``ListmonkAPI`` method for one resolved ``listmonk_templates`` action."""
+    if action == "get_templates":
+        return {"results": client.get_templates(**kwargs)}
+    if action == "get_template":
+        return client.get_template(**kwargs)
+    if action == "get_template_preview":
+        return client.get_template_preview(**kwargs)
+    if action == "set_default_template":
+        return client.set_default_template(**kwargs)
+    if action == "delete_template":
+        return client.delete_template(**kwargs)
+    raise ValueError(f"Unknown action: {action}")
+
+
 def register_listmonk_templates_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_templates"})
     def listmonk_templates(
@@ -322,14 +350,9 @@ def register_listmonk_templates_tools(mcp: FastMCP):
         """Manage listmonk templates operations."""
         if ctx:
             logger.info("Executing tool...")
-        import json
-
-        try:
-            kwargs = json.loads(params_json)
-        except Exception:
+        kwargs = _parse_action_params(params_json)
+        if kwargs is None:
             return {"error": "Operation failed"}
-
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         valid_actions = (
             "get_templates",
@@ -343,17 +366,7 @@ def register_listmonk_templates_tools(mcp: FastMCP):
             return resolved
         action = resolved
 
-        if action == "get_templates":
-            return {"results": client.get_templates(**kwargs)}
-        if action == "get_template":
-            return client.get_template(**kwargs)
-        if action == "get_template_preview":
-            return client.get_template_preview(**kwargs)
-        if action == "set_default_template":
-            return client.set_default_template(**kwargs)
-        if action == "delete_template":
-            return client.delete_template(**kwargs)
-        raise ValueError(f"Unknown action: {action}")
+        return _dispatch_template_action(action, client, kwargs)
 
 
 def register_listmonk_tx_tools(mcp: FastMCP):
@@ -476,6 +489,40 @@ def register_prompts(mcp: FastMCP):
         return f"Send a transactional message to {subscriber_email} using template ID {template_id}. Use the listmonk_tx tool with action='transactional_message'."
 
 
+def _validate_openapi_token_credential() -> None:
+    """Raise unless a live incoming Bearer token is present for token-mode import."""
+    if not getattr(local, "user_token", None):
+        raise ValueError(
+            "OpenAPI import requires --openapi-use-token and a valid Bearer token in the request"
+        )
+    print("Using incoming JWT for OpenAPI import", file=sys.stderr)
+
+
+def _validate_openapi_password_or_client_credentials(args: Any) -> None:
+    """Raise unless username+password or client_id+client_secret resolve."""
+    username = args.openapi_username or setting("OPENAPI_USERNAME")
+    password = args.openapi_password or setting("OPENAPI_PASSWORD")
+    client_id = args.openapi_client_id or setting("OPENAPI_CLIENT_ID")
+    client_secret = args.openapi_client_secret or setting("OPENAPI_CLIENT_SECRET")
+    if not (username and password) and not (client_id and client_secret):
+        raise ValueError(
+            "OpenAPI import requires either --openapi-use-token or (username+password) or (client_id+client_secret)"
+        )
+
+
+def _validate_openapi_credentials(args: Any) -> None:
+    """Raise if the OpenAPI import lacks the auth args it needs.
+
+    Token mode requires a live Bearer token in ``local.user_token``;
+    otherwise either username+password or client_id+client_secret must
+    resolve from ``args``/settings.
+    """
+    if args.openapi_use_token:
+        _validate_openapi_token_credential()
+        return
+    _validate_openapi_password_or_client_credentials(args)
+
+
 def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
     """Initialize and return the MCP instance, args, and middlewares."""
     load_config()
@@ -494,31 +541,7 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
                 spec = json.load(f)
 
             async def _load_openapi_tools():
-                token = None
-                username = None
-                password = None
-                client_id = None
-                client_secret = None
-                if args.openapi_use_token:
-                    token = getattr(local, "user_token", None)
-                    if not token:
-                        raise ValueError(
-                            "OpenAPI import requires --openapi-use-token and a valid Bearer token in the request"
-                        )
-                    print("Using incoming JWT for OpenAPI import", file=sys.stderr)
-                else:
-                    username = args.openapi_username or setting("OPENAPI_USERNAME")
-                    password = args.openapi_password or setting("OPENAPI_PASSWORD")
-                    client_id = args.openapi_client_id or setting("OPENAPI_CLIENT_ID")
-                    client_secret = args.openapi_client_secret or setting(
-                        "OPENAPI_CLIENT_SECRET"
-                    )
-                    if not (username and password) and (
-                        not (client_id and client_secret)
-                    ):
-                        raise ValueError(
-                            "OpenAPI import requires either --openapi-use-token or (username+password) or (client_id+client_secret)"
-                        )
+                _validate_openapi_credentials(args)
                 api = get_client()
                 base_url = args.openapi_base_url or api.base_url
                 async with httpx.AsyncClient(base_url=base_url) as client:
