@@ -23,7 +23,7 @@ from listmonk_api.kg_ingest import (
 
 from agent_utilities.knowledge_graph.memory.native_ingest import NativeIngestError
 from agent_utilities.security.brain_context import ActorContext, use_actor
-from agent_utilities.models.company_brain import ActorType
+from agent_utilities.security.actor_identity import ActorType
 from agent_utilities.knowledge_graph.core.session import GraphSession, use_session
 
 
