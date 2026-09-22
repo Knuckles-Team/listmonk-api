@@ -28,7 +28,7 @@ import json
 import logging
 import sys
 from threading import local
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 from agent_utilities.core.config import load_config, setting
@@ -240,7 +240,15 @@ def _dispatch_campaign_action(action: str, client: Any, kwargs: dict[str, Any]) 
 def register_listmonk_campaigns_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_campaigns"})
     def listmonk_campaigns(
-        action: str = Field(
+        action: Literal[
+            "create_campaign",
+            "delete_campaign",
+            "get_campaign",
+            "get_campaign_preview",
+            "get_campaign_stats",
+            "get_campaigns",
+            "set_campaign_status",
+        ] = Field(
             description="Action to perform. Must be one of: 'get_campaigns', 'get_campaign', 'get_campaign_preview', 'get_campaign_stats', 'create_campaign', 'set_campaign_status', 'delete_campaign'"
         ),
         params_json: str = Field(
