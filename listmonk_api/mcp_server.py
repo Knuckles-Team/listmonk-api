@@ -238,7 +238,18 @@ def _dispatch_campaign_action(action: str, client: Any, kwargs: dict[str, Any]) 
 
 
 def register_listmonk_campaigns_tools(mcp: FastMCP):
-    @mcp.tool(tags={"listmonk_campaigns"})
+    @mcp.tool(
+        tags={"listmonk_campaigns"},
+        annotations={
+            "readOnlyHint": False,
+            "destructiveHint": True,
+            "idempotentHint": False,
+            "openWorldHint": True,
+        },
+        meta={
+            "eg.annotations": {"modalities_in": ["text"], "modalities_out": ["text"]}
+        },
+    )
     def listmonk_campaigns(
         action: Literal[
             "create_campaign",
