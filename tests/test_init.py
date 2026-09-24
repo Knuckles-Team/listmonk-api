@@ -1,19 +1,20 @@
-import sys
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import listmonk_api
 
 
 def test_init_available_flags():
     # Test _MCP_AVAILABLE and _AGENT_AVAILABLE dynamic checks
     assert listmonk_api._MCP_AVAILABLE is True
-    assert listmonk_api._AGENT_AVAILABLE is True
+    assert listmonk_api._AGENT_AVAILABLE is False
 
 
 def test_init_lazy_loading():
-    # Test lazy loading of mcp_server and agent_server attributes
+    # Test lazy loading of mcp_server (agent_server.py was retired -- no
+    # agent-connector-sdk equivalent -- SDK-GAPS.md #11).
     assert listmonk_api.mcp_server is not None
-    assert listmonk_api.agent_server is not None
+    with pytest.raises(AttributeError):
+        _ = listmonk_api.agent_server
 
 
 def test_init_attribute_error():
@@ -25,10 +26,9 @@ def test_init_attribute_error():
 
 
 def test_init_dir():
-    # Test dynamic __dir__
+    # Test dynamic __dir__ (agent_server.py was retired -- SDK-GAPS.md #11)
     attrs = dir(listmonk_api)
     assert "mcp_server" in attrs
-    assert "agent_server" in attrs
     assert "CORE_MODULES" in attrs
 
 
