@@ -33,16 +33,24 @@ from typing import Any, Literal
 import httpx
 from agent_connector_sdk.config import load_config, setting
 from agent_connector_sdk.mcp.action_dispatch import resolve_action
-from agent_connector_sdk.mcp.server import (
-    create_mcp_server,
-)
-from agent_connector_sdk.mcp.server import (
-    mcp_auth_config as config,
-)
+from agent_connector_sdk.mcp.server import create_mcp_server
 from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
+
+
+def _enable_delegation() -> bool:
+    """SDK-GAP: agent_utilities.mcp.server_factory.mcp_auth_config was a
+    module-level dict; agent-connector-sdk replaced it with
+    agent_connector_sdk.auth (see that package's docstring) but has no
+    drop-in equivalent constant, so this reads the one field this module
+    actually used directly.
+    """
+    from agent_connector_sdk.auth.delegation import DelegationSettings
+
+    return DelegationSettings.from_settings().enabled
+
 
 __version__ = "2.1.0"
 logger = get_logger(name="ListmonkMCP")
@@ -553,7 +561,7 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
     imported_tools = []
     imported_resources = []
     if args.openapi_file:
-        if config["enable_delegation"]:
+        if _enable_delegation():
             raise ValueError("OpenAPI import not supported with delegation enabled")
         try:
             with open(args.openapi_file) as f:
@@ -609,7 +617,7 @@ def mcp_server() -> None:
     print(f"  Transport: {args.transport.upper()}", file=sys.stderr)
     print(f"  Auth: {args.auth_type}", file=sys.stderr)
     print(
-        f"  Delegation: {('ON' if config['enable_delegation'] else 'OFF')}",
+        f"  Delegation: {('ON' if _enable_delegation() else 'OFF')}",
         file=sys.stderr,
     )
     print(f"  Eunomia: {args.eunomia_type}", file=sys.stderr)
