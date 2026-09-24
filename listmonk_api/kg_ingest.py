@@ -11,6 +11,12 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from agent_utilities.knowledge_graph.memory.native_ingest import (
+    ingest_documents as _native_ingest_documents,
+)
+from agent_utilities.knowledge_graph.memory.native_ingest import (
+    ingest_entities as _native_ingest_entities,
+)
 
 logger = logging.getLogger("listmonk_api.kg")
 
@@ -18,20 +24,33 @@ _SOURCE = "listmonk-api"
 _DOMAIN = "listmonk"
 
 
-def ingest_entities(*args: object, **kwargs: object) -> object:
-    """Write canonical typed nodes and relationships in one native transaction.
+def ingest_entities(
+    entities: list[dict[str, Any]],
+    relationships: list[dict[str, Any]] | None = None,
+    *,
+    source: str = _SOURCE,
+    domain: str = _DOMAIN,
+    client: Any | None = None,
+    graph: str | None = None,
+) -> dict[str, int]:
+    """Write canonical typed nodes and relationships in one native transaction."""
+    return _native_ingest_entities(
+        entities, relationships, source=source, domain=domain, client=client, graph=graph
+    )
 
-    SDK-GAP: Always raises now; see KnowledgeGraphIngestUnavailable.
-    """
-    _kg_unavailable("ingest_entities")
 
-
-def ingest_documents(*args: object, **kwargs: object) -> object:
-    """Write text records as canonical Document nodes.
-
-    SDK-GAP: Always raises now; see KnowledgeGraphIngestUnavailable.
-    """
-    _kg_unavailable("ingest_documents")
+def ingest_documents(
+    documents: list[dict[str, Any]],
+    *,
+    source: str = _SOURCE,
+    domain: str = _DOMAIN,
+    client: Any | None = None,
+    graph: str | None = None,
+) -> dict[str, int]:
+    """Write text records as canonical Document nodes."""
+    return _native_ingest_documents(
+        documents, source=source, domain=domain, client=client, graph=graph
+    )
 
 
 # --- record mappers (records -> entity/document dicts) ------------------------
@@ -136,12 +155,52 @@ def _campaign_body_document(
     return document, relationship
 
 
-def ingest_campaigns(*args: object, **kwargs: object) -> object:
+def ingest_campaigns(
+    campaigns: Any,
+    *,
+    client: Any | None = None,
+    graph: str | None = None,
+) -> dict[str, int]:
     """Map Listmonk campaign records → :Campaign nodes (+ :SubscriptionList /
+    :EmailTemplate links) and their bodies → :Document nodes, and ingest both."""
+    entities: list[dict[str, Any]] = []
+    relationships: list[dict[str, Any]] = []
+    documents: list[dict[str, Any]] = []
+    document_relationships: list[dict[str, Any]] = []
+    for camp in _as_list(campaigns):
+        cid = camp.get("id")
+        if cid is None:
+            continue
+        node_id = f"listmonk:campaign:{cid}"
+        entities.append(_campaign_entity(camp, cid, node_id))
 
-    SDK-GAP: Always raises now; see KnowledgeGraphIngestUnavailable.
-    """
-    _kg_unavailable("ingest_campaigns")
+        list_entities, list_relationships = _campaign_list_links(camp, node_id)
+        entities.extend(list_entities)
+        relationships.extend(list_relationships)
+
+        template_entity, template_relationship = _campaign_template_link(camp, node_id)
+        if template_entity is not None:
+            entities.append(template_entity)
+            relationships.append(template_relationship)
+
+        document, document_relationship = _campaign_body_document(camp, cid, node_id)
+        if document is not None:
+            documents.append(document)
+            document_relationships.append(document_relationship)
+    ent_res = ingest_entities(entities, relationships, client=client, graph=graph)
+    doc_res = (
+        _native_ingest_documents(
+            documents,
+            document_relationships,
+            source=_SOURCE,
+            domain=_DOMAIN,
+            client=client,
+            graph=graph,
+        )
+        if documents
+        else {"nodes": 0, "edges": 0}
+    )
+    return _merge(ent_res, doc_res)
 
 
 def ingest_lists(
@@ -217,23 +276,3 @@ def _merge(a: dict[str, int], b: dict[str, int]) -> dict[str, int]:
         "nodes": a["nodes"] + b["nodes"],
         "edges": a["edges"] + b["edges"],
     }
-
-
-class KnowledgeGraphIngestUnavailable(RuntimeError):
-    """Direct-to-graph ingestion is unavailable from this connector.
-
-    SDK-GAP (EH-48x, /var/tmp/l9/finish/au-decon-G4c/SDK-GAPS.md): raised in
-    place of the old ``agent_utilities.knowledge_graph`` native-ingest call --
-    agent-connector-sdk has no facade over EG's typed ingestion protocol yet,
-    and the fleet precedent (agents/world-reference-mcp) moves direct-to-graph
-    delivery to agent_connector_sdk.runner/sinks at the deployment layer, out
-    of connector scope.
-    """
-
-
-def _kg_unavailable(name: str) -> None:
-    raise KnowledgeGraphIngestUnavailable(
-        f"{name}: direct-to-graph ingestion moved out of connector code "
-        "(agent-utilities removed); no agent-connector-sdk facade exists yet "
-        "-- see SDK-GAPS.md"
-    )
