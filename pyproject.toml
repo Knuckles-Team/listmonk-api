@@ -17,22 +17,15 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.12,<3.15"
 dependencies = [
-    "agent-utilities[mcp]>=2.0.0,<3.0.0"]
+    "agent-connector-sdk>=0.1.0,<1.0.0",]
 
 [project.optional-dependencies]
-mcp = [
-    "agent-utilities[mcp]>=2.0.0,<3.0.0"]
-
-agent = [
-    "agent-utilities[agent-runtime,logfire]>=2.0.0,<3.0.0"]
 
 
-all = [
-    "agent-utilities[mcp,agent-runtime,logfire]>=2.0.0,<3.0.0"]
+
 
 [project.scripts]
 listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
-listmonk-agent = "listmonk_api.agent_server:agent_server"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -72,5 +65,3 @@ override-dependencies = [
     "fastmcp-slim[client,server]>=4.0.0b1",
 ]
 
-[tool.uv.sources]
-agent-utilities = { path = ".uv-workspace-siblings/agent-utilities", editable = true }

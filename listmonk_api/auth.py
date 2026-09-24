@@ -1,6 +1,6 @@
-from agent_utilities.core.config import setting
-from agent_utilities.core.exceptions import AuthError, UnauthorizedError
-from agent_utilities.core.transport_security import resolve_configured_tls_profile
+from agent_connector_sdk.config import setting
+from agent_connector_sdk.exceptions import AuthError, UnauthorizedError
+from agent_connector_sdk.tls.resolve import resolve_tls_profile
 
 from listmonk_api.api_client import ListmonkAPI
 
@@ -13,7 +13,7 @@ def get_client():
     if _client is None:
         base_url = setting("LISTMONK_URL", "https://listmonk.example.invalid")
         token = setting("LISTMONK_TOKEN", "")
-        tls_profile = resolve_configured_tls_profile(
+        tls_profile = resolve_tls_profile(
             "listmonk",
             profile_name=setting("LISTMONK_TLS_PROFILE", "") or None,
             profile_ref=setting("LISTMONK_TLS_PROFILE_REF", "") or None,

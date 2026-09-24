@@ -31,15 +31,15 @@ from threading import local
 from typing import Any, Literal
 
 import httpx
-from agent_utilities.core.config import load_config, setting
-from agent_utilities.mcp.action_dispatch import resolve_action
-from agent_utilities.mcp.server_factory import (
+from agent_connector_sdk.config import load_config, setting
+from agent_connector_sdk.mcp.action_dispatch import resolve_action
+from agent_connector_sdk.mcp.server import (
     create_mcp_server,
 )
-from agent_utilities.mcp.server_factory import (
+from agent_connector_sdk.mcp.server import (
     mcp_auth_config as config,
 )
-from agent_utilities.mcp.verbose_tools import register_tool_surface
+from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
