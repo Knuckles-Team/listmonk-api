@@ -1,7 +1,7 @@
 # Installation
 
 `listmonk-api` is a standard Python package and a prebuilt container image. Choose the
-path that matches how you intend to run it.
+path that matches how the operator intend to run it.
 
 ## Requirements
 
@@ -18,7 +18,7 @@ pip install listmonk-api
 ### Optional extras
 
 The base install ships the API client and the MCP server runtime. Install the extra for
-what you need:
+what the operator need:
 
 | Extra | Install | Pulls in |
 |---|---|---|

@@ -1,7 +1,7 @@
 # Usage — MCP / API / Agent
 
 `listmonk-api` exposes the same capability three ways: as **MCP tools** an agent calls,
-as a **Python API** (`ListmonkAPI`) you import, and as an **A2A agent**. The complete
+as a **Python API** (`ListmonkAPI`) the operator import, and as an **A2A agent**. The complete
 tool surface and the API structure are in [Overview](overview.md).
 
 ## As an MCP server
@@ -65,7 +65,7 @@ client.create_campaign(name="Weekly Update", subject="This week", lists=[1])
 ## As an A2A agent
 
 The agent server (console script `listmonk-agent`) is a Pydantic-AI graph that calls the
-MCP tools on your behalf, with an optional web interface and terminal interface.
+MCP tools on the operator's behalf, with an optional web interface and terminal interface.
 
 ```bash
 export LISTMONK_URL="https://listmonk.yourdomain.com"
