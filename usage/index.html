@@ -846,7 +846,7 @@
 
 <h1 id="usage-mcp-api-agent">Usage — MCP / API / Agent<a class="headerlink" href="#usage-mcp-api-agent" title="Permanent link">&para;</a></h1>
 <p><code>listmonk-api</code> exposes the same capability three ways: as <strong>MCP tools</strong> an agent calls,
-as a <strong>Python API</strong> (<code>ListmonkAPI</code>) you import, and as an <strong>A2A agent</strong>. The complete
+as a <strong>Python API</strong> (<code>ListmonkAPI</code>) the operator import, and as an <strong>A2A agent</strong>. The complete
 tool surface and the API structure are in <a href="../overview/">Overview</a>.</p>
 <h2 id="as-an-mcp-server">As an MCP server<a class="headerlink" href="#as-an-mcp-server" title="Permanent link">&para;</a></h2>
 <p>Once <a href="../deployment/">deployed</a>, the server registers action-routed tool modules. Each
@@ -935,7 +935,7 @@ media, templates, imports, transactional) behind one unified client.</p>
 </span></code></pre></div>
 <h2 id="as-an-a2a-agent">As an A2A agent<a class="headerlink" href="#as-an-a2a-agent" title="Permanent link">&para;</a></h2>
 <p>The agent server (console script <code>listmonk-agent</code>) is a Pydantic-AI graph that calls the
-MCP tools on your behalf, with an optional web interface and terminal interface.</p>
+MCP tools on the operator's behalf, with an optional web interface and terminal interface.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LISTMONK_URL</span><span class="o">=</span><span class="s2">"https://listmonk.yourdomain.com"</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LISTMONK_TOKEN</span><span class="o">=</span><span class="s2">"your-bearer-token"</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>

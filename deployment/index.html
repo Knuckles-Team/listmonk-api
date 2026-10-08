@@ -1154,7 +1154,7 @@ set:</p>
 set — including telemetry (OTEL) and access-governance (Eunomia / OIDC) variables — is
 documented in
 <a href="https://github.com/Knuckles-Team/listmonk-api/blob/main/.env.example"><code>.env.example</code></a>.
-Copy it to <code>.env</code> and populate only what you use.</p>
+Copy it to <code>.env</code> and populate only what the operator use.</p>
 <h2 id="docker-compose">Docker Compose<a class="headerlink" href="#docker-compose" title="Permanent link">&para;</a></h2>
 <p>The repo ships <a href="https://github.com/Knuckles-Team/listmonk-api/blob/main/docker/mcp.compose.yml"><code>docker/mcp.compose.yml</code></a>.
 It reads a sibling <code>.env</code> and publishes the HTTP server:</p>
@@ -1242,7 +1242,7 @@ MCP server by container name:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/agent.compose.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <h2 id="behind-a-caddy-reverse-proxy">Behind a Caddy reverse proxy<a class="headerlink" href="#behind-a-caddy-reverse-proxy" title="Permanent link">&para;</a></h2>
-<p>Expose the HTTP server on a hostname with automatic TLS. Add to your <code>Caddyfile</code>:</p>
+<p>Expose the HTTP server on a hostname with automatic TLS. Add to the operator's <code>Caddyfile</code>:</p>
 <div class="language-caddy highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Internal (self-signed) — homelab .example.invalid zone</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>listmonk-api.example.invalid<span class="w"> </span><span class="p">{</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="k">tls</span><span class="w"> </span>internal
@@ -1272,7 +1272,7 @@ console (<code>http://technitium.example.invalid:5380</code>). The ecosystem
 <a href="https://knuckles-team.github.io/technitium-dns-mcp/"><code>technitium-dns-mcp</code></a> automates
 this as a tool.</p>
 <h2 id="register-with-an-mcp-client">Register with an MCP client<a class="headerlink" href="#register-with-an-mcp-client" title="Permanent link">&para;</a></h2>
-<p>Add to your client's <code>mcp_config.json</code>:</p>
+<p>Add to the operator's client's <code>mcp_config.json</code>:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="nt">"listmonk-api"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
