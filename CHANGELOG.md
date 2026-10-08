@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Bidirectional Concept Traceability**: Embedded concept trace tags (`CONCEPT:CE-012` Actionable Reporting, `CONCEPT:CE-014` SDD Handoff) in MCP registrations and core managers.
-- **Detailed Environment Configurations**: Added comprehensive environment variable documentation in both `README.md` and `.env.example` to support OAuth/OIDC, Eunomia Policies, and OpenAPI credentials.
+- **Detailed Environment Configurations**: Added complete environment variable documentation in both `README.md` and `.env.example` to support OAuth/OIDC, Eunomia Policies, and OpenAPI credentials.
 - **Robust Test Coverage**: Added intensive unit test suites for all client subclasses, FastMCP tools, argument parsing CLI utilities, and exception-handling paths, raising coverage to 98%.
 
 ### Changed

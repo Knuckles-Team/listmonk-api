@@ -132,4 +132,4 @@ docker compose -f docker/stack.compose.yml up -d
 
 With the platform running and credentials configured, the MCP tools and the
 [`ListmonkAPI`](usage.md#as-a-python-api) client can manage lists, subscribers,
-campaigns, templates, and transactional sends against your instance.
+campaigns, templates, and transactional sends against the operator's instance.
