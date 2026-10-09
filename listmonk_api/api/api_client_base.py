@@ -2,10 +2,8 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 import requests
-from agent_utilities.core.transport_security import (
-    ResolvedTLSProfile,
-    resolve_configured_tls_profile,
-)
+from agent_connector_sdk.tls.profile import ResolvedTLSProfile
+from agent_connector_sdk.tls.resolve import resolve_tls_profile
 
 
 @dataclass(frozen=True)
@@ -45,7 +43,7 @@ class BaseApiClient:
     ):
         self.base_url = url
         self._session = requests.Session()
-        self.tls_profile = tls_profile or resolve_configured_tls_profile("listmonk")
+        self.tls_profile = tls_profile or resolve_tls_profile("listmonk")
         self.tls_profile.configure_requests_session(self._session)
         self._session.headers.update(
             {

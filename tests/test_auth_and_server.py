@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import Mock, patch
-from agent_utilities.core.exceptions import AuthError
+from agent_connector_sdk.exceptions import AuthError
 from listmonk_api.auth import get_client
 from listmonk_api.agent_server import agent_server
 

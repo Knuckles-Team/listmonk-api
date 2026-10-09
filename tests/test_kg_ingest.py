@@ -1,18 +1,23 @@
-"""Native epistemic-graph typed-node + document ingestion — Wire-First coverage.
+"""Epistemic-graph typed-node + document ingestion -- Wire-First coverage for listmonk-api.
 
 Exercises the real ``ingest_entities`` / ``ingest_documents`` / ``ingest_campaigns`` /
-``ingest_lists`` / ``ingest_subscribers`` seam with a fake engine client (no engine
-required), asserting the txn add_node/commit + edge calls and the Listmonk record →
-:Campaign / :SubscriptionList / :Subscriber / :EmailTemplate / :Document mapping.
+``ingest_lists`` / ``ingest_subscribers`` seam against a fake ``agent_connector_sdk.ingest``
+transport (no engine required). The real SDK request builder
+(``agent_connector_sdk.ingest.request.build_request``) still runs, so a malformed change
+set and the PII privacy guard are still exercised by the SDK's own contract, not
+re-derived here; only the final network commit is faked.
 CONCEPT:AU-KG.ingest.enterprise-source-extractor.
 """
 
 from __future__ import annotations
 
+from types import SimpleNamespace
 from typing import Any
 
-import msgpack
 import pytest
+from agent_connector_sdk.ingest import IngestError, KnowledgeIngest
+from epistemic_graph.generated.source_ingestion import SourceIngestionRequest
+
 from listmonk_api.kg_ingest import (
     ingest_campaigns,
     ingest_documents,
@@ -21,135 +26,76 @@ from listmonk_api.kg_ingest import (
     ingest_subscribers,
 )
 
-from agent_utilities.knowledge_graph.memory.native_ingest import NativeIngestError
-from agent_utilities.security.brain_context import ActorContext, use_actor
-from agent_utilities.security.actor_identity import ActorType
-from agent_utilities.knowledge_graph.core.session import GraphSession, use_session
 
+class _FakeTransport:
+    """Records every submitted request; no epistemic-graph engine required."""
 
-@pytest.fixture(autouse=True)
-def _governed_session():
-    actor = ActorContext(
-        actor_id="subject:opaque:synthetic",
-        actor_type=ActorType.AUTOMATED_SERVICE,
-        roles=(),
-        tenant_id="tenant:opaque:synthetic",
-        authenticated=True,
-    )
-    session = GraphSession(
-        actor=actor,
-        tenant=actor.tenant_id,
-        scopes=frozenset({"kg:write"}),
-        graph="graph:opaque:synthetic",
-        policy_version="policy:opaque:synthetic",
-        audience="epistemic-graph",
-    )
-    with use_actor(actor), use_session(session):
-        yield
-
-
-class _FakeNodes:
     def __init__(self) -> None:
-        self.values: dict[str, dict[str, Any]] = {}
+        self.requests: list[SourceIngestionRequest] = []
 
-    def properties(self, node_id: str) -> dict[str, Any] | None:
-        return self.values.get(node_id)
+    async def source_status(self, _connector: str, _stream: str) -> Any:
+        return SimpleNamespace(accepted_checkpoint=None)
 
-    def list(self) -> list[tuple[str, dict[str, Any]]]:
-        return list(self.values.items())
+    async def submit(self, request: SourceIngestionRequest) -> Any:
+        self.requests.append(request)
+        return SimpleNamespace(
+            affected_count=len(request.records),
+            relationship_count=len(request.relationships),
+        )
 
-
-class _FakeChanges:
-    def __init__(self, nodes: _FakeNodes) -> None:
-        self.nodes = nodes
-        self.edges: list[tuple[str, str, dict[str, Any]]] = []
-        self.applied: list[dict[str, Any]] = []
-        self.records: dict[str, dict[str, Any]] = {}
-        self.versions: dict[str, dict[str, Any]] = {}
-
-    def get(self, envelope_id: str) -> dict[str, Any] | None:
-        return self.records.get(envelope_id)
-
-    def content_version(self, object_id: str) -> dict[str, Any] | None:
-        return self.versions.get(object_id)
-
-    def cursor(self, _source: str, _partition: str = "") -> None:
-        return None
-
-    def apply(self, envelope: dict[str, Any]) -> dict[str, Any]:
-        self.applied.append(envelope)
-        mutation = envelope["mutation"]
-        for operation in mutation["operations"]:
-            method = operation["method"]
-            params = method["params"]
-            properties = msgpack.unpackb(params["properties_msgpack"], raw=False)
-            if method["method"] == "AddNode":
-                self.nodes.values[params["node_id"]] = properties
-            elif method["method"] == "AddEdge":
-                self.edges.append(
-                    (params["source_id"], params["target_id"], properties)
-                )
-        version = envelope["content_version"]
-        self.versions[version["object_id"]] = version
-        self.records[envelope["envelope_id"]] = envelope
-        return {
-            "batch_id": mutation["batch_id"],
-            "replayed": False,
-            "projection_pending": False,
-        }
+    async def store_blob(self, _data: bytes) -> str:
+        raise AssertionError("listmonk-api ingestion carries no media")
 
 
-class _FakeRdf:
-    def validate_shacl(self, _shapes: str, _data_graph: str) -> dict[str, Any]:
-        return {"conforms": True, "results": []}
+@pytest.fixture
+def ingest() -> tuple[KnowledgeIngest, _FakeTransport]:
+    transport = _FakeTransport()
+    return KnowledgeIngest(transport, loop=None), transport
 
 
-class _FakeClient:
-    def __init__(self) -> None:
-        self.nodes = _FakeNodes()
-        self.changes = _FakeChanges(self.nodes)
-        self.rdf = _FakeRdf()
-
-    @staticmethod
-    def supports(operation: str) -> bool:
-        return operation == "ApplyChangeEnvelope"
-
-
-def test_ingest_entities_writes_nodes_and_edges():
-    c = _FakeClient()
-    res = ingest_entities(
+@pytest.mark.asyncio
+async def test_ingest_entities_writes_nodes_and_edges(ingest):
+    service, transport = ingest
+    res = await ingest_entities(
         [
             {"id": "a", "node_type": "Campaign", "name": "c"},
             {"id": "b", "node_type": "SubscriptionList"},
         ],
         [{"source": "a", "target": "b", "relationship": "targetsList"}],
-        client=c,
+        ingest=service,
     )
     assert res == {"nodes": 2, "edges": 1}
-    assert len(c.changes.applied) == 1
-    assert set(c.nodes.values) == {"a", "b"}
-    # provenance is stamped
-    assert c.nodes.values["a"]["source"] == "listmonk-api"
-    assert c.nodes.values["a"]["domain"] == "listmonk"
-    assert c.changes.edges == [("a", "b", {"relationship": "targetsList"})]
+    assert len(transport.requests) == 1
+    request = transport.requests[0]
+    record_ids = {record.record_id for record in request.records}
+    assert record_ids == {"a", "b"}
+    a_record = next(r for r in request.records if r.record_id == "a")
+    assert a_record.payload["name"] == "c"
+    assert request.relationships[0].relation_reference.endswith(
+        "resources/Campaign/relations/targetsList"
+    )
 
 
-def test_ingest_documents_writes_document_nodes():
-    c = _FakeClient()
-    res = ingest_documents(
+@pytest.mark.asyncio
+async def test_ingest_documents_writes_document_nodes(ingest):
+    service, transport = ingest
+    res = await ingest_documents(
         [{"id": "listmonk:campaign:1:body", "text": "<h1>Hi</h1>", "title": "Hi"}],
-        client=c,
+        ingest=service,
     )
     assert res == {"nodes": 1, "edges": 0}
-    node = c.nodes.values["listmonk:campaign:1:body"]
-    assert node["node_type"] == "Document"
-    assert node["text"] == "<h1>Hi</h1>"
-    assert node["needs_enrichment"] is True  # stamped
+    record = next(
+        r for r in transport.requests[0].records
+        if r.record_id == "listmonk:campaign:1:body"
+    )
+    assert record.payload["text"] == "<h1>Hi</h1>"
+    assert record.payload["title"] == "Hi"
 
 
-def test_ingest_campaigns_maps_campaign_list_template_and_body():
-    c = _FakeClient()
-    res = ingest_campaigns(
+@pytest.mark.asyncio
+async def test_ingest_campaigns_maps_campaign_list_template_and_body(ingest):
+    service, transport = ingest
+    res = await ingest_campaigns(
         [
             {
                 "id": 42,
@@ -162,42 +108,52 @@ def test_ingest_campaigns_maps_campaign_list_template_and_body():
                 "lists": [{"id": 3, "name": "Product"}],
             }
         ],
-        client=c,
+        ingest=service,
     )
     # 1 campaign + 1 list + 1 template = 3 entity nodes, + 1 document node = 4
     assert res == {"nodes": 4, "edges": 3}
-    camp = c.nodes.values["listmonk:campaign:42"]
-    assert camp["node_type"] == "Campaign"
-    assert camp["campaignStatus"] == "running"
-    assert camp["subject"] == "News"
-    assert camp["externalToolId"] == "42"
-    assert c.nodes.values["listmonk:list:3"]["node_type"] == "SubscriptionList"
-    assert c.nodes.values["listmonk:template:5"]["node_type"] == "EmailTemplate"
-    assert c.nodes.values["listmonk:campaign:42:body"]["node_type"] == "Document"
-    edge_types = {e[2]["relationship"] for e in c.changes.edges}
+    # entities and the document body commit together in one transaction, since
+    # the document's :hasBody relationship names the campaign as its source.
+    assert len(transport.requests) == 1
+    request = transport.requests[0]
+    all_records = request.records
+    all_relationships = request.relationships
+    camp = next(r for r in all_records if r.record_id == "listmonk:campaign:42")
+    assert camp.payload["campaignStatus"] == "running"
+    assert camp.payload["subject"] == "News"
+    assert camp.payload["externalToolId"] == "42"
+    assert any(r.record_id == "listmonk:list:3" for r in all_records)
+    assert any(r.record_id == "listmonk:template:5" for r in all_records)
+    body = next(
+        r for r in all_records if r.record_id == "listmonk:campaign:42:body"
+    )
+    assert body.payload["text"] == "<p>hello</p>"
+    edge_types = {r.relation_reference.rsplit("/", 1)[-1] for r in all_relationships}
     assert edge_types == {"targetsList", "usesTemplate", "hasBody"}
 
 
-def test_ingest_lists_maps_subscription_list():
-    c = _FakeClient()
-    res = ingest_lists(
+@pytest.mark.asyncio
+async def test_ingest_lists_maps_subscription_list(ingest):
+    service, transport = ingest
+    res = await ingest_lists(
         {
             "results": [
                 {"id": 3, "name": "Product", "type": "public", "optin": "double"}
             ]
         },
-        client=c,
+        ingest=service,
     )
     assert res == {"nodes": 1, "edges": 0}
-    node = c.nodes.values["listmonk:list:3"]
-    assert node["node_type"] == "SubscriptionList"
-    assert node["listType"] == "public"
-    assert node["optinType"] == "double"
+    record = transport.requests[0].records[0]
+    assert record.record_id == "listmonk:list:3"
+    assert record.payload["listType"] == "public"
+    assert record.payload["optinType"] == "double"
 
 
-def test_ingest_subscribers_maps_subscriber_and_membership():
-    c = _FakeClient()
-    res = ingest_subscribers(
+@pytest.mark.asyncio
+async def test_ingest_subscribers_maps_subscriber_and_membership(ingest):
+    service, transport = ingest
+    res = await ingest_subscribers(
         [
             {
                 "id": 9,
@@ -207,24 +163,29 @@ def test_ingest_subscribers_maps_subscriber_and_membership():
                 "lists": [{"id": 3}],
             }
         ],
-        client=c,
+        ingest=service,
     )
     assert res == {"nodes": 1, "edges": 1}
-    node = c.nodes.values["listmonk:subscriber:9"]
-    assert node["node_type"] == "Subscriber"
-    # native_ingest's governed PII scrubber redacts email-shaped values.
-    assert node["email"] == "[REDACTED_EMAIL]"
-    assert node["subscriberStatus"] == "enabled"
-    assert c.changes.edges == [
-        ("listmonk:subscriber:9", "listmonk:list:3", {"relationship": "subscribedToList"})
-    ]
+    request = transport.requests[0]
+    record = next(
+        r for r in request.records if r.record_id == "listmonk:subscriber:9"
+    )
+    # the SDK's PersistencePrivacyGuard redacts email-shaped values by default.
+    assert record.payload["email"] == "[REDACTED_EMAIL]"
+    assert record.payload["subscriberStatus"] == "enabled"
+    assert request.relationships[0].source.record_id == "listmonk:subscriber:9"
+    assert request.relationships[0].target.record_id == "listmonk:list:3"
 
 
-def test_retired_structural_alias_is_rejected():
-    with pytest.raises(NativeIngestError, match="canonical node_type"):
-        ingest_entities([{"id": "a", "type": "Campaign"}], client=_FakeClient())
+@pytest.mark.asyncio
+async def test_retired_structural_alias_is_rejected(ingest):
+    service, _transport = ingest
+    with pytest.raises(IngestError, match="node_type"):
+        await ingest_entities([{"id": "a", "type": "Campaign"}], ingest=service)
 
 
-def test_empty_native_ingest_is_rejected():
-    with pytest.raises(NativeIngestError, match="at least one entity"):
-        ingest_entities([], client=_FakeClient())
+@pytest.mark.asyncio
+async def test_empty_ingest_is_rejected(ingest):
+    service, _transport = ingest
+    with pytest.raises(IngestError, match="at least one entity"):
+        await ingest_entities([], ingest=service)

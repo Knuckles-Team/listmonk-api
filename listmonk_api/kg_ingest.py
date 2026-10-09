@@ -1,9 +1,10 @@
-"""Native epistemic-graph ingestion for Listmonk records and documents.
+"""Epistemic-graph ingestion for Listmonk records and documents.
 
-All writes use the required ``agent_utilities.knowledge_graph.memory.native_ingest``
-primitive. Nodes use canonical ``node_type`` and edges use canonical ``relationship``;
-nodes and edges commit in one native transaction. Missing engine dependencies, rejected
-records, conflicts, and transaction failures propagate as ``NativeIngestError``.
+CONCEPT:AU-KG.ingest.enterprise-source-extractor. The listmonk-api connector pushes
+campaigns/lists/subscribers into the ONE epistemic-graph knowledge graph as **typed
+OWL nodes** (``:Campaign``, ``:SubscriptionList``, ``:Subscriber``, ``:EmailTemplate``)
++ text bodies as ``:Document`` nodes, through ``agent_connector_sdk.ingest`` -- the
+generated ``SourceIngest`` client, not a local ingestion helper.
 """
 
 from __future__ import annotations
@@ -11,45 +12,122 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    ingest_documents as _native_ingest_documents,
-)
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    ingest_entities as _native_ingest_entities,
+from agent_connector_sdk.ingest import (
+    ChangeSet,
+    Document,
+    Entity,
+    IngestBinding,
+    IngestError,
+    KnowledgeIngest,
+    Relationship,
+    current_ingest,
 )
 
 logger = logging.getLogger("listmonk_api.kg")
 
-_SOURCE = "listmonk-api"
-_DOMAIN = "listmonk"
+_BINDING = IngestBinding(connector="listmonk-api", stream="listmonk")
+
+_ENTITY_RESERVED_KEYS = frozenset({"id", "node_type"})
+_RELATIONSHIP_RESERVED_KEYS = frozenset({"source", "target", "relationship"})
+_DOCUMENT_RESERVED_KEYS = frozenset({"id", "text", "title", "source_uri"})
 
 
-def ingest_entities(
-    entities: list[dict[str, Any]],
-    relationships: list[dict[str, Any]] | None = None,
-    *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
-) -> dict[str, int]:
-    """Write canonical typed nodes and relationships in one native transaction."""
-    return _native_ingest_entities(
-        entities, relationships, source=source, domain=domain, client=client, graph=graph
+def _to_entity(record: dict[str, Any]) -> Entity:
+    return Entity(
+        id=record.get("id"),
+        node_type=record.get("node_type"),
+        properties={
+            key: value
+            for key, value in record.items()
+            if key not in _ENTITY_RESERVED_KEYS
+        },
     )
 
 
-def ingest_documents(
-    documents: list[dict[str, Any]],
+def _to_relationship(record: dict[str, Any]) -> Relationship:
+    properties = {
+        key: value
+        for key, value in record.items()
+        if key not in _RELATIONSHIP_RESERVED_KEYS
+    }
+    return Relationship(
+        source=record["source"],
+        target=record["target"],
+        relationship=record["relationship"],
+        properties=properties or None,
+    )
+
+
+def _to_document(record: dict[str, Any]) -> Document:
+    return Document(
+        id=record["id"],
+        text=record["text"],
+        title=record.get("title"),
+        source_uri=record.get("source_uri"),
+        properties={
+            key: value
+            for key, value in record.items()
+            if key not in _DOCUMENT_RESERVED_KEYS
+        },
+    )
+
+
+async def _submit(
     *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
+    entities: tuple[Entity, ...] = (),
+    documents: tuple[Document, ...] = (),
+    relationships: tuple[Relationship, ...] = (),
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
-    """Write text records as canonical Document nodes."""
-    return _native_ingest_documents(
-        documents, source=source, domain=domain, client=client, graph=graph
+    change_set = ChangeSet(
+        entities=entities, documents=documents, relationships=relationships
+    )
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    return {"nodes": receipt.affected_count, "edges": receipt.relationship_count}
+
+
+async def ingest_entities(
+    entities: list[dict[str, Any]],
+    relationships: list[dict[str, Any]] | None = None,
+    *,
+    ingest: KnowledgeIngest | None = None,
+) -> dict[str, int]:
+    """Write typed OWL nodes (+ edges) into epistemic-graph via the SDK ingest facade.
+
+    Uses canonical ``node_type`` / ``relationship`` structural fields and surfaces
+    a malformed change set or a refused commit as ``IngestError``.
+    """
+    if not entities:
+        raise IngestError("ingest_entities needs at least one entity")
+    return await _submit(
+        entities=tuple(_to_entity(entity) for entity in entities),
+        relationships=tuple(
+            _to_relationship(relationship) for relationship in relationships or ()
+        ),
+        ingest=ingest,
+    )
+
+
+async def ingest_documents(
+    documents: list[dict[str, Any]],
+    relationships: list[dict[str, Any]] | None = None,
+    *,
+    ingest: KnowledgeIngest | None = None,
+) -> dict[str, int]:
+    """Write text records as canonical ``:Document`` nodes (+ edges).
+
+    ``relationships`` uses the same canonical ``source``/``target``/``relationship``
+    shape as :func:`ingest_entities`; document nodes and their links commit together.
+    """
+    if not documents:
+        raise IngestError("ingest_documents needs at least one document")
+    return await _submit(
+        documents=tuple(_to_document(document) for document in documents),
+        relationships=tuple(
+            _to_relationship(relationship) for relationship in relationships or ()
+        ),
+        ingest=ingest,
     )
 
 
@@ -155,11 +233,10 @@ def _campaign_body_document(
     return document, relationship
 
 
-def ingest_campaigns(
+async def ingest_campaigns(
     campaigns: Any,
     *,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Map Listmonk campaign records → :Campaign nodes (+ :SubscriptionList /
     :EmailTemplate links) and their bodies → :Document nodes, and ingest both."""
@@ -187,27 +264,29 @@ def ingest_campaigns(
         if document is not None:
             documents.append(document)
             document_relationships.append(document_relationship)
-    ent_res = ingest_entities(entities, relationships, client=client, graph=graph)
-    doc_res = (
-        _native_ingest_documents(
-            documents,
-            document_relationships,
-            source=_SOURCE,
-            domain=_DOMAIN,
-            client=client,
-            graph=graph,
-        )
-        if documents
-        else {"nodes": 0, "edges": 0}
+    if not entities:
+        raise IngestError("ingest_entities needs at least one entity")
+    # Entities and their document bodies commit in one transaction: a document's
+    # :hasBody relationship names a campaign entity as its source, and the SDK's
+    # request builder only resolves a relationship endpoint's node_type from
+    # entities present in the SAME change set (or an explicit EntityRef) -- so
+    # splitting this into two separate submits (entities, then documents) would
+    # make the :hasBody edge's source type unresolvable.
+    return await _submit(
+        entities=tuple(_to_entity(entity) for entity in entities),
+        documents=tuple(_to_document(document) for document in documents),
+        relationships=tuple(
+            _to_relationship(relationship)
+            for relationship in (*relationships, *document_relationships)
+        ),
+        ingest=ingest,
     )
-    return _merge(ent_res, doc_res)
 
 
-def ingest_lists(
+async def ingest_lists(
     lists: Any,
     *,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Map Listmonk list records → :SubscriptionList nodes and ingest."""
     entities: list[dict[str, Any]] = []
@@ -228,14 +307,13 @@ def ingest_lists(
                 "externalToolId": str(lid),
             }
         )
-    return ingest_entities(entities, client=client, graph=graph)
+    return await ingest_entities(entities, ingest=ingest)
 
 
-def ingest_subscribers(
+async def ingest_subscribers(
     subscribers: Any,
     *,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Map Listmonk subscriber records → :Subscriber nodes (+ :subscribedToList links)."""
     entities: list[dict[str, Any]] = []
@@ -268,11 +346,4 @@ def ingest_subscribers(
                     "relationship": "subscribedToList",
                 }
             )
-    return ingest_entities(entities, relationships, client=client, graph=graph)
-
-
-def _merge(a: dict[str, int], b: dict[str, int]) -> dict[str, int]:
-    return {
-        "nodes": a["nodes"] + b["nodes"],
-        "edges": a["edges"] + b["edges"],
-    }
+    return await ingest_entities(entities, relationships, ingest=ingest)
