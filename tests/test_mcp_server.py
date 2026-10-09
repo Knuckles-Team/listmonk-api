@@ -486,7 +486,6 @@ def test_get_mcp_instance_standard(mock_get_client):
 
 
 @patch("listmonk_api.mcp_server.get_client")
-@patch("listmonk_api.mcp_server.config", {"enable_delegation": True})
 @patch.dict(
     "os.environ",
     {
@@ -499,6 +498,7 @@ def test_get_mcp_instance_openapi_delegation_error(mock_get_client):
     with patch("listmonk_api.mcp_server.create_mcp_server") as mock_create:
         mock_args = Mock()
         mock_args.openapi_file = "spec.json"
+        mock_args.enable_delegation = True
         mock_create.return_value = (mock_args, Mock(), [])
 
         with pytest.raises(
@@ -508,7 +508,6 @@ def test_get_mcp_instance_openapi_delegation_error(mock_get_client):
 
 
 @patch("listmonk_api.mcp_server.get_client")
-@patch("listmonk_api.mcp_server.config", {"enable_delegation": False})
 @patch.dict(
     "os.environ",
     {
@@ -523,6 +522,7 @@ def test_get_mcp_instance_openapi_import_failure(mock_get_client):
     ):
         mock_args = Mock()
         mock_args.openapi_file = "spec.json"
+        mock_args.enable_delegation = False
         mock_args.openapi_use_token = True
         mock_create.return_value = (mock_args, Mock(), [])
 
@@ -534,7 +534,6 @@ def test_get_mcp_instance_openapi_import_failure(mock_get_client):
 
 
 @patch("listmonk_api.mcp_server.get_client")
-@patch("listmonk_api.mcp_server.config", {"enable_delegation": False})
 @patch.dict(
     "os.environ",
     {
@@ -552,6 +551,7 @@ def test_get_mcp_instance_openapi_import_success(mock_get_client):
     ):
         mock_args = Mock()
         mock_args.openapi_file = "spec.json"
+        mock_args.enable_delegation = False
         mock_args.openapi_use_token = False
         mock_args.openapi_username = "admin"
         mock_args.openapi_password = "password"

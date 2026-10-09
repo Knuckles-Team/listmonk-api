@@ -31,15 +31,10 @@ from threading import local
 from typing import Any
 
 import httpx
-from agent_utilities.core.config import load_config, setting
-from agent_utilities.mcp.action_dispatch import resolve_action
-from agent_utilities.mcp.server_factory import (
-    create_mcp_server,
-)
-from agent_utilities.mcp.server_factory import (
-    mcp_auth_config as config,
-)
-from agent_utilities.mcp.verbose_tools import register_tool_surface
+from agent_connector_sdk.config import load_config, setting
+from agent_connector_sdk.mcp.action_dispatch import resolve_action
+from agent_connector_sdk.mcp.server import create_mcp_server
+from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
@@ -410,7 +405,7 @@ def register_listmonk_tx_tools(mcp: FastMCP):
 
 def register_listmonk_ingest_tools(mcp: FastMCP):
     @mcp.tool(tags={"listmonk_ingest"})
-    def listmonk_ingest(
+    async def listmonk_ingest(
         entity: str = Field(
             default="campaigns",
             description="What to ingest into the KG: 'campaigns', 'lists', or 'subscribers'.",
@@ -451,13 +446,13 @@ def register_listmonk_ingest_tools(mcp: FastMCP):
 
         if entity == "campaigns":
             records = client.get_campaigns(**kwargs)
-            result = ingest_campaigns(records)
+            result = await ingest_campaigns(records)
         elif entity == "lists":
             records = client.get_lists(**kwargs)
-            result = ingest_lists(records)
+            result = await ingest_lists(records)
         elif entity == "subscribers":
             records = client.get_subscribers(**kwargs)
-            result = ingest_subscribers(records)
+            result = await ingest_subscribers(records)
         else:
             return {
                 "error": f"Unknown entity '{entity}'. Use campaigns, lists, or subscribers."
@@ -533,8 +528,14 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
     )
     imported_tools = []
     imported_resources = []
-    if args.openapi_file:
-        if config["enable_delegation"]:
+    # agent_connector_sdk's parser/create_mcp_server does not define the
+    # AU-only --openapi-file/--enable-delegation flags (delegation, Eunomia,
+    # and OpenAPI import are explicitly AU-internal features, not part of the
+    # SDK's scope per agent_connector_sdk.mcp.parser's own docstring), so this
+    # branch degrades to permanently inert rather than crashing on a missing
+    # attribute.
+    if getattr(args, "openapi_file", None):
+        if getattr(args, "enable_delegation", False):
             raise ValueError("OpenAPI import not supported with delegation enabled")
         try:
             with open(args.openapi_file) as f:
@@ -590,10 +591,10 @@ def mcp_server() -> None:
     print(f"  Transport: {args.transport.upper()}", file=sys.stderr)
     print(f"  Auth: {args.auth_type}", file=sys.stderr)
     print(
-        f"  Delegation: {('ON' if config['enable_delegation'] else 'OFF')}",
+        f"  Delegation: {('ON' if getattr(args, 'enable_delegation', False) else 'OFF')}",
         file=sys.stderr,
     )
-    print(f"  Eunomia: {args.eunomia_type}", file=sys.stderr)
+    print(f"  Eunomia: {getattr(args, 'eunomia_type', 'disabled')}", file=sys.stderr)
     print(f"  Imported OpenAPI Tools: {len(imported_tools)} total", file=sys.stderr)
     if args.transport == "stdio":
         mcp.run(transport="stdio")
