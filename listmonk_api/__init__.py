@@ -17,7 +17,6 @@ CORE_MODULES: list[str] = [
 ]
 
 OPTIONAL_MODULES = {
-    "listmonk_api.agent_server": "agent_server",
     "listmonk_api.mcp_server": "mcp_server",
 }
 
@@ -55,7 +54,6 @@ def _import_module_safely(module_name: str):
 #: its module in ``OPTIONAL_MODULES``.
 _AVAILABILITY_FLAG_MODULES = {
     "_MCP_AVAILABLE": "mcp_server",
-    "_AGENT_AVAILABLE": "agent_server",
 }
 
 

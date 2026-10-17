@@ -13,7 +13,10 @@ def _get_pkg_name():
 
     test_dir = pathlib.Path(__file__).resolve().parent
     project_dir = test_dir.parent
-    return project_dir.name.replace("-", "_")
+    import tomllib
+
+    project = tomllib.loads((project_dir / "pyproject.toml").read_text())
+    return project["project"]["name"].replace("-", "_")
 
 
 @pytest.fixture

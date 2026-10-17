@@ -8,12 +8,12 @@ import pytest
 
 def test_module_runnable():
     """Package module should be runnable with --help or similar."""
-    pkg_name = (
-        __import__("pathlib")
-        .Path(__file__)
-        .resolve()
-        .parent.parent.name.replace("-", "_")
-    )
+    import pathlib
+    import tomllib
+
+    root = pathlib.Path(__file__).resolve().parent.parent
+    project = tomllib.loads((root / "pyproject.toml").read_text())
+    pkg_name = project["project"]["name"].replace("-", "_")
     result = subprocess.run(
         [sys.executable, "-c", f"import {pkg_name}"],
         capture_output=True,

@@ -22,8 +22,7 @@ what the operator need:
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install listmonk-api` | `agent-utilities[mcp]` — FastMCP MCP-server runtime |
-| `agent` | `pip install "listmonk-api[agent]"` | Pydantic-AI agent + Logfire tracing |
+| _(base)_ | `pip install listmonk-api` | `agent-connector-sdk` — FastMCP MCP-server runtime |
 | `all` | `pip install "listmonk-api[all]"` | Everything above (MCP + agent + Logfire) |
 
 ```bash

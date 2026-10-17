@@ -68,7 +68,6 @@ and giving it a DNS name with Technitium. To provision the **Listmonk instance**
 connects to, see [Backing Platform](platform.md).
 
 > `listmonk-api` ships both an **MCP server** (console script `listmonk-mcp`) and an
-> **A2A agent server** (console script `listmonk-agent`). The MCP server is the typed,
 > deterministic tool surface; the agent server is a Pydantic-AI graph that calls those
 > tools over an MCP connection.
 
@@ -177,7 +176,6 @@ listmonk-agent \
 ```
 
 The repo ships
-[`docker/agent.compose.yml`](https://github.com/Knuckles-Team/listmonk-api/blob/main/docker/agent.compose.yml),
 which runs the MCP server and the agent together on one network so the agent reaches the
 MCP server by container name:
 
@@ -198,7 +196,6 @@ services:
     ports:
       - "8000:8000"
 
-  listmonk-api-agent:
     image: example/listmonk-api@sha256:<digest>
     container_name: listmonk-api-agent
     hostname: listmonk-api-agent
@@ -222,7 +219,6 @@ services:
 ```
 
 ```bash
-docker compose -f docker/agent.compose.yml up -d
 ```
 
 ## Behind a Caddy reverse proxy
