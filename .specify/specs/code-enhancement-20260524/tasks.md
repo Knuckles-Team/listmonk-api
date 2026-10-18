@@ -3,7 +3,7 @@
 Generated: 2026-05-24T04:17:16.200999+00:00
 Skipped informational: 4
 
-- [ ] [P] **T001** [Dependency Audit] Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+- [ ] [P] **T001** [Dependency Audit] Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
   - Priority: P3-Low | Effort: Small
 - [ ] [P] **T002** [Codebase Optimization] Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Ap
   - Priority: P1-High | Effort: Large
@@ -65,5 +65,5 @@ Skipped informational: 4
   - Priority: P3-Low | Effort: Medium
 - [ ] [P] **T031** [Environment Variables] 3 Python env vars not in .env.example: OPENAPI_CLIENT_ID, OPENAPI_PASSWORD, OPEN
   - Priority: P3-Low | Effort: Medium
-- [ ] [P] **T032** [analyze_xdg_kg] Analysis error: No module named 'agent_utilities.knowledge_graph'
+- [ ] [P] **T032** [analyze_xdg_kg] Analysis error: No module named 'agent_connector_sdk.knowledge_graph'
   - Priority: P1-High | Effort: Medium

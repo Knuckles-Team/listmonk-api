@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=80.9.0", "wheel"]
+requires = ["setuptools>=84.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "2.1.0"
+version = "2.2.0"
 description = "Agent package for Listmonk"
 readme = "README.md"
 authors = [{ name = "Project Maintainers", email = "maintainers@users.noreply.github.com" }]
@@ -15,40 +15,31 @@ classifiers = [
     "Environment :: Console",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3"]
-requires-python = ">=3.12,<3.15"
+requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk>=0.1.0,<1.0.0",
-    "agent-utilities[mcp]>=2.0.0,<3.0.0"]
+    "agent-connector-sdk[mcp]>=0.2.1,<1.0.0",
+    "requests>=2.34.2",
+]
 
 [project.optional-dependencies]
-mcp = [
-    "agent-utilities[mcp]>=2.0.0,<3.0.0"]
-
-agent = [
-    "agent-utilities[agent-runtime,logfire]>=2.0.0,<3.0.0"]
-
-
-all = [
-    "agent-utilities[mcp,agent-runtime,logfire]>=2.0.0,<3.0.0"]
+mcp = [ "agent-connector-sdk[mcp]>=0.2.1,<1.0.0",]
+all = [ "agent-connector-sdk[mcp]>=0.2.1,<1.0.0",]
+test = [ "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
 [project.scripts]
 listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
-listmonk-agent = "listmonk_api.agent_server:agent_server"
 
 [tool.setuptools.packages.find]
 where = ["."]
 
-[project.entry-points."agent_utilities.skill_providers"]
+[project.entry-points."agent_connector_sdk.skill_providers"]
 listmonk-api = "listmonk_api.skills"
 
-[project.entry-points."agent_utilities.ontology_providers"]
+[project.entry-points."agent_connector_sdk.ontology_providers"]
 listmonk-api = "listmonk_api.ontology"
 
-[project.entry-points."agent_utilities.source_connector_providers"]
+[project.entry-points."agent_connector_sdk.source_connector_providers"]
 listmonk-api = "listmonk_api.connectors"
-
-[project.entry-points."agent_utilities.prompt_providers"]
-listmonk-api = "listmonk_api.prompts"
 
 [tool.uv.workspace]
 members = ["."]
@@ -70,12 +61,8 @@ omit = [
 
 [tool.uv]
 override-dependencies = [
-    "fastmcp-slim[client,server]>=4.0.0b1",
+    "fastmcp-slim[client,server]>=4.1.0",
 ]
-
-[tool.uv.sources]
-agent-connector-sdk = { path = ".uv-workspace-siblings/agent-connector-sdk", editable = true }
-agent-utilities = { path = ".uv-workspace-siblings/agent-utilities", editable = true }
 
 [tool.pipelines_hooks.ste]
 exempt = ["specs/*", "specs/**/*"]

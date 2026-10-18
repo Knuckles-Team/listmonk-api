@@ -13,7 +13,7 @@
 
 ## Functional Requirements
 
-- **FR-001**: Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+- **FR-001**: Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
 - **FR-002**: Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23); God class: Api (29 methods) — consider mixins/composition
 - **FR-003**: Test suite lacks intent diversity (only one type)
 - **FR-004**: 12 potential doc-test drift items
