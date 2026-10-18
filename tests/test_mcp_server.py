@@ -481,8 +481,8 @@ def test_get_mcp_instance_standard(mock_get_client):
     mcp, args, middlewares, registered_tags, imported_tools = get_mcp_instance()
     assert mcp.name == "Listmonk"
     # Ensure tools got registered
-    assert get_tool(mcp, "listmonk_subscribers") is not None
-    assert get_tool(mcp, "listmonk_lists") is not None
+    assert get_tool(mcp, "listmonk_get_subscribers") is not None
+    assert get_tool(mcp, "listmonk_get_lists") is not None
 
 
 @patch("listmonk_api.mcp_server.get_client")
