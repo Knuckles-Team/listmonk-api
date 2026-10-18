@@ -40,9 +40,23 @@ actions:
   description: 'Answers epistemic_status/why/what_changed queries over the shared knowledge graph: calibrated
     confidence, evidence/source citations, belief justification trees, bitemporal valid/tx history, and
     policy-redaction-aware provenance.'
+  label: ''
+  parameters: []
+  target_resource: null
+  conflict_policy: null
+  requires_approval: true
+  approval_class: unclassified
+  effects: []
 - id: run_graph_flow
   name: Graph Flow Execution
   description: Execute a workflow through the agent's graph orchestration engine
+  label: ''
+  parameters: []
+  target_resource: null
+  conflict_policy: null
+  requires_approval: true
+  approval_class: unclassified
+  effects: []
 events:
 - name: listmonk-campaigns.updated
   resource: campaign
@@ -119,8 +133,8 @@ schema_mappings:
 sync:
 - preset: listmonk-campaigns
   server: listmonk-mcp
-  tool: listmonk_campaigns
-  action: get_campaigns
+  tool: listmonk_get_campaigns
+  action: null
   records_path: results
   id_field: id
   title_field: name
@@ -128,37 +142,37 @@ sync:
   updated_field: updated_at
   pagination: page
   doc_type: campaign
-  tool_schema_sha256: e4acd10cb930ee0586e9db54d867b500a594e54b28099102954770a0225d8fa2
+  tool_schema_sha256: fd03bd5c854e87aeb83eec3778441c1d3cd6d1d5ce3e164fcf5c254a62972bfb
   raw:
     server: listmonk-mcp
-    tool: listmonk_campaigns
-    action: get_campaigns
+    tool: listmonk_get_campaigns
     records_path: results
     id_field: id
     title_field: name
     text_field: body
     updated_field: updated_at
     pagination: page
-    page_kind: page
+    page_kind: number
     page_param: page
     page_size_param: per_page
     doc_type: campaign
+    params_style: args
 provenance:
   generated_by: scripts/generate_connector_manifests.py
-  generated_at: '2026-08-26T13:42:55Z'
+  generated_at: '2026-10-18T00:00:00Z'
   source_artifacts:
   - listmonk_api/connectors/mcp_source_presets.json
   - listmonk_api/connectors/tool_schema_fingerprints.json
   - listmonk_api/ontology/listmonk.ttl
   integrity:
     algorithm: urdna2015-sha256
-    hash: fb2af6e860a9e9a46bcd7ff1c86186bc4a6872aecb6b4adba6542595fd029f02
+    hash: 5e9016c9bdeddf410869bdca25b1e07ebdd2f24e4a7b9dcef28ab3b3b3a54b62
     triple_count: 56
   signer: UNSIGNED-PREVIEW
   signature_algorithm: none
   signing_public_key: ''
   signature: null
-  source_commit: 7e1f87a8b7cdd9f6b065fb0ef7557e701cfe57b1
+  source_commit: 94331e87f16665bdf0d2fa04006eb30da4d7e550
 policy:
   pii_fields:
     Campaign:
