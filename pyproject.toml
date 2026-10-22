@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "2.3.0"
+version = "2.3.1"
 description = "Agent package for Listmonk"
 readme = "README.md"
 authors = [{ name = "Project Maintainers", email = "maintainers@users.noreply.github.com" }]
@@ -66,3 +66,7 @@ override-dependencies = [
 
 [tool.pipelines_hooks.ste]
 exempt = ["specs/*", "specs/**/*"]
+
+[tool.ruff.lint]
+select = [ "E", "F", "I", "UP", "B",]
+ignore = [ "E402", "E501", "B008",]

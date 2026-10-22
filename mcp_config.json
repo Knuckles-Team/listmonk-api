@@ -7,7 +7,6 @@
         "listmonk-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "intent",
         "LISTMONK_CAMPAIGNSTOOL": "True",
         "LISTMONK_IMPORTSTOOL": "True",
         "LISTMONK_LISTSTOOL": "True",

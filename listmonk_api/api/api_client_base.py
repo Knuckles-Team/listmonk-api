@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 import requests
 from agent_connector_sdk.tls.profile import ResolvedTLSProfile
@@ -14,10 +14,10 @@ class PaginationRequest:
     per_page: int
     max_pages: int
     extra_filter: str = ""
-    order_by: Optional[str] = None
-    order: Optional[str] = None
+    order_by: str | None = None
+    order: str | None = None
     valid_order_by: tuple = field(default_factory=tuple)
-    data: Optional[dict] = None
+    data: dict | None = None
 
 
 def _flatten_page_results(response_json: Any) -> list:
@@ -34,12 +34,24 @@ def _flatten_page_results(response_json: Any) -> list:
     return [response_json]
 
 
+def build_authorization(token: str, username: str | None = None) -> str:
+    """Return the listmonk API-user header value: ``token <user>:<token>``.
+
+    listmonk rejects ``Bearer``. A ``token`` that already reads ``user:token``
+    is used as given; otherwise ``username`` is prepended.
+    """
+    if ":" in token or not username:
+        return f"token {token}"
+    return f"token {username}:{token}"
+
+
 class BaseApiClient:
     def __init__(
         self,
         url: str,
         token: str,
         tls_profile: ResolvedTLSProfile | None = None,
+        username: str | None = None,
     ):
         self.base_url = url
         self._session = requests.Session()
@@ -47,7 +59,7 @@ class BaseApiClient:
         self.tls_profile.configure_requests_session(self._session)
         self._session.headers.update(
             {
-                "Authorization": f"Bearer {token}",
+                "Authorization": build_authorization(token, username),
                 "Content-Type": "application/json",
             }
         )

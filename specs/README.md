@@ -12,4 +12,4 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 
 ## Local specifications
 
-This repository has no local spec yet.
+[`CONN-LISTMONK-API`](listmonk-api/spec.md) — API-user token authentication for the listmonk client.

@@ -23,6 +23,7 @@ def get_client():
             _client = ListmonkAPI(
                 url=base_url,
                 token=token,
+                username=setting("LISTMONK_USERNAME", "") or None,
                 tls_profile=tls_profile,
             )
 
