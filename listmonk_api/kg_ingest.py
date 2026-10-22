@@ -25,7 +25,7 @@ from agent_connector_sdk.ingest import (
 
 logger = logging.getLogger("listmonk_api.kg")
 
-_BINDING = IngestBinding(connector="listmonk-api", stream="listmonk")
+_BINDING = IngestBinding(connector="listmonk-mcp", stream="listmonk")
 
 _ENTITY_RESERVED_KEYS = frozenset({"id", "node_type"})
 _RELATIONSHIP_RESERVED_KEYS = frozenset({"source", "target", "relationship"})

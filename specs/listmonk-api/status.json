@@ -6,7 +6,8 @@
   "requirement_ids": [
     "CONN-LISTMONK-API-R001",
     "CONN-LISTMONK-API-R002",
-    "CONN-LISTMONK-API-R003"
+    "CONN-LISTMONK-API-R003",
+    "CONN-LISTMONK-API-R004"
   ],
   "requirements": [
     {
@@ -14,21 +15,41 @@
       "title": "Token scheme",
       "delivery_state": "SPECIFIED",
       "landed_in": [],
-      "verified_by": []
+      "verified_by": [
+        "tests/test_token_auth.py:19",
+        "tests/test_token_auth.py:24"
+      ]
     },
     {
       "id": "CONN-LISTMONK-API-R002",
       "title": "Credential shapes",
       "delivery_state": "SPECIFIED",
       "landed_in": [],
-      "verified_by": []
+      "verified_by": [
+        "tests/test_token_auth.py:29",
+        "tests/test_token_auth.py:34"
+      ]
     },
     {
       "id": "CONN-LISTMONK-API-R003",
       "title": "Wiring",
       "delivery_state": "SPECIFIED",
       "landed_in": [],
-      "verified_by": []
+      "verified_by": [
+        "tests/test_token_auth.py:39"
+      ]
+    },
+    {
+      "id": "CONN-LISTMONK-API-R004",
+      "title": "Fleet name",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "34f280ab208d",
+        "f7306559d9c7"
+      ],
+      "verified_by": [
+        "tests/test_fleet_name.py:35"
+      ]
     }
   ]
 }
