@@ -17,3 +17,4 @@ An empty username with a bare token sends the bare token. No case sends `Bearer`
 ## Quality and release proof
 
 Run `pytest tests/test_token_auth.py`. Run `pipelines-hook spec-standard`.
+| T-006 | `CONN-LISTMONK-API-R004` | `tests/test_fleet_name.py::test_connector_name_is_the_fleet_name` | Every connector name in the package is `listmonk-mcp`. |

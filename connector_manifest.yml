@@ -1,4 +1,4 @@
-connector: listmonk-api
+connector: listmonk-mcp
 ontology_source: listmonk
 schema_version: '1'
 resources:
