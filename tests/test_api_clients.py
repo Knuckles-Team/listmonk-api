@@ -38,7 +38,7 @@ def client(mock_session):
 
 def test_base_client_init(mock_session, client):
     mock_session.headers.update.assert_called_with(
-        {"Authorization": "Bearer mock-token", "Content-Type": "application/json"}
+        {"Authorization": "token mock-token", "Content-Type": "application/json"}
     )
 
 
