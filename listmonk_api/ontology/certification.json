@@ -1,9 +1,6 @@
 {
   "api_version": "arbora.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "892c422fbc73fa8ac6de69937adfa1f4f2eba79862627e8ac42663584e9873ad",
-    "listmonk_api/connectors/mcp_source_presets.json": "5680d8490d54fa3bf08da1b052a6f3cdbc9d90730d077a5b058a7c6e6549e94f",
-    "listmonk_api/connectors/tool_schema_fingerprints.json": "07cea0e0754b1f23c71e76be6bc0ec06413ba87a4b960cd098a0683bbbfa06d2",
     "listmonk_api/ontology/fixtures/records.json": "3bfc9ad808b89d144406d45d220b63c8c40e969068f525844780c02a91e88b3a",
     "listmonk_api/ontology/listmonk.ttl": "f9cfacedeb69e22939b8c81980a2abcbaaef8689bd6682268dd54abfaf2d0733",
     "listmonk_api/ontology/mappings/source.yaml": "75b70ed3dfe508eb63b9a5ddd0b0ea9addf8b71d86645741651724f31c75216d",

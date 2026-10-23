@@ -39,7 +39,7 @@ from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
 
-__version__ = "2.3.3"
+__version__ = "2.3.4"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 

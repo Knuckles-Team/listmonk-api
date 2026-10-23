@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "2.3.3"
+version = "2.3.4"
 description = "Agent package for Listmonk"
 readme = "README.md"
 authors = [{ name = "Project Maintainers", email = "maintainers@users.noreply.github.com" }]
@@ -17,13 +17,13 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk[mcp]>=0.3.18,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",
     "requests>=2.34.2",
 ]
 
 [project.optional-dependencies]
-mcp = [ "agent-connector-sdk[mcp]>=0.3.18,<1.0.0",]
-all = [ "agent-connector-sdk[mcp]>=0.3.18,<1.0.0",]
+mcp = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
+all = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
 test = [ "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
 [project.scripts]
@@ -41,9 +41,6 @@ listmonk-api = "listmonk_api.skills"
 
 [project.entry-points."agent_connector_sdk.ontology_providers"]
 listmonk-api = "listmonk_api.ontology"
-
-[project.entry-points."agent_connector_sdk.source_connector_providers"]
-listmonk-api = "listmonk_api.connectors"
 
 [tool.uv.workspace]
 members = ["."]
