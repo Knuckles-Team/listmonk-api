@@ -1,8 +1,0 @@
-{
-  "algorithm": "agent-connector-sdk:mcp-tool-contract-compat:v2",
-  "connector": "listmonk-mcp",
-  "schema_version": "1",
-  "tools": {
-    "listmonk_get_campaigns": "fd03bd5c854e87aeb83eec3778441c1d3cd6d1d5ce3e164fcf5c254a62972bfb"
-  }
-}
