@@ -2,8 +2,8 @@
 
 import importlib
 import inspect
-from typing import Any
 import warnings
+from typing import Any
 
 # Suppress RequestsDependencyWarning due to chardet 6.x / requests 2.32.x mismatch
 # Centralized here to ensure it runs before any sub-package imports
@@ -92,3 +92,18 @@ def __getattr__(name: str) -> Any:
 
 def __dir__() -> list[str]:
     return sorted(list(globals().keys()) + __all__)
+
+
+from agent_connector_sdk.connector import Connector
+
+from listmonk_api.api_client import ListmonkAPI
+from listmonk_api.auth import get_client
+from listmonk_api.mcp_server import register_prompts
+
+connector = Connector(
+    api=ListmonkAPI,
+    get_client=get_client,
+    tools="listmonk_api.mcp_server",
+    instructions="Listmonk MCP Server — Manage subscribers, lists, campaigns, templates, media, imports, and transactional messages.",
+    extra_registrations=(register_prompts,),
+)
