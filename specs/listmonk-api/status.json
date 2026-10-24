@@ -48,7 +48,7 @@
         "f7306559d9c7"
       ],
       "verified_by": [
-        "tests/test_fleet_name.py:35"
+        "tests/test_fleet_name.py:34"
       ]
     }
   ]
