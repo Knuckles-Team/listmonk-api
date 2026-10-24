@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "2.3.4"
+version = "2.3.5"
 description = "Agent package for Listmonk"
 readme = "README.md"
-authors = [{ name = "Project Maintainers", email = "maintainers@users.noreply.github.com" }]
+authors = [{ name = "Repository Maintainers", email = "maintainers@knuckles.team" }]
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -17,30 +17,22 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.5.4,<0.6.0",
     "requests>=2.34.2",
 ]
 
 [project.optional-dependencies]
-mcp = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
-all = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
 test = [ "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
 [project.scripts]
-listmonk-mcp = "listmonk_api.mcp_server:mcp_server"
+listmonk-mcp = "agent_connector_sdk.cli:serve"
 
 # The one declared connector identity: the fleet name (SDK-CONNECTOR-CONTROL-R071).
 [project.entry-points."agent_connector_sdk.connector"]
-listmonk-mcp = "listmonk_api"
+listmonk-mcp = "listmonk_api:connector"
 
 [tool.setuptools.packages.find]
 where = ["."]
-
-[project.entry-points."agent_connector_sdk.skill_providers"]
-listmonk-api = "listmonk_api.skills"
-
-[project.entry-points."agent_connector_sdk.ontology_providers"]
-listmonk-api = "listmonk_api.ontology"
 
 [tool.uv.workspace]
 members = ["."]
@@ -71,3 +63,10 @@ exempt = ["specs/*", "specs/**/*"]
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]
 ignore = [ "E402", "E501", "B008",]
+
+[tool.pipelines.container]
+port = 8004
+debug_apt = ["default-jre", "ripgrep", "tree", "fd-find", "curl", "nano", "build-essential", "cmake", "libssl-dev", "libcurl4-openssl-dev", "pkg-config", "cargo", "rustc"]
+
+[tool.ruff]
+extend-exclude = ["tests", "scripts"]

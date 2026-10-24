@@ -1,5 +1,5 @@
 schema_version: '1'
-connector: listmonk-api
+connector: listmonk-mcp
 ontology_source: listmonk
 sync:
 - preset: listmonk-campaigns

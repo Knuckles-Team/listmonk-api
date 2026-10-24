@@ -23,23 +23,18 @@ with warnings.catch_warnings():
         pass
 warnings.filterwarnings("ignore", message=".*urllib3.*or chardet.*")
 warnings.filterwarnings("ignore", message=".*urllib3.*or charset_normalizer.*")
-import asyncio
 import json
 import logging
 import sys
 from threading import local
 from typing import Any
 
-import httpx
-from agent_connector_sdk.config import load_config, setting
+from agent_connector_sdk.config import setting
+from agent_connector_sdk.connector_hooks import RegistrationContext
 from agent_connector_sdk.mcp.action_dispatch import resolve_action
-from agent_connector_sdk.mcp.server import create_mcp_server
-from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 
-from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client
 
-__version__ = "2.3.4"
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
 
@@ -462,8 +457,9 @@ def register_listmonk_ingest_tools(mcp: FastMCP):
         return {"entity": entity, "listed": listed, "ingested": result}
 
 
-def register_prompts(mcp: FastMCP):
+def register_prompts(context: RegistrationContext):
     """Register MCP prompts."""
+    mcp = context.server
 
     @mcp.prompt
     def create_campaign_prompt(
@@ -516,96 +512,3 @@ def _validate_openapi_credentials(args: Any) -> None:
         _validate_openapi_token_credential()
         return
     _validate_openapi_password_or_client_credentials(args)
-
-
-def get_mcp_instance() -> tuple[Any, Any, Any, Any, Any]:
-    """Initialize and return the MCP instance, args, and middlewares."""
-    load_config()
-    args, mcp, middlewares = create_mcp_server(
-        name="Listmonk",
-        version=__version__,
-        instructions="Listmonk MCP Server — Manage subscribers, lists, campaigns, templates, media, imports, and transactional messages.",
-    )
-    imported_tools = []
-    imported_resources = []
-    # agent_connector_sdk's parser/create_mcp_server does not define the
-    # AU-only --openapi-file/--enable-delegation flags (delegation, Eunomia,
-    # and OpenAPI import are explicitly AU-internal features, not part of the
-    # SDK's scope per agent_connector_sdk.mcp.parser's own docstring), so this
-    # branch degrades to permanently inert rather than crashing on a missing
-    # attribute.
-    if getattr(args, "openapi_file", None):
-        if getattr(args, "enable_delegation", False):
-            raise ValueError("OpenAPI import not supported with delegation enabled")
-        try:
-            with open(args.openapi_file) as f:
-                spec = json.load(f)
-
-            async def _load_openapi_tools():
-                _validate_openapi_credentials(args)
-                api = get_client()
-                base_url = args.openapi_base_url or api.base_url
-                async with httpx.AsyncClient(base_url=base_url) as client:
-                    openapi_mcp = FastMCP.from_openapi(
-                        openapi_spec=spec, client=client, name="OpenAPI Tools"
-                    )
-                    tools = await openapi_mcp.get_tools()
-                    resources = await openapi_mcp.get_resources()
-                    return (tools, resources)
-
-            print("Importing OpenAPI tools...", file=sys.stderr)
-            imported_tools, imported_resources = asyncio.run(_load_openapi_tools())
-            print(
-                f"Imported {len(imported_tools)} tools, {len(imported_resources)} resources",
-                file=sys.stderr,
-            )
-            for tool in imported_tools:
-                mcp.add_tool(tool)
-            for resource in imported_resources:
-                mcp.add_resource(resource)
-        except Exception as exc:
-            print(f"Operation failed: {type(exc).__name__}", file=sys.stderr)
-            logger.error("OpenAPI import failed", extra={"error": "Operation failed"})
-            sys.exit(1)
-
-    registered_tags = register_tool_surface(
-        mcp,
-        client_cls=ListmonkAPI,
-        get_client=get_client,
-        service="listmonk-api",
-        tools_module=sys.modules[__name__],
-    )
-    register_prompts(mcp)
-    for tool in imported_tools:
-        mcp.add_tool(tool)
-    for resource in imported_resources:
-        mcp.add_resource(resource)
-    for mw in middlewares:
-        mcp.add_middleware(mw)
-    return (mcp, args, middlewares, registered_tags, imported_tools)
-
-
-def mcp_server() -> None:
-    mcp, args, middlewares, registered_tags, imported_tools = get_mcp_instance()
-    print("\nStarting Listmonk MCP Server", file=sys.stderr)
-    print(f"  Transport: {args.transport.upper()}", file=sys.stderr)
-    print(f"  Auth: {args.auth_type}", file=sys.stderr)
-    print(
-        f"  Delegation: {('ON' if getattr(args, 'enable_delegation', False) else 'OFF')}",
-        file=sys.stderr,
-    )
-    print(f"  Eunomia: {getattr(args, 'eunomia_type', 'disabled')}", file=sys.stderr)
-    print(f"  Imported OpenAPI Tools: {len(imported_tools)} total", file=sys.stderr)
-    if args.transport == "stdio":
-        mcp.run(transport="stdio")
-    elif args.transport == "streamable-http":
-        mcp.run(transport="streamable-http", host=args.host, port=args.port)
-    elif args.transport == "sse":
-        mcp.run(transport="sse", host=args.host, port=args.port)
-    else:
-        logger.error("Invalid transport", extra={"transport": args.transport})
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    mcp_server()

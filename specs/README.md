@@ -13,3 +13,4 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 ## Local specifications
 
 [`CONN-LISTMONK-API`](listmonk-api/spec.md) — API-user token authentication for the listmonk client.
+- [`CONN-LISTMONK-API-CONNECTOR-CONTENT`](connector-content/spec.md) — The connector serves its packaged content.
