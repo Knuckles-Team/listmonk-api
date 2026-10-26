@@ -3,8 +3,6 @@
 import subprocess
 import sys
 
-import pytest
-
 
 def test_module_runnable():
     """Package module should be runnable with --help or similar."""

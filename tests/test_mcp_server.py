@@ -1,12 +1,14 @@
-import pytest
 from unittest.mock import Mock
+
+import pytest
 from fastmcp import FastMCP
+
 from listmonk_api.mcp_server import (
-    register_listmonk_subscribers_tools,
-    register_listmonk_lists_tools,
-    register_listmonk_imports_tools,
     register_listmonk_campaigns_tools,
+    register_listmonk_imports_tools,
+    register_listmonk_lists_tools,
     register_listmonk_media_tools,
+    register_listmonk_subscribers_tools,
     register_listmonk_templates_tools,
     register_listmonk_tx_tools,
 )

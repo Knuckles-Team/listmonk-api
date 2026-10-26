@@ -1,7 +1,7 @@
+from listmonk_api.api.api_client_base import BaseApiClient
 from listmonk_api.models import (
     ImportSubscribersRequest,
 )
-from listmonk_api.api.api_client_base import BaseApiClient
 
 
 class ListmonkAPI(BaseApiClient):

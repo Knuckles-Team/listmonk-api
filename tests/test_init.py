@@ -1,11 +1,8 @@
-import sys
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import patch, MagicMock
+
 import listmonk_api
-
-
-
-
 
 
 def test_init_attribute_error():
@@ -28,5 +25,3 @@ def test_init_import_error_handling():
 
         res = _import_module_safely("listmonk_api.non_existent")
         assert res is None
-
-

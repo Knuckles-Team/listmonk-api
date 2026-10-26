@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from agent_connector_sdk.connector_identity import connector_name
 import ast
 import tomllib
 from pathlib import Path
 
 import pytest
+from agent_connector_sdk.connector_identity import connector_name
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "listmonk_api"

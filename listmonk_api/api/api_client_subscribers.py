@@ -1,11 +1,10 @@
-from typing import Optional, List, Dict, Union
+from listmonk_api.api.api_client_base import BaseApiClient, PaginationRequest
 from listmonk_api.models import (
     SubscriberCreateRequest,
 )
-from listmonk_api.api.api_client_base import BaseApiClient, PaginationRequest
 
 
-def _list_id_filter(list_id: Optional[Union[int, List[int]]]) -> str:
+def _list_id_filter(list_id: int | list[int] | None) -> str:
     """Build the ``&list_id=...`` query-filter suffix for one or many list ids."""
     if not list_id:
         return ""
@@ -17,8 +16,8 @@ def _list_id_filter(list_id: Optional[Union[int, List[int]]]) -> str:
 class ListmonkAPI(BaseApiClient):
     def get_subscribers(
         self,
-        query: Optional[Dict] = None,
-        list_id: Optional[Union[int, List[int]]] = None,
+        query: dict | None = None,
+        list_id: int | list[int] | None = None,
         max_pages: int = 0,
         per_page: int = 100,
     ):
