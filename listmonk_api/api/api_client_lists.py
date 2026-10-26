@@ -1,17 +1,16 @@
-from typing import Optional, Dict
+from listmonk_api.api.api_client_base import BaseApiClient, PaginationRequest
 from listmonk_api.models import (
     ListCreateRequest,
     ListEditRequest,
 )
-from listmonk_api.api.api_client_base import BaseApiClient, PaginationRequest
 
 
 class ListmonkAPI(BaseApiClient):
     def get_lists(
         self,
-        query: Optional[Dict] = None,
-        order_by: Optional[str] = None,
-        order: Optional[str] = None,
+        query: dict | None = None,
+        order_by: str | None = None,
+        order: str | None = None,
         max_pages: int = 0,
         per_page: int = 100,
     ):

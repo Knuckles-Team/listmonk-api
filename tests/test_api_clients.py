@@ -1,6 +1,8 @@
-import pytest
 from unittest.mock import Mock, patch
-from requests import Response, HTTPError
+
+import pytest
+from requests import Response
+
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.models import (
     CampaignCreateRequest,

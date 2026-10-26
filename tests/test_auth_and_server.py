@@ -1,7 +1,8 @@
-import os
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import Mock, patch
 from agent_connector_sdk.exceptions import AuthError
+
 from listmonk_api.auth import get_client
 
 # ==============================================================================
@@ -55,5 +56,3 @@ def test_get_client_auth_error(mock_listmonk_api):
 # ==============================================================================
 # Agent Server Launcher CLI Tests
 # ==============================================================================
-
-
