@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.6] - 2026-10-26
+
+### Added
+- Canonical spec-delivery Pages publication and a packaged connector development skill.
+
 ## [2.3.5] - 2026-10-24
 
 ### Changed

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "listmonk-api"
-version = "2.3.5"
+version = "2.3.6"
 description = "Agent package for Listmonk"
 readme = "README.md"
 authors = [{ name = "Repository Maintainers", email = "maintainers@knuckles.team" }]

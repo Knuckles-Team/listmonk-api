@@ -15,6 +15,9 @@ ecosystem.
 
 ## Overview
 
+The [spec delivery dashboard](spec-delivery/) reports the generated delivery
+status for this connector.
+
 `listmonk-api` wraps Listmonk's REST API with a typed, modular Python client and a
 deterministic MCP tool surface, and ships a Pydantic-AI agent server for conversational
 automation. It provides:
