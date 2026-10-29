@@ -34,7 +34,9 @@ class _FakeTransport:
         self.requests: list[SourceIngestionRequest] = []
 
     async def source_status(self, _connector: str, _stream: str) -> Any:
-        return SimpleNamespace(accepted_checkpoint=None)
+        return SimpleNamespace(
+            connector=_connector, stream=_stream, accepted_checkpoint=None
+        )
 
     async def submit(self, request: SourceIngestionRequest) -> Any:
         self.requests.append(request)
@@ -85,7 +87,8 @@ async def test_ingest_documents_writes_document_nodes(ingest):
     )
     assert res == {"nodes": 1, "edges": 0}
     record = next(
-        r for r in transport.requests[0].records
+        r
+        for r in transport.requests[0].records
         if r.record_id == "listmonk:campaign:1:body"
     )
     assert record.payload["text"] == "<h1>Hi</h1>"
@@ -124,9 +127,7 @@ async def test_ingest_campaigns_maps_campaign_list_template_and_body(ingest):
     assert camp.payload["externalToolId"] == "42"
     assert any(r.record_id == "listmonk:list:3" for r in all_records)
     assert any(r.record_id == "listmonk:template:5" for r in all_records)
-    body = next(
-        r for r in all_records if r.record_id == "listmonk:campaign:42:body"
-    )
+    body = next(r for r in all_records if r.record_id == "listmonk:campaign:42:body")
     assert body.payload["text"] == "<p>hello</p>"
     edge_types = {r.relation_reference.rsplit("/", 1)[-1] for r in all_relationships}
     assert edge_types == {"targetsList", "usesTemplate", "hasBody"}
@@ -167,9 +168,7 @@ async def test_ingest_subscribers_maps_subscriber_and_membership(ingest):
     )
     assert res == {"nodes": 1, "edges": 1}
     request = transport.requests[0]
-    record = next(
-        r for r in request.records if r.record_id == "listmonk:subscriber:9"
-    )
+    record = next(r for r in request.records if r.record_id == "listmonk:subscriber:9")
     # the SDK's PersistencePrivacyGuard redacts email-shaped values by default.
     assert record.payload["email"] == "[REDACTED_EMAIL]"
     assert record.payload["subscriberStatus"] == "enabled"
