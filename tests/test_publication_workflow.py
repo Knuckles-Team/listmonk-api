@@ -20,7 +20,6 @@ def _actions_on(workflow):
 
 def test_pages_publishes_spec_dashboard_and_supports_manual_refresh():
 
-
     config = json.loads((ROOT / ".github/spec-dashboard.json").read_text())
     assert config == {
         "version": 1,
@@ -30,7 +29,6 @@ def test_pages_publishes_spec_dashboard_and_supports_manual_refresh():
 
 def test_single_pages_publisher_and_release_flags_remain_canonical():
     assert not (ROOT / ".github/workflows/docs.yml").exists()
-
 
 
 def test_development_skill_and_runtime_entrypoints_match_source_tree():
