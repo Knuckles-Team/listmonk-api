@@ -38,7 +38,7 @@
   "functional_requirements": [
     {
       "id": "FR-001",
-      "description": "Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0",
+      "description": "Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0",
       "testable": true
     },
     {

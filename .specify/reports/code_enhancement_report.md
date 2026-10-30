@@ -42,7 +42,7 @@ xychart-beta
 `█████████████░░░░░░░` 69/100
 
 > [!WARNING]
-> Detected ecosystem marker: agent-connector-sdk → Agent-Utilities Ecosystem
+> Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
@@ -67,7 +67,7 @@ xychart-beta
 `███████████████████░` 97/100
 
 > [!TIP]
-> Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
+> Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
@@ -295,7 +295,7 @@ xychart-beta
 | 2 | 🔴 High | Concept Traceability | 36 test functions missing concept markers | High | High |
 | 3 | 🔴 High | Concept Traceability | 51 significant functions (>10 lines) missing concept markers in docstrings | High | High |
 | 4 | 🔴 High | Test Execution | No tests were executed (test framework detected but no tests found) | High | High |
-| 5 | 🔴 High | Project Analysis | Detected ecosystem marker: agent-connector-sdk → Agent-Utilities Ecosystem | High | Medium |
+| 5 | 🔴 High | Project Analysis | Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem | High | Medium |
 | 6 | 🔴 High | Project Analysis | Protocol support: MCP | High | Medium |
 | 7 | 🔴 High | Architecture & Design Patterns | SRP: 1 modules exceed 500 lines (god modules) | High | Medium |
 | 8 | 🔴 High | Architecture & Design Patterns | SRP: 1 classes have >15 methods | High | Medium |
@@ -314,7 +314,7 @@ xychart-beta
 | 21 | 🟢 Low | Pytest Quality | No shared fixtures in conftest.py | Low | Low |
 | 22 | 🟢 Low | Pytest Quality | 5 tests use weak assertions (assert result is not None, assert True, etc.) | Low | Low |
 | 23 | 🟢 Low | Pytest Quality | 13 tests have >5 assertions — consider splitting (single responsibility) | Low | Low |
-| 24 | 🟢 Low | Dependency Audit | Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0 | Low | Low |
+| 24 | 🟢 Low | Dependency Audit | Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0 | Low | Low |
 | 25 | 🟢 Low | Documentation & Governance | README.md missing sections: usage|quick start | Low | Low |
 | 26 | 🟢 Low | Documentation & Governance | 2 broken internal links in README.md | Low | Low |
 | 27 | 🟢 Low | Documentation & Governance | README missing: Has a Table of Contents | Low | Low |

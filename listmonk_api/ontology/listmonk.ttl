@@ -116,7 +116,7 @@
     rdfs:label "Listmonk Email-Marketing Ontology" ;
     rdfs:comment """Listmonk newsletter and mailing-list model — campaigns, subscription
     lists, subscribers, email templates and transactional messages, with their targeting,
-    subscription and templating relationships — federated into the agent-connector-sdk
+    subscription and templating relationships — federated into the scion-sdk
     knowledge-graph hub. Reuses the shared :Person and :Document classes.""" .
 
 # ontology-codemod R3

@@ -94,7 +94,7 @@ def __dir__() -> list[str]:
     return sorted(list(globals().keys()) + __all__)
 
 
-from agent_connector_sdk.connector import Connector
+from scion_sdk.connector import Connector
 
 from listmonk_api.api_client import ListmonkAPI
 from listmonk_api.auth import get_client

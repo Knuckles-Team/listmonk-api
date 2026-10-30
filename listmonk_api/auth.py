@@ -1,6 +1,6 @@
-from agent_connector_sdk.config import setting
-from agent_connector_sdk.exceptions import AuthError, UnauthorizedError
-from agent_connector_sdk.tls.resolve import resolve_tls_profile
+from scion_sdk.config import setting
+from scion_sdk.exceptions import AuthError, UnauthorizedError
+from scion_sdk.tls.resolve import resolve_tls_profile
 
 from listmonk_api.api_client import ListmonkAPI
 

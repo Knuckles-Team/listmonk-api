@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 import pytest
-from agent_connector_sdk.exceptions import AuthError
+from scion_sdk.exceptions import AuthError
 
 from listmonk_api.auth import get_client
 

@@ -29,9 +29,9 @@ import sys
 from threading import local
 from typing import Any
 
-from agent_connector_sdk.config import setting
-from agent_connector_sdk.connector_hooks import RegistrationContext
-from agent_connector_sdk.mcp.action_dispatch import resolve_action
+from scion_sdk.config import setting
+from scion_sdk.connector_hooks import RegistrationContext
+from scion_sdk.mcp.action_dispatch import resolve_action
 
 from listmonk_api.auth import get_client
 

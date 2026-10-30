@@ -15,7 +15,7 @@
 
 ## Functional Requirements
 
-- **FR-001**: Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
+- **FR-001**: Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0
 - **FR-002**: Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Api.create_campaign at 64L, CC=23); God class: Api (29 methods) — consider mixins/composition
 - **FR-003**: 1 MEDIUM severity vulnerabilities found
 - **FR-004**: 13 potential doc-test drift items
@@ -46,7 +46,7 @@
 - **FR-029**: 13 tests have >5 assertions — consider splitting (single responsibility)
 - **FR-030**: Undocumented env vars: OAUTH_UPSTREAM_AUTH_ENDPOINT, OAUTH_UPSTREAM_CLIENT_ID, OAUTH_UPSTREAM_CLIENT_SECRET, OAUTH_UPSTREAM_TOKEN_ENDPOINT, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CONFIG_URL, OPENAPI_CLIENT_ID, REMOTE_AUTH_SERVERS, REMOTE_BASE_URL
 - **FR-031**: 3 Python env vars not in .env.example: OPENAPI_CLIENT_ID, OPENAPI_PASSWORD, OPENAPI_USERNAME
-- **FR-032**: Analysis error: No module named 'agent_connector_sdk.knowledge_graph'
+- **FR-032**: Analysis error: No module named 'scion_sdk.knowledge_graph'
 
 ## Success Criteria
 

@@ -3,7 +3,7 @@
 Generated: 2026-05-22T21:09:49.796868+00:00
 Skipped informational: 5
 
-- [ ] [P] **T001** [Dependency Audit] Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
+- [ ] [P] **T001** [Dependency Audit] Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0
   - Priority: P3-Low | Effort: Small
 - [ ] [P] **T002** [Codebase Optimization] Monolithic: listmonk_api.py (734L) — 2 functions with high complexity (worst: Ap
   - Priority: P1-High | Effort: Large

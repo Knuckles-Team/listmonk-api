@@ -12,7 +12,7 @@ description: >-
 license: MIT
 tags: [listmonk, campaign, newsletter, email, mcp]
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 # Listmonk Campaign Management

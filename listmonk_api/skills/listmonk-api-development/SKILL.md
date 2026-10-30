@@ -32,7 +32,7 @@ hooks.
   in `pyproject.toml` includes `skills/**`, `prompts/**`, `ontology/**`, and
   `connectors/**`; inspect a built wheel when changing these files.
 - The only declared current console script is `listmonk-mcp`, provided by
-  `agent_connector_sdk.cli:serve`; `python -m listmonk_api` delegates to the SDK
+  `scion_sdk.cli:serve`; `python -m listmonk_api` delegates to the SDK
   runner. The tracked `docker/compose.yml` and older docs still mention a
   `listmonk-agent` profile, but current `pyproject.toml` declares no such script
   or `agent_server.py`. Do not invent that runtime or rewrite it as part of a

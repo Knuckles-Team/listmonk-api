@@ -7,7 +7,7 @@
       "score": 69,
       "grade": "D",
       "findings": [
-        "Detected ecosystem marker: agent-connector-sdk \u2192 Agent-Utilities Ecosystem",
+        "Detected ecosystem marker: scion-sdk \u2192 Agent-Utilities Ecosystem",
         "Protocol support: MCP"
       ],
       "justifications": [
@@ -87,7 +87,7 @@
       "score": 97,
       "grade": "A",
       "findings": [
-        "Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0"
+        "Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0"
       ],
       "justifications": [
         {
@@ -98,14 +98,14 @@
         }
       ],
       "packages": {
-        "agent-connector-sdk": {
+        "scion-sdk": {
           "current": "0.2.40",
           "constraint": "0.16.0",
           "installed": "0.2.40",
           "latest": "0.16.0",
           "status": "minor",
           "version_source": "installed",
-          "summary": "Agent Connector SDK for Pydantic AI Agents"
+          "summary": "Scion SDK for Pydantic AI Agents"
         }
       }
     },

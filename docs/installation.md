@@ -22,7 +22,7 @@ what the operator need:
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install listmonk-api` | `agent-connector-sdk` — FastMCP MCP-server runtime |
+| _(base)_ | `pip install listmonk-api` | `scion-sdk` — FastMCP MCP-server runtime |
 | `all` | `pip install "listmonk-api[all]"` | Everything above (MCP + agent + Logfire) |
 
 ```bash
