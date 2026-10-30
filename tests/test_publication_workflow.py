@@ -48,7 +48,7 @@ def test_development_skill_and_runtime_entrypoints_match_source_tree():
         assert (ROOT / path).exists(), path
 
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
-    assert project["scripts"]["listmonk-mcp"] == "agent_connector_sdk.cli:serve"
-    assert project["entry-points"]["agent_connector_sdk.connector"]["listmonk-mcp"] == (
+    assert project["scripts"]["listmonk-mcp"] == "scion_sdk.cli:serve"
+    assert project["entry-points"]["scion_sdk.connector"]["listmonk-mcp"] == (
         "listmonk_api:connector"
     )

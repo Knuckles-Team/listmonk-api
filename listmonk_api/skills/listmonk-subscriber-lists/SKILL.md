@@ -12,7 +12,7 @@ description: >-
 license: MIT
 tags: [listmonk, subscribers, lists, audience, import, mcp]
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 # Listmonk Subscriber & List Management

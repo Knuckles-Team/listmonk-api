@@ -3,7 +3,7 @@
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. The listmonk-api connector pushes
 campaigns/lists/subscribers into the ONE epistemic-graph knowledge graph as **typed
 OWL nodes** (``:Campaign``, ``:SubscriptionList``, ``:Subscriber``, ``:EmailTemplate``)
-+ text bodies as ``:Document`` nodes, through ``agent_connector_sdk.ingest`` -- the
++ text bodies as ``:Document`` nodes, through ``scion_sdk.ingest`` -- the
 generated ``SourceIngest`` client, not a local ingestion helper.
 """
 
@@ -12,7 +12,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from agent_connector_sdk.ingest import (
+from scion_sdk.ingest import (
     ChangeSet,
     Document,
     Entity,

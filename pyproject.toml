@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.12"
 dependencies = [
-    "scion-sdk[mcp]>=0.5.9,<0.6.0",
+    "scion-sdk[mcp]>=0.6.0,<0.7.0",
     "requests>=2.34.2",
 ]
 
@@ -25,10 +25,10 @@ dependencies = [
 test = [ "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
 [project.scripts]
-listmonk-mcp = "agent_connector_sdk.cli:serve"
+listmonk-mcp = "scion_sdk.cli:serve"
 
 # The one declared connector identity: the fleet name (SCION-CONNECTOR-CONTROL-R071).
-[project.entry-points."agent_connector_sdk.connector"]
+[project.entry-points."scion_sdk.connector"]
 listmonk-mcp = "listmonk_api:connector"
 
 [tool.setuptools.packages.find]

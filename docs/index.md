@@ -1,7 +1,7 @@
 # listmonk-api
 
 A Python **API client, MCP Server, and A2A agent** for [Listmonk](https://listmonk.app/)
-— the self-hosted newsletter and mailing-list manager — built on the agent-connector-sdk
+— the self-hosted newsletter and mailing-list manager — built on the scion-sdk
 ecosystem.
 
 !!! info "Official documentation"

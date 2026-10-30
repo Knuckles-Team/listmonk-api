@@ -1,5 +1,5 @@
 site_name: "listmonk-api"
-site_description: "Listmonk API client + MCP Server + A2A agent — manage newsletters, lists, campaigns, subscribers, and templates from the agent-connector-sdk ecosystem."
+site_description: "Listmonk API client + MCP Server + A2A agent — manage newsletters, lists, campaigns, subscribers, and templates from the scion-sdk ecosystem."
 site_url: "https://knuckles-team.github.io/listmonk-api/"
 repo_name: "Knuckles-Team/listmonk-api"
 repo_url: "https://github.com/Knuckles-Team/listmonk-api"
