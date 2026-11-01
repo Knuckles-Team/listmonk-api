@@ -2,4 +2,6 @@
 
 Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requirements.md](requirements.md).
 
-- [x] **CONN-LISTMONK-API-CONNECTOR-CONTENT-R001:** Declare the fleet identity and serve the packaged content by default.
+Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is producer first.
+
+- [x] T001 [US1] CONN-LISTMONK-API-CONNECTOR-CONTENT-R001 Default content.
