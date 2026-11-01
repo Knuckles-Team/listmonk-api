@@ -16,7 +16,7 @@ from typing import Any
 
 import pytest
 from scion_sdk.ingest import IngestError, KnowledgeIngest
-from epistemic_graph.generated.source_ingestion import SourceIngestionRequest
+from medulla.generated.source_ingestion import SourceIngestionRequest
 
 from listmonk_api.kg_ingest import (
     ingest_campaigns,
