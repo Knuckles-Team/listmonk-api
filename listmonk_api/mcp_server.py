@@ -414,7 +414,7 @@ def register_listmonk_ingest_tools(mcp: FastMCP):
             default=None, description="MCP context for progress reporting"
         ),
     ) -> dict:
-        """Natively ingest Listmonk records into epistemic-graph as typed nodes + documents.
+        """Natively ingest Listmonk records into medulla as typed nodes + documents.
 
         Lists campaigns / lists / subscribers via the Listmonk API and pushes them into
         the knowledge graph as ``:Campaign`` / ``:SubscriptionList`` / ``:Subscriber``
