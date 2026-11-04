@@ -1,7 +1,7 @@
 """Epistemic-graph ingestion for Listmonk records and documents.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. The listmonk-api connector pushes
-campaigns/lists/subscribers into the ONE epistemic-graph knowledge graph as **typed
+campaigns/lists/subscribers into the ONE medulla knowledge graph as **typed
 OWL nodes** (``:Campaign``, ``:SubscriptionList``, ``:Subscriber``, ``:EmailTemplate``)
 + text bodies as ``:Document`` nodes, through ``scion_sdk.ingest`` -- the
 generated ``SourceIngest`` client, not a local ingestion helper.
@@ -93,7 +93,7 @@ async def ingest_entities(
     *,
     ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
-    """Write typed OWL nodes (+ edges) into epistemic-graph via the SDK ingest facade.
+    """Write typed OWL nodes (+ edges) into medulla via the SDK ingest facade.
 
     Uses canonical ``node_type`` / ``relationship`` structural fields and surfaces
     a malformed change set or a refused commit as ``IngestError``.
