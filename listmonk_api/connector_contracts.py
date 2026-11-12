@@ -773,9 +773,7 @@ LINKS = (
             "listmonk_transactional_message",
             "listmonk_upload_media",
         ),
-        prompts=(
-            "listmonk-mcp-listmonk-administrator",
-        ),
+        prompts=("listmonk-mcp-listmonk-administrator", "create_campaign_prompt", "send_transactional_message_prompt",),
     ),
     SurfaceLink(
         task="listmonk-mcp-operator",
