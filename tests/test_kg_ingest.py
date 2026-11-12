@@ -1,4 +1,4 @@
-"""Epistemic-graph typed-node + document ingestion -- Wire-First coverage for listmonk-api.
+"""Medulla typed-node + document ingestion -- Wire-First coverage for listmonk-api.
 
 Exercises the real ``ingest_entities`` / ``ingest_documents`` / ``ingest_campaigns`` /
 ``ingest_lists`` / ``ingest_subscribers`` seam against a fake ``scion_sdk.ingest``

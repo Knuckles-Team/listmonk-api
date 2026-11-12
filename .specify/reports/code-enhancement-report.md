@@ -42,12 +42,12 @@ xychart-beta
 `█████████████░░░░░░░` 69/100
 
 > [!WARNING]
-> Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem
+> Detected ecosystem marker: scion-sdk → Meristem Ecosystem
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
 | has_pyproject | 10 | `pyproject.toml and requirements.txt` | Both pyproject.toml and requirements.txt exist, fulfilling mandatory Python proj |
-| project_type_detected | 10 | `Agent-Utilities Ecosystem` | Identified 1 ecosystem marker(s) in dependencies |
+| project_type_detected | 10 | `Meristem Ecosystem` | Identified 1 ecosystem marker(s) in dependencies |
 | externalized_prompts | 0 | `${WORKSPACE_ROOT}/agent-packages/agents/listmonk-api` | No prompts/ directory found. Prompts may be hardcoded in source. |
 | observability | 0 | `dependency list` | No observability tools (logfire, sentry, opentelemetry) found |
 | testing_suite | 5 | `tests dir: True, pytest dep: False` | Tests directory exists, pytest not in dependencies |
@@ -295,7 +295,7 @@ xychart-beta
 | 2 | 🔴 High | Concept Traceability | 36 test functions missing concept markers | High | High |
 | 3 | 🔴 High | Concept Traceability | 51 significant functions (>10 lines) missing concept markers in docstrings | High | High |
 | 4 | 🔴 High | Test Execution | No tests were executed (test framework detected but no tests found) | High | High |
-| 5 | 🔴 High | Project Analysis | Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem | High | Medium |
+| 5 | 🔴 High | Project Analysis | Detected ecosystem marker: scion-sdk → Meristem Ecosystem | High | Medium |
 | 6 | 🔴 High | Project Analysis | Protocol support: MCP | High | Medium |
 | 7 | 🔴 High | Architecture & Design Patterns | SRP: 1 modules exceed 500 lines (god modules) | High | Medium |
 | 8 | 🔴 High | Architecture & Design Patterns | SRP: 1 classes have >15 methods | High | Medium |

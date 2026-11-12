@@ -1,4 +1,4 @@
-"""Epistemic-graph ingestion for Listmonk records and documents.
+"""Medulla ingestion for Listmonk records and documents.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. The listmonk-api connector pushes
 campaigns/lists/subscribers into the ONE medulla knowledge graph as **typed
