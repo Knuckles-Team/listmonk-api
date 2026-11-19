@@ -18,12 +18,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_create_campaign",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -42,12 +38,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_create_list",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -66,12 +58,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_create_subscriber",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -94,9 +82,7 @@ CONTRACTS = (
                     "campaign_id",
                     "confirm",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -123,9 +109,7 @@ CONTRACTS = (
                     "confirm",
                     "media_id",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -148,12 +132,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_delete_subscriber_import",
-                params=(
-                    "confirm",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("confirm",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -180,9 +160,7 @@ CONTRACTS = (
                     "confirm",
                     "template_id",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -209,9 +187,7 @@ CONTRACTS = (
                     "data",
                     "list_id",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -230,12 +206,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_campaign",
-                params=(
-                    "campaign_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("campaign_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -254,12 +226,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_campaign_preview",
-                params=(
-                    "campaign_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("campaign_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -278,12 +246,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_campaign_stats",
-                params=(
-                    "campaign_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("campaign_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -309,9 +273,7 @@ CONTRACTS = (
                     "per_page",
                     "query",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -330,12 +292,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_list",
-                params=(
-                    "list_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("list_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -361,9 +319,7 @@ CONTRACTS = (
                     "per_page",
                     "query",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -382,12 +338,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_media",
-                params=(
-                    "media_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("media_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -406,12 +358,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_subscriber",
-                params=(
-                    "subscriber_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("subscriber_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -430,9 +378,7 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_subscriber_import_logs",
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -451,9 +397,7 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_subscriber_import_status",
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -478,9 +422,7 @@ CONTRACTS = (
                     "per_page",
                     "query",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -499,12 +441,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_subscribers_from_list",
-                params=(
-                    "list_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("list_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -523,12 +461,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_template",
-                params=(
-                    "template_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("template_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -547,12 +481,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_get_template_preview",
-                params=(
-                    "template_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("template_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -575,9 +505,7 @@ CONTRACTS = (
                     "max_pages",
                     "per_page",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -596,12 +524,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_import_subscribers",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -624,9 +548,7 @@ CONTRACTS = (
                     "entity",
                     "params_json",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -649,9 +571,7 @@ CONTRACTS = (
                     "campaign_id",
                     "data",
                 ),
-                result=(
-                    "result",
-                ),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -670,12 +590,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_set_default_template",
-                params=(
-                    "template_id",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("template_id",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -694,12 +610,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_transactional_message",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -718,12 +630,8 @@ CONTRACTS = (
         steps=(
             ToolStep(
                 tool="listmonk_upload_media",
-                params=(
-                    "data",
-                ),
-                result=(
-                    "result",
-                ),
+                params=("data",),
+                result=("result",),
                 refusals=(
                     Refusal(
                         code="ACCESS_DENIED",
@@ -773,7 +681,11 @@ LINKS = (
             "listmonk_transactional_message",
             "listmonk_upload_media",
         ),
-        prompts=("listmonk-mcp-listmonk-administrator", "create_campaign_prompt", "send_transactional_message_prompt",),
+        prompts=(
+            "listmonk-mcp-listmonk-administrator",
+            "create_campaign_prompt",
+            "send_transactional_message_prompt",
+        ),
     ),
     SurfaceLink(
         task="listmonk-mcp-operator",
@@ -808,9 +720,7 @@ LINKS = (
             "listmonk_transactional_message",
             "listmonk_upload_media",
         ),
-        prompts=(
-            "listmonk-mcp-operator",
-        ),
+        prompts=("listmonk-mcp-operator",),
     ),
     SurfaceLink(
         task="listmonk-api-development",
@@ -845,9 +755,7 @@ LINKS = (
             "listmonk_transactional_message",
             "listmonk_upload_media",
         ),
-        skills=(
-            "listmonk-api-development",
-        ),
+        skills=("listmonk-api-development",),
     ),
     SurfaceLink(
         task="listmonk-api-operations",
@@ -882,45 +790,29 @@ LINKS = (
             "listmonk_transactional_message",
             "listmonk_upload_media",
         ),
-        skills=(
-            "listmonk-api-operations",
-        ),
+        skills=("listmonk-api-operations",),
     ),
     SurfaceLink(
         task="listmonk-campaign-management",
-        tools=(
-            "listmonk_ingest",
-        ),
-        skills=(
-            "listmonk-campaign-management",
-        ),
+        tools=("listmonk_ingest",),
+        skills=("listmonk-campaign-management",),
     ),
     SurfaceLink(
         task="listmonk-subscriber-lists",
-        tools=(
-            "listmonk_ingest",
-        ),
-        skills=(
-            "listmonk-subscriber-lists",
-        ),
+        tools=("listmonk_ingest",),
+        skills=("listmonk-subscriber-lists",),
     ),
     SurfaceLink(
         task="listmonk-transactional-messaging",
-        tools=(
-            "listmonk_ingest",
-        ),
-        skills=(
-            "listmonk-transactional-messaging",
-        ),
+        tools=("listmonk_ingest",),
+        skills=("listmonk-transactional-messaging",),
     ),
 )
 
 LOCATIONS = (
     DataLocation(
         name="listmonk-campaigns",
-        holds=(
-            "Campaign",
-        ),
+        holds=("Campaign",),
         instance="LISTMONK_URL",
         read_tool="listmonk_get_campaigns",
     ),
