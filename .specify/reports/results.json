@@ -7,7 +7,7 @@
       "score": 69,
       "grade": "D",
       "findings": [
-        "Detected ecosystem marker: scion-sdk \u2192 Agent-Utilities Ecosystem",
+        "Detected ecosystem marker: scion-sdk \u2192 Meristem Ecosystem",
         "Protocol support: MCP"
       ],
       "justifications": [
@@ -20,7 +20,7 @@
         {
           "criterion": "project_type_detected",
           "points": 10,
-          "evidence": "Agent-Utilities Ecosystem",
+          "evidence": "Meristem Ecosystem",
           "reasoning": "Identified 1 ecosystem marker(s) in dependencies"
         },
         {
@@ -77,7 +77,7 @@
         "has_requirements": true,
         "dep_count": 1,
         "project_types": [
-          "Agent-Utilities Ecosystem"
+          "Meristem Ecosystem"
         ],
         "has_agent_skills": false
       }

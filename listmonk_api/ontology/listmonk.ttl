@@ -1,7 +1,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix : <http://knuckles.team/kg#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/listmonk#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -13,15 +14,17 @@
 # listmonk_templates / listmonk_tx). Reuses the shared :Person and :Document classes.
 
 :Campaign a owl:Class ;
+    rdfs:subClassOf core:EmailCampaign ;
     rdfs:label "Campaign" ;
     rdfs:comment "An email campaign sent to one or more subscription lists (listmonk_campaigns)." .
 
 :SubscriptionList a owl:Class ;
+    rdfs:subClassOf core:MailingList ;
     rdfs:label "Subscription List" ;
     rdfs:comment "A mailing list (public/private, single/double opt-in) that subscribers belong to (listmonk_lists)." .
 
 :Subscriber a owl:Class ;
-    rdfs:subClassOf :Person ;
+    rdfs:subClassOf core:Person ;
     rdfs:label "Subscriber" ;
     rdfs:comment "A contact/recipient with an email and status (enabled, disabled, blocklisted); a specialization of :Person (listmonk_subscribers)." .
 
@@ -61,7 +64,7 @@
 :hasBody a owl:ObjectProperty ;
     rdfs:label "has body" ;
     rdfs:comment "Links a Campaign or EmailTemplate to the :Document carrying its rendered body text." ;
-    rdfs:range :Document .
+    rdfs:range core:Document .
 
 # --- fields (owl:DatatypeProperty) ---
 
@@ -112,7 +115,7 @@
     rdfs:domain :Subscriber ;
     rdfs:range xsd:string .
 
-<http://knuckles.team/kg/listmonk> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/listmonk> a owl:Ontology ;
     rdfs:label "Listmonk Email-Marketing Ontology" ;
     rdfs:comment """Listmonk newsletter and mailing-list model — campaigns, subscription
     lists, subscribers, email templates and transactional messages, with their targeting,
@@ -120,5 +123,5 @@
     knowledge-graph hub. Reuses the shared :Person and :Document classes.""" .
 
 # ontology-codemod R3
-<http://knuckles.team/kg#EmailTemplate> rdfs:subClassOf <http://knuckles.team/kg#Template> .
-<http://knuckles.team/kg#TransactionalMessage> rdfs:subClassOf <http://knuckles.team/kg#Message> .
+<https://knuckles-team.github.io/ontology/connector/listmonk#EmailTemplate> rdfs:subClassOf <https://knuckles-team.github.io/ontology/core#Template> .
+<https://knuckles-team.github.io/ontology/connector/listmonk#TransactionalMessage> rdfs:subClassOf <https://knuckles-team.github.io/ontology/core#Message> .

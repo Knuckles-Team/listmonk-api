@@ -26,6 +26,7 @@ warnings.filterwarnings("ignore", message=".*urllib3.*or charset_normalizer.*")
 import json
 import logging
 import sys
+from pathlib import Path
 from threading import local
 from typing import Any
 
@@ -37,6 +38,20 @@ from listmonk_api.auth import get_client
 
 logger = get_logger(name="ListmonkMCP")
 logger.setLevel(logging.DEBUG)
+
+
+_PROMPT_AGENT = json.loads(
+    (
+        Path(__file__).parent / "prompts/listmonk-mcp-listmonk-administrator.json"
+    ).read_text(encoding="utf-8")
+)["agent"]
+
+
+def _prompt_meta(role: str, goal: str) -> dict:
+    """The agent definition every served prompt carries (the packaged role prompt's)."""
+    return {
+        "team.knuckles/prompt": {"role": role, "goal": goal, "agent": _PROMPT_AGENT}
+    }
 
 
 def _parse_action_params(params_json: str) -> dict[str, Any] | None:
@@ -461,7 +476,7 @@ def register_prompts(context: RegistrationContext):
     """Register MCP prompts."""
     mcp = context.server
 
-    @mcp.prompt
+    @mcp.prompt(meta=_prompt_meta("Business Role Specialist", "Create campaign."))
     def create_campaign_prompt(
         name: str, subject: str, list_ids: str, type: str = "regular"
     ) -> str:
@@ -470,7 +485,9 @@ def register_prompts(context: RegistrationContext):
         """
         return f"Create a new Listmonk campaign with name '{name}', subject '{subject}', lists [{list_ids}], and type '{type}'. Use the listmonk_campaigns tool with action='create_campaign'."
 
-    @mcp.prompt
+    @mcp.prompt(
+        meta=_prompt_meta("Business Role Specialist", "Send transactional message.")
+    )
     def send_transactional_message_prompt(
         subscriber_email: str, template_id: int
     ) -> str:
