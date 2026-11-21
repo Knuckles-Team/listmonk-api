@@ -23,11 +23,6 @@
     rdfs:label "Subscription List" ;
     rdfs:comment "A mailing list (public/private, single/double opt-in) that subscribers belong to (listmonk_lists)." .
 
-:Subscriber a owl:Class ;
-    rdfs:subClassOf core:Person ;
-    rdfs:label "Subscriber" ;
-    rdfs:comment "A contact/recipient with an email and status (enabled, disabled, blocklisted); a specialization of :Person (listmonk_subscribers)." .
-
 :EmailTemplate a owl:Class ;
     rdfs:label "Email Template" ;
     rdfs:comment "A reusable campaign or transactional email template (listmonk_templates)." .
@@ -47,7 +42,7 @@
 :subscribedToList a owl:ObjectProperty ;
     rdfs:label "subscribed to list" ;
     rdfs:comment "Links a Subscriber to a SubscriptionList they belong to." ;
-    rdfs:domain :Subscriber ;
+    rdfs:domain core:Subscriber ;
     rdfs:range :SubscriptionList .
 
 :usesTemplate a owl:ObjectProperty ;
@@ -59,7 +54,7 @@
     rdfs:label "sent to subscriber" ;
     rdfs:comment "Links a TransactionalMessage to the Subscriber that received it." ;
     rdfs:domain :TransactionalMessage ;
-    rdfs:range :Subscriber .
+    rdfs:range core:Subscriber .
 
 :hasBody a owl:ObjectProperty ;
     rdfs:label "has body" ;
@@ -67,18 +62,6 @@
     rdfs:range core:Document .
 
 # --- fields (owl:DatatypeProperty) ---
-
-:campaignStatus a owl:DatatypeProperty ;
-    rdfs:label "campaign status" ;
-    rdfs:comment "Lifecycle status of a Campaign (draft, scheduled, running, paused, cancelled, finished)." ;
-    rdfs:domain :Campaign ;
-    rdfs:range xsd:string .
-
-:subject a owl:DatatypeProperty ;
-    rdfs:label "subject" ;
-    rdfs:comment "Email subject line of a Campaign." ;
-    rdfs:domain :Campaign ;
-    rdfs:range xsd:string .
 
 :fromEmail a owl:DatatypeProperty ;
     rdfs:label "from email" ;
@@ -106,13 +89,7 @@
 :subscriberStatus a owl:DatatypeProperty ;
     rdfs:label "subscriber status" ;
     rdfs:comment "Status of a Subscriber (enabled, disabled, blocklisted)." ;
-    rdfs:domain :Subscriber ;
-    rdfs:range xsd:string .
-
-:email a owl:DatatypeProperty ;
-    rdfs:label "email" ;
-    rdfs:comment "Email address of a Subscriber." ;
-    rdfs:domain :Subscriber ;
+    rdfs:domain core:Subscriber ;
     rdfs:range xsd:string .
 
 <https://knuckles-team.github.io/ontology/connector/listmonk> a owl:Ontology ;
