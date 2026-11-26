@@ -2,13 +2,7 @@
 name: listmonk-subscriber-lists
 skill_type: skill
 description: >-
-  Audience management on Listmonk via the listmonk-api MCP server — manage
-  subscription lists and the subscribers on them with the domain-typed tools
-  (not raw HTTP). Use when the agent must create/read/edit a mailing list, read
-  or create subscribers, read the subscribers of a list, or bulk-import
-  subscribers from a file. Do NOT use for building/sending campaigns (use
-  listmonk-campaign-management) or one-off transactional mail (use
-  listmonk-transactional-messaging).
+  Listmonk audience management via the listmonk-api MCP server: create, read and edit subscription lists and subscribers, bulk-import from a file. Use to manage who receives mail. Do NOT use for campaigns (listmonk-campaign-management) or one-off transactional mail (listmonk-transactional-messaging).
 license: MIT
 tags: [listmonk, subscribers, lists, audience, import, mcp]
 metadata:
@@ -16,6 +10,8 @@ metadata:
   version: '0.1.0'
 ---
 # Listmonk Subscriber & List Management
+
+Scope: Audience management on Listmonk via the listmonk-api MCP server — manage subscription lists and the subscribers on them with the domain-typed tools (not raw HTTP). Use when the agent must create/read/edit a mailing list, read or create subscribers, read the subscribers of a list, or bulk-import subscribers from a file. Do NOT use for building/sending campaigns (use listmonk-campaign-management) or one-off transactional mail (use listmonk-transactional-messaging).
 
 Domain-typed access to Listmonk **subscription lists** and **subscribers** — the
 audience a campaign targets. Prefer these tools over raw calls; they carry the
@@ -40,6 +36,22 @@ Connect via the `mcp-client` skill against the **`listmonk-api`** MCP server.
 | `LISTMONK_TOKEN` | ✅ | API token (`user:token` or admin token) |
 
 `MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed vs. verbose surface.
+
+## Steps
+
+1. Find the list with `listmonk_lists` (`action=get_lists`). Verify whether the list name already exists before creating one.
+2. Create or edit it with `action=create_list` or `action=edit_list` (`params_json` with `name`, `type`, `optin`). Verify `get_list` (`list_id`) returns the new settings.
+3. Add a subscriber with `listmonk_subscribers` (`action=create_subscriber`, `email`, `name`, `lists`). Verify `get_subscribers_from_list` (`list_id`) includes the email.
+4. For bulk loads, call `listmonk_imports` (`action=import_subscribers`, `params_json` with `file`, `mode`, `lists`). Verify `get_subscriber_import_status` reports completion.
+5. Read `get_subscriber_import_logs` after an import. Verify the log shows no rejected rows beyond what is expected.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| 401 or connection error | `LISTMONK_URL` or `LISTMONK_TOKEN` missing or wrong | Set both variables to the right instance and token, then call `get_lists` to confirm access. |
+| Import refused | Another import is still running or stuck | Read `get_subscriber_import_status`, and if stuck call `delete_subscriber_import` before starting `import_subscribers` again. |
+| Subscriber missing from list | Wrong `list_id`, or double opt-in has not been confirmed | Check the id with `get_lists`, then re-read `get_subscribers_from_list`; set `preconfirm_subscriptions` only if consent exists. |
 
 ## Tools & actions
 Prefer the **condensed** tools; each takes `action` + a `params_json` **JSON string**.

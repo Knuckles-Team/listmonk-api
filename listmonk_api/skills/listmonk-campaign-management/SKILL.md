@@ -2,13 +2,7 @@
 name: listmonk-campaign-management
 skill_type: skill
 description: >-
-  Email-campaign operations on Listmonk via the listmonk-api MCP server — list,
-  read, preview, create, schedule/run, and stat campaigns with the domain-typed
-  tool (not raw HTTP). Use when the agent must build a newsletter campaign
-  against explicit list_ids, transition a campaign's status (draft → scheduled →
-  running → paused/cancelled), preview rendered content, or read running stats.
-  Do NOT use for managing subscribers or lists (use listmonk-subscriber-lists)
-  or for one-off per-recipient mail (use listmonk-transactional-messaging).
+  Listmonk email campaigns via the listmonk-api MCP server: list, read, preview, create, schedule or run, and stat campaigns. Use to build a newsletter against explicit list_ids or change campaign status. Do NOT use for subscribers or lists (listmonk-subscriber-lists) or one-off mail (listmonk-transactional-messaging).
 license: MIT
 tags: [listmonk, campaign, newsletter, email, mcp]
 metadata:
@@ -16,6 +10,8 @@ metadata:
   version: '0.1.0'
 ---
 # Listmonk Campaign Management
+
+Scope: Email-campaign operations on Listmonk via the listmonk-api MCP server — list, read, preview, create, schedule/run, and stat campaigns with the domain-typed tool (not raw HTTP). Use when the agent must build a newsletter campaign against explicit list_ids, transition a campaign's status (draft → scheduled → running → paused/cancelled), preview rendered content, or read running stats. Do NOT use for managing subscribers or lists (use listmonk-subscriber-lists) or for one-off per-recipient mail (use listmonk-transactional-messaging).
 
 Domain-typed access to Listmonk **campaigns** for newsletter/broadcast email.
 Prefer these tools over raw calls — they carry the campaign field conventions
@@ -43,6 +39,22 @@ Connect via the `mcp-client` skill against the **`listmonk-api`** MCP server.
 
 `MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed surface
 (used below) vs. the one-to-one verbose tools.
+
+## Steps
+
+1. Resolve the target lists with `listmonk_lists` (`action=get_lists`). Verify the list_ids you will target appear in the result.
+2. Create the campaign with `listmonk_campaigns` (`action=create_campaign`, `params_json` with `name`, `subject`, `lists`, `from_email`, `type`, `body`). Verify the response returns a `campaign_id`.
+3. Render it with `listmonk_campaigns` (`action=get_campaign_preview`, `campaign_id`). Verify the content and `from_email` are correct before any send.
+4. Schedule or start it with `action=set_campaign_status` (`campaign_id`, `data` holding `status`). Verify `get_campaign` reports the new status.
+5. Watch a running campaign with `action=get_campaign_stats` (`campaign_id`). Verify the sent counter increases.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| 401 or connection error | `LISTMONK_URL` or `LISTMONK_TOKEN` missing or wrong | Set both variables to the right instance and token, then call `get_campaigns` with `per_page=1` to confirm access. |
+| Create rejected | Payload used `send_type` instead of `type`, or `params_json` was an object | Resend with the key `type` set to `regular` or `optin` and `params_json` serialized as a JSON string. |
+| Stats empty | The campaign is not running, so no running stats exist | Read `get_campaign` for its status and call `set_campaign_status` to `running` only after preview, then call `get_campaign_stats` again. |
 
 ## Tools & actions
 Prefer the **condensed** tool; it takes `action` + a `params_json` **JSON string**

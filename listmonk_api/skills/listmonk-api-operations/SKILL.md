@@ -27,6 +27,22 @@ Use the provider's governed MCP tools through Arbora delegation.
 - Require explicit approval for destructive, externally visible, or irreversible actions.
 - Keep runtime traces policy-scoped and privacy-sanitized.
 
+## Steps
+
+1. Confirm the tool surface by reading the [workflow catalog](references/catalog.md) with `cat references/catalog.md`. Verify the workflow you need is listed there.
+2. Open the matching skill, for example `listmonk-campaign-management`, and read its Tools table. Verify every tool and action you plan to call is named in it.
+3. Run read-only inspection first, for example `listmonk_campaigns` with `action=get_campaigns`. Verify the ids you will change exist in the result.
+4. For a change, present the impact and execute one mutating action, for example `listmonk_lists` with `action=create_list`. Verify the response echoes the changed object.
+5. Re-read the object with the matching get action, for example `get_campaign` with `campaign_id`. Verify it matches the intended state before reporting completion.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Unknown tool or action | Stale name or wrong tool mode | Re-read the Tools table of the matching skill and call the exact listed action with a `params_json` JSON string. |
+| 401 or connection error | `LISTMONK_URL` or `LISTMONK_TOKEN` missing or wrong | Set both variables to the right instance and token, then call `get_lists` with `per_page=1` to confirm access. |
+| Destructive action blocked | No explicit approval | Obtain explicit approval naming the ids, then call the delete action again with those ids. |
+
 ## Specialized workflows
 
 Read [the workflow catalog](references/catalog.md) only when the request needs a
