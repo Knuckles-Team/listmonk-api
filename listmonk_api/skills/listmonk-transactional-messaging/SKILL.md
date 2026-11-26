@@ -2,13 +2,7 @@
 name: listmonk-transactional-messaging
 skill_type: skill
 description: >-
-  Transactional email + template operations on Listmonk via the listmonk-api MCP
-  server — send a one-off, per-recipient message rendered from a template, and
-  manage the email templates it uses, with the domain-typed tools (not raw HTTP).
-  Use when the agent must send a receipt/notification/password-reset style mail to
-  a single subscriber, or list/read/preview/set-default/delete templates. Do NOT
-  use for bulk newsletters (use listmonk-campaign-management) or for managing the
-  audience (use listmonk-subscriber-lists).
+  Listmonk transactional email and templates via the listmonk-api MCP server: send a one-off message to one subscriber from a template, and list, preview, set default or delete templates. Do NOT use for bulk newsletters (listmonk-campaign-management) or audience management (listmonk-subscriber-lists).
 license: MIT
 tags: [listmonk, transactional, template, email, mcp]
 metadata:
@@ -16,6 +10,8 @@ metadata:
   version: '0.1.0'
 ---
 # Listmonk Transactional Messaging & Templates
+
+Scope: Transactional email + template operations on Listmonk via the listmonk-api MCP server — send a one-off, per-recipient message rendered from a template, and manage the email templates it uses, with the domain-typed tools (not raw HTTP). Use when the agent must send a receipt/notification/password-reset style mail to a single subscriber, or list/read/preview/set-default/delete templates. Do NOT use for bulk newsletters (use listmonk-campaign-management) or for managing the audience (use listmonk-subscriber-lists).
 
 Domain-typed access to Listmonk **transactional messages** and **templates** —
 one-off, per-recipient mail (receipts, notifications, resets) rendered from a
@@ -40,6 +36,21 @@ Connect via the `mcp-client` skill against the **`listmonk-api`** MCP server.
 
 The template must be of the **transactional** type in Listmonk for `listmonk_tx` to use it.
 `MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed vs. verbose surface.
+
+## Steps
+
+1. List templates with `listmonk_templates` (`action=get_templates`). Verify a transactional template exists and note its `template_id`.
+2. Render it with `action=get_template_preview` (`template_id`). Verify the placeholders you plan to fill appear in the output.
+3. Send the message with `listmonk_tx` (`action=transactional_message`, `params_json` with `template_id`, one of `subscriber_email` or `subscriber_id`, and `data`). Verify the call returns success.
+4. To change the default, call `action=set_default_template` (`template_id`) only after confirming impact on future campaigns. Verify `get_template` shows it as default.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| 401 or connection error | `LISTMONK_URL` or `LISTMONK_TOKEN` missing or wrong | Set both variables to the right instance and token, then call `get_templates` to confirm access. |
+| Message not rendered | `template_id` points at a campaign template, not a transactional one | Call `get_templates`, choose a transactional template, and resend `transactional_message` with that `template_id`. |
+| Recipient rejected | Both or neither of `subscriber_email` and `subscriber_id` were given | Resend with exactly one recipient key. |
 
 ## Tools & actions
 Prefer the **condensed** tools; each takes `action` + a `params_json` **JSON string**.

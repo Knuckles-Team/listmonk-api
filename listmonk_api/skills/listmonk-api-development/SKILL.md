@@ -54,6 +54,23 @@ hooks.
    Pages run, check `/spec-delivery/`, its `index.html`, and `snapshot.json` over
    HTTPS and record the revision from the snapshot.
 
+## Steps
+
+1. Find the owning requirement with `git grep -n "<term>" -- specs`. Verify a row exists before editing.
+2. Create a worktree from `origin/main` with `git worktree add`. Verify `git status --short` is clean.
+3. Make the smallest connector-owned change under `listmonk_api/`. Verify with `git diff --stat` that only intended files changed.
+4. Run the focused tests with `uv run --locked --extra test pytest -q tests/test_publication_workflow.py`. Verify they pass.
+5. Run the gates with `uvx pre-commit run --all-files`. Verify every hook reports Passed.
+6. Stage an explicit allowlist with `git add -- <paths>` and commit with the `Spec:` trailer. Verify `git diff --cached --name-status` lists only reviewed paths.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Locked sync fails | `uv.lock` out of step with `pyproject.toml` | Run `uv sync --locked` in the worktree, and update the lock together with the version only for a packaged-content change. |
+| Hook fails on commit | A gate found a formatting, spelling or spec problem | Read the hook output, fix the named file, and commit again with hooks active. |
+| Publication test fails | Pages or release contract changed | Open `tests/test_publication_workflow.py`, find the failing assertion, and align the workflow file it names. |
+
 ## Focused development commands
 
 From the repository root:
